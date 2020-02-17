@@ -1,9 +1,6 @@
-print("Hello world!")
+from test.tests import DefaultTest
 
-# todo: Log
-# log sınıfı aç, timestamp ile birlikte log yazsın
-# her cycle'da yeni log dosyası açsın
-# log saklama süresini geçen dosyaları silecek yordam
+DefaultTest().run()
 
 # todo: 3P
 # PULL klasörü: abstract + uygulama sınıfları
@@ -22,8 +19,11 @@ print("Hello world!")
 # konfigürasyon dosyası
 # - log saklama süresi
 # işlem
+# - yeni log dosyası aç
 # - tüm klasörlerden elindeki bilgileri tazele
 # - passenger'lardan cycle'ı gelenler için 3P
 # - log kaydet
 # - eski log'ları sil (konfigürasyondaki süreyi geçenler)
+# -- json_database içerisindeki delete_old_logs tamamlanacak
+# -- bu yordamdan faydalanıp, konfigürasyonadaki süreden eski olanları sil
 # - yeni cycle
