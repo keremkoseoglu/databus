@@ -2,15 +2,13 @@ from test.tests import DefaultTest
 
 DefaultTest().run()
 
-# todo: passenger
-# JSON: PULL, PROCESS, PUSH listesi
-# test altına ekle
-# readme.md altına ekle
-
 # todo: 3P
-# PULL klasörü: abstract + uygulama sınıfları (passenger[] ile çalış)
 # PROCESS klasörü: abstract + uygulama sınıfları (passenger[] ile çalış)
+# müşteri hangi process'leri kullanıyor?
+# PROCESS: Loglama (testlere de log ekle)
 # PUSH klasörü: abstract + uygulama sınıfları (passenger[] ile çalış)
+# müşteri hangi push'ları kullanıyor?
+# PUSH: Loglama (testlere de log ekle)
 # tüm bu sınıflar loga ek yapabilsin
 # bunların parametreleri aynı klasörde mi olsun merkezi yerde mi?
 # test altına ekle

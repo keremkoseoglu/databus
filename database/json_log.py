@@ -1,3 +1,4 @@
+from client.client import Client
 from client.log import Log
 from config.constants import *
 from database.json_client import JsonClient
@@ -24,7 +25,7 @@ class JsonLog:
         return datetime_part + "_" + guid_part + "." + JSON_DB_LOG_EXTENSION
 
     @staticmethod
-    def build_log_file_path(p_log: Log) -> str:
-        return path.join(JsonClient.build_client_dir_path(p_log.client),
+    def build_log_file_path(p_client: Client, p_log: Log) -> str:
+        return path.join(JsonClient.build_client_dir_path(p_client),
                          JSON_DB_LOG_DIR,
                          JsonLog.build_log_file_name(p_log))

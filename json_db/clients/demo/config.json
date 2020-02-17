@@ -1,5 +1,4 @@
 {
-  "passengers": [
-    {"module": "demo_passenger", "sync_frequency": 1}
-  ]
+  "pullers": [ "demo_puller_1", "demo_puller_2" ],
+  "sync_frequency": 1
 }

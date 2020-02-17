@@ -3,7 +3,8 @@ DATABUS_MODULE_EXTENSIONS = ('.py', '.pyc', '.pyo')
 
 # DEMO
 DEMO_CLIENT = "demo"
-DEMO_PASSENGER_MODULE = "demo_passenger"
+DEMO_PASSENGER_MODULE = "demo_passenger_2"
+DEMO_PULLER_MODULE = "demo_puller_1"
 
 # JSON Database
 JSON_DB_CLIENT_CONFIG = "config.json"
@@ -14,3 +15,6 @@ JSON_DB_LOG_EXTENSION = "txt"
 
 # Passenger
 PASSENGER_PATH = "passenger"
+
+# Puller
+PULLER_PATH = "puller"

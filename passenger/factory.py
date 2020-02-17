@@ -11,7 +11,9 @@ class PassengerFactory:
         module = __import__(PASSENGER_PATH + "." + p_module, fromlist=[""])
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if name != "AbstractPassenger":
-                return obj()
+                obj_instance = obj()
+                if isinstance(obj_instance, AbstractPassenger):
+                    return obj_instance
 
     @staticmethod
     def get_passenger_types() -> List[str]:

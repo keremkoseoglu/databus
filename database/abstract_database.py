@@ -14,11 +14,15 @@ class AbstractDatabase(ABC):
         pass
 
     @abstractmethod
+    def get_client(self, p_name: str) -> Client:
+        pass
+
+    @abstractmethod
     def get_clients(self) -> List[Client]:
         pass
 
     @abstractmethod
-    def insert_log(self, p_log: Log):
+    def insert_log(self, p_client: Client, p_log: Log):
         pass
 
 

@@ -1,4 +1,3 @@
-from client.client import Client
 from datetime import datetime
 from enum import Enum
 from typing import List
@@ -27,13 +26,11 @@ class LogEntry:
 
 
 class Log:
-    client: Client
     creation_datetime: datetime
     entries: List[LogEntry]
     guid: UUID
 
-    def __init__(self, p_client: Client):
-        self.client = p_client
+    def __init__(self):
         self.creation_datetime = datetime.now()
         self.guid = uuid1()
         self.entries = []
