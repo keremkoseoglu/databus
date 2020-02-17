@@ -12,5 +12,9 @@ Yeni bir müşteri geldiğinde (ismi abc olsun):
 Yeni bir işlev eklendiğinde;
 * test/tests.py dosyasına bu işlev ile ilgili bir test eklemekte fayda var
 
+Yeni bir veritabanına geçmek isterseniz;
+* database/ altında abstract_database'den yeni bir sınıf türetin ve yordamlarını değiştirin
+* database/factory içerisinde yeni veritabanını döndürün
+
 ## Test
 test/test.py dosyasındaki testleri yürüterek, sistemin sağlıklı işleyip işlemediğini görebilirsiniz.

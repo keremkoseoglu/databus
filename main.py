@@ -2,18 +2,19 @@ from test.tests import DefaultTest
 
 DefaultTest().run()
 
+# todo: passenger
+# Passanger type kavramı
+# PASSENGER klasörü
+# senkronizasyon sıklığı
+# JSON: passenger tanımları
+# JSON: PULL, PROCESS, PUSH listesi
+
 # todo: 3P
 # PULL klasörü: abstract + uygulama sınıfları
 # PROCESS klasörü: abstract + uygulama sınıfları
 # PUSH klasörü: abstract + uygulama sınıfları
 # tüm bu sınıflar loga ek yapabilsin
 # bunların parametreleri aynı klasörde mi olsun merkezi yerde mi?
-
-# todo: passenger
-# PASSENGER klasörü
-# senkronizasyon sıklığı
-# JSON: passenger tanımları
-# JSON: PULL, PROCESS, PUSH listesi
 
 # todo: driver
 # konfigürasyon dosyası
