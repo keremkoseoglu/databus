@@ -1,0 +1,5 @@
+{
+  "passengers": [
+    {"module": "demo_passenger", "sync_frequency": 1}
+  ]
+}

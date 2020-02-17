@@ -1,9 +1,12 @@
-from client.client import Client
+from client.client import Client, ClientPassenger
 from client.log import Log
+from config.constants import *
 from database.abstract_database import AbstractDatabase
 from database.json_client import JsonClient
 from database.json_log import JsonLog
 from datetime import datetime
+import json
+from os import path
 from typing import List
 
 
@@ -22,6 +25,17 @@ class JsonDatabase(AbstractDatabase):
         output = []
         for client_directory in JsonClient.get_client_directories():
             client_obj = Client(client_directory)
+
+            config_file_path = path.join(JSON_DB_DATABASE_DIR,
+                                         JSON_DB_CLIENT_DIR,
+                                         client_directory,
+                                         JSON_DB_CLIENT_CONFIG)
+            with open(config_file_path) as config_json_file:
+                config_json = json.load(config_json_file)
+                for passenger in config_json["passengers"]:
+                    client_passenger = ClientPassenger(p_module=passenger["module"],
+                                                       p_sync_frequency=passenger["sync_frequency"])
+                    client_obj.passengers.append(client_passenger)
             output.append(client_obj)
         return output
 
