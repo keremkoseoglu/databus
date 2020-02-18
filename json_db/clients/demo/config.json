@@ -1,5 +1,6 @@
 {
   "pullers": [ "demo_puller_1", "demo_puller_2" ],
   "processors": [ "demo_processor_1", "demo_processor_2" ],
+  "pushers": ["demo_pusher_1", "demo_pusher_2"],
   "sync_frequency": 1
 }

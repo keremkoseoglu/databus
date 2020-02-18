@@ -16,5 +16,5 @@ class ProcessorFactory:
                     return obj_instance
 
     @staticmethod
-    def get_puller_types() -> List[str]:
+    def get_processor_types() -> List[str]:
         return FileSystem.get_all_python_modules(PROCESSOR_PATH)

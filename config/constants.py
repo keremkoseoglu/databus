@@ -21,3 +21,6 @@ PROCESSOR_PATH = "processor"
 
 # Puller
 PULLER_PATH = "puller"
+
+# Pusher
+PUSHER_PATH = "pusher"

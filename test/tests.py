@@ -38,6 +38,7 @@ class DefaultTest:
         self._create_demo_client()
         self._client_pull()
         self._client_process()
+        self._client_push()
 
         # Final
         self._demo_log.entries.append(LogEntry("Test finished"))
@@ -56,6 +57,12 @@ class DefaultTest:
             self._demo_passengers = puller.pull(p_log=self._demo_log)
             for pulled_passanger in self._demo_passengers:
                 print("Pulled passanger: " + pulled_passanger.dataset)
+
+    def _client_push(self):
+        self._h1("Client is pushing")
+        for pusher in self._demo_client.pushers:
+            print("Pushing with " + pusher.__module__)
+            pusher.push(p_log=self._demo_log, p_passengers=self._demo_passengers)
 
     def _create_demo_client(self):
         self._h1("Creating demo client")
