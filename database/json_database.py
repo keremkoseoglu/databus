@@ -41,6 +41,7 @@ class JsonDatabase(AbstractDatabase):
                 config_json = json.load(config_json_file)
 
                 client_obj = Client(p_name=client_directory,
+                                    p_processor_modules=config_json["processors"],
                                     p_puller_modules=config_json["pullers"],
                                     p_sync_frequency=config_json["sync_frequency"])
 

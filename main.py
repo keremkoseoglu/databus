@@ -3,14 +3,11 @@ from test.tests import DefaultTest
 DefaultTest().run()
 
 # todo: 3P
-# PROCESS klasörü: abstract + uygulama sınıfları (passenger[] ile çalış)
-# müşteri hangi process'leri kullanıyor?
-# PROCESS: Loglama (testlere de log ekle)
 # PUSH klasörü: abstract + uygulama sınıfları (passenger[] ile çalış)
 # müşteri hangi push'ları kullanıyor?
 # PUSH: Loglama (testlere de log ekle)
-# tüm bu sınıflar loga ek yapabilsin
-# bunların parametreleri aynı klasörde mi olsun merkezi yerde mi?
+# tüm bu sınıflara client yollamak iyi fikir
+# bunların parametreleri aynı klasörde mi olsun merkezi yerde mi? demo'lara parametre okumayı ekle
 # test altına ekle
 # readme.md altına ekle
 
@@ -26,5 +23,6 @@ DefaultTest().run()
 # -- json_database içerisindeki delete_old_logs tamamlanacak
 # -- bu yordamdan faydalanıp, konfigürasyonadaki süreden eski olanları sil
 # - yeni cycle
+# herhangi birinde hata olursa devam edip etmeme kararı?
 # test altına ekle
 # readme.md altına ekle

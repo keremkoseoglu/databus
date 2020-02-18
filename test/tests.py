@@ -3,14 +3,17 @@ from client.log import Log, LogEntry
 from config.constants import *
 from database.abstract_database import AbstractDatabase
 from database.factory import DatabaseFactory
+from passenger.abstract_passenger import AbstractPassenger
 from passenger.factory import PassengerFactory
 from puller.abstract_puller import AbstractPuller
 from puller.factory import PullerFactory
+from typing import List
 
 
 class DefaultTest:
     _demo_client: Client
     _demo_log: Log
+    _demo_passengers: List[AbstractPassenger]
     _demo_puller: AbstractPuller
     _db: AbstractDatabase
 
@@ -34,17 +37,24 @@ class DefaultTest:
         self._read_clients()
         self._create_demo_client()
         self._client_pull()
+        self._client_process()
 
         # Final
         self._demo_log.entries.append(LogEntry("Test finished"))
         self._save_log()
 
+    def _client_process(self):
+        self._h1("Client is processing")
+        for processor in self._demo_client.processors:
+            print("Processing with " + processor.__module__)
+            processor.process(p_log=self._demo_log, p_passengers=self._demo_passengers)
+
     def _client_pull(self):
         self._h1("Client is pulling")
         for puller in self._demo_client.pullers:
             print("Pulling with " + puller.__module__)
-            pulled_passangers = puller.pull(p_log=self._demo_log)
-            for pulled_passanger in pulled_passangers:
+            self._demo_passengers = puller.pull(p_log=self._demo_log)
+            for pulled_passanger in self._demo_passengers:
                 print("Pulled passanger: " + pulled_passanger.dataset)
 
     def _create_demo_client(self):

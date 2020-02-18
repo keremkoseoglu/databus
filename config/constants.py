@@ -16,5 +16,8 @@ JSON_DB_LOG_EXTENSION = "txt"
 # Passenger
 PASSENGER_PATH = "passenger"
 
+# Processor
+PROCESSOR_PATH = "processor"
+
 # Puller
 PULLER_PATH = "puller"
