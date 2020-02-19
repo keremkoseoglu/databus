@@ -11,9 +11,9 @@ class DemoProcessor1(AbstractProcessor):
 
     def process(self, p_log: Log, p_passengers: List[AbstractPassenger]):
         if len(p_passengers) > 1:
-            p_log.entries.append(LogEntry("Processor 1 is deleting the last passenger"))
+            p_log.append("Processor 1 is deleting the last passenger")
             p_passengers.pop()
-            p_log.entries.append(LogEntry("Remaining passengers: " + str(len(p_passengers))))
+            p_log.append("Remaining passengers: " + str(len(p_passengers)))
         else:
             p_log.entries.append(LogEntry(p_message="Processor 1 is doing nothing",
                                           p_type=MessageType.warning))

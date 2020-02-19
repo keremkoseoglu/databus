@@ -7,5 +7,5 @@ from typing import List
 class DemoPusher2(AbstractPusher):
 
     def push(self, p_log: Log, p_passengers: List[AbstractPassenger]):
-        p_log.entries.append(LogEntry("Pusher 2 did its job"))
+        p_log.append("Pusher 2 did its job")
 

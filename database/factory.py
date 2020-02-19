@@ -1,12 +1,19 @@
+import inspect
 from database.abstract_database import AbstractDatabase
-from database.json_database import JsonDatabase
 
 
 class DatabaseFactory:
-    __singleton: AbstractDatabase = None
-
     @staticmethod
-    def get_instance() -> AbstractDatabase:
-        if DatabaseFactory.__singleton is None:
-            DatabaseFactory.__singleton = JsonDatabase()
-        return DatabaseFactory.__singleton
+    def create_database(p_module: str, p_client_id: str) -> AbstractDatabase:
+        module = __import__(p_module, fromlist=[""])
+        for name, obj in inspect.getmembers(module, inspect.isclass):
+            if name != "AbstractDatabase":
+                try:
+                    obj_instance = obj(p_client_id)
+                    if isinstance(obj_instance, AbstractDatabase):
+                        return obj_instance
+                except:
+                    continue
+        return None # TODO: Burada Exception dönse daha iyi
+
+

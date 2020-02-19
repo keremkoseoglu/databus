@@ -12,25 +12,55 @@ class MessageType(Enum):
 
 
 class LogEntry:
-    message: str
-    timestamp: datetime
-    type: MessageType
+    __message: str
+    __timestamp: datetime
+    __type: MessageType
 
     def __init__(self,
                  p_message: str = "",
                  p_timestamp: datetime = datetime.now(),
                  p_type: MessageType = MessageType.info):
-        self.message = p_message
-        self.timestamp = p_timestamp
-        self.type = p_type
+        self.__message = p_message
+        self.__timestamp = p_timestamp
+        self.__type = p_type
+
+    @property
+    def message(self) -> str:
+        return self.__message
+
+    @property
+    def timestamp(self) -> datetime:
+        return self.__timestamp
+
+    @property
+    def type(self) -> MessageType:
+        return self.__type
 
 
 class Log:
-    creation_datetime: datetime
-    entries: List[LogEntry]
-    guid: UUID
+    __creation_datetime: datetime
+    __entries: List[LogEntry]
+    __guid: UUID
 
     def __init__(self):
-        self.creation_datetime = datetime.now()
-        self.guid = uuid1()
-        self.entries = []
+        self.__creation_datetime = datetime.now()
+        self.__guid = uuid1()
+        self.__entries = []
+
+    @property
+    def creation_datetime(self) -> datetime:
+        return self.__creation_datetime
+
+    @property
+    def entries(self) -> List[LogEntry]:
+        return self.__entries
+
+    @property
+    def guid(self) -> UUID:
+        return self.__guid
+
+    def append(self, p_entry: LogEntry):
+        self.__entries.append(p_entry)
+
+    def append(self, p_entry: str):
+        self.__entries.append(LogEntry(p_entry))

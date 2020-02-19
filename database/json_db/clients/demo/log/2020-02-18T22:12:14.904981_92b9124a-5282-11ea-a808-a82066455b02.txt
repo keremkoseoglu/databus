@@ -1,0 +1,27 @@
+[2020-02-18T22:12:14.872776][info] Test started
+[2020-02-18T22:12:14.872776][info] Puller 1 pulled first DemoPassenger1
+[2020-02-18T22:12:14.872776][info] Puller 1 pulled second DemoPassenger1
+[2020-02-18T22:12:14.872776][info] Puller 2 pulled first DemoPassenger2
+[2020-02-18T22:12:14.872776][info] Puller 2 pulled second DemoPassenger2
+[2020-02-18T22:12:14.872776][info] Puller 2 pulled first DemoPassenger2
+[2020-02-18T22:12:14.872776][info] Puller 2 pulled second DemoPassenger2
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID1 (92b94670-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID2 (92b94670-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID21 (92b97e88-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID22 (92b97e88-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID21 (92b97e88-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] demo için kuyruğa eklenecek veriler:
+[2020-02-18T22:12:14.872776][info]  - ID22 (92b97e88-5282-11ea-a808-a82066455b02)
+[2020-02-18T22:12:14.872776][info] Processor 1 is deleting the last passenger
+[2020-02-18T22:12:14.872776][info] Remaining passengers: 5
+[2020-02-18T22:12:14.872776][warning] Processor 2 is doing nothing
+[2020-02-18T22:12:14.872776][warning] Processor 2 is doing nothing
+[2020-02-18T22:12:14.872776][info] Pusher 1 did its job
+[2020-02-18T22:12:14.872776][info] Pusher 2 did its job
+[2020-02-18T22:12:14.872776][info] Pusher 2 did its job
+[2020-02-18T22:12:14.872776][info] Test finished

@@ -1,7 +1,6 @@
-from client.client import Client
 from client.log import Log
 from config.constants import *
-from database.json_client import JsonClient
+from database.json_db.json_client import JsonClient
 from os import path
 
 
@@ -25,7 +24,16 @@ class JsonLog:
         return datetime_part + "_" + guid_part + "." + JSON_DB_LOG_EXTENSION
 
     @staticmethod
-    def build_log_file_path(p_client: Client, p_log: Log) -> str:
-        return path.join(JsonClient.build_client_dir_path(p_client),
+    def build_log_file_path(p_client_id: str, p_log: Log) -> str:
+        return path.join(JsonClient.build_client_dir_path(p_client_id),
                          JSON_DB_LOG_DIR,
                          JsonLog.build_log_file_name(p_log))
+
+    @staticmethod
+    def insert(p_client_id: str, p_log: Log):
+        log_file_content = JsonLog.build_log_file_content(p_log)
+        log_file_path = JsonLog.build_log_file_path(p_client_id, p_log)
+
+        log_file = open(log_file_path, "w+")
+        log_file.write(log_file_content)
+        log_file.close()
