@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from client.log import Log
-from passenger.abstract_passenger import AbstractPassenger
-from typing import List
+from pqueue.queue_status import PassengerQueueStatus
 
 
 class AbstractPusher(ABC):
@@ -9,5 +8,5 @@ class AbstractPusher(ABC):
         pass
 
     @abstractmethod
-    def push(self, p_log: Log, p_passengers: List[AbstractPassenger]):
+    def push(self, p_log: Log, p_passenger: PassengerQueueStatus):
         pass

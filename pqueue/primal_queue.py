@@ -2,64 +2,45 @@ from client.log import Log
 from database.abstract_database import AbstractDatabase
 from passenger.abstract_passenger import AbstractPassenger
 from pqueue.abstract_queue import AbstractQueue
-from pqueue.queue_status import QueueStatus
+from pqueue.queue_status import QueueStatus, PassengerQueueStatus, QueueStatusFactory
 from typing import List
 
 
 class PrimalQueue(AbstractQueue):
 
-    def __init__(self):
-        pass
+    def __init__(self, p_database: AbstractDatabase, p_log: Log):
+        super().__init__(p_database, p_log)
 
-    def insert(self,
-               p_database: AbstractDatabase,
-               p_client_id: str,
-               p_passengers: List[AbstractPassenger],
-               p_log: Log):
+    def erase(self):
+        self.database.erase_passsenger_queue()
 
+    def insert(self, p_passengers: List[AbstractPassenger]):
         if len(p_passengers) <= 0:
-            p_log.append(p_client_id + " için kuyruğa eklenecek veri yok")
             return
 
-        p_log.append(p_client_id + " için kuyruğa eklenecek veriler:")
         for passenger in p_passengers:
-            p_log.append(passenger.id_text)
+            self.log.append_text("Inserting passenger into queue: " + passenger.id_text)
+            client_passenger = self.database.client.get_client_passenger(passenger.__module__)
+            pqs = QueueStatusFactory.get_passenger_queue_status(passenger, client_passenger)
+            self.database.insert_passenger_queue(pqs)
 
-        p_database.insert_passenger_queue(p_passengers=p_passengers,
-                                          p_log=p_log)
-
-    def get_undelivered_passengers(self,
-                                   p_database: AbstractDatabase,
-                                   p_client_id: str,
-                                   p_passenger_module: str,
-                                   p_log: Log) -> List[AbstractPassenger]:
-
-        p_log.append(p_client_id + " için gönderilmemiş veriler çekiliyor")
-
-        output = p_database.get_passenger_queue_entries(p_status=QueueStatus.undelivered,
-                                                        p_passenger_module=p_passenger_module,
-                                                        p_log=p_log)
-
-        if len(output) <= 0:
-            p_log.append("Gönderilmemiş veri bulunamadı")
-        else:
-            for undelivered_passenger in output:
-                p_log.append("Bulunan veri: " + undelivered_passenger.id_text)
-
+    def get_deliverable_passengers(self, p_passenger_module: str) -> List[PassengerQueueStatus]:
+        self.log.append_text("Reading deliverable passengers of type " + p_passenger_module)
+        output = self.database.get_passenger_queue_entries(p_passenger_module=p_passenger_module,
+                                                           p_pusher_status=QueueStatus.incomplete)
+        # todo: aralarında bir tanesinin bile process'i eksikse deliverable değildir
         return output
 
-    def set_passengers_delivered(self,
-                                 p_database: AbstractDatabase,
-                                 p_client_id: str,
-                                 p_passengers: List[AbstractPassenger],
-                                 p_log: Log):
-        p_log.append(p_client_id + " verileri gönderildi olarak işaretlenecek")
+    def get_processable_passengers(self, p_passenger_module: str) -> List[PassengerQueueStatus]:
+        self.log.append_text("Reading processable passengers of type " + p_passenger_module)
+        return self.database.get_passenger_queue_entries(
+            p_passenger_module=p_passenger_module,
+            p_processor_status=QueueStatus.incomplete)
 
-        for delivered_passenger in p_passengers:
-            p_log.append("İşaretlenecek veri: " + delivered_passenger.id_text)
+    def get_puller_notifiable_passengers(self) -> List[PassengerQueueStatus]:
+        self.log.append_text("Reading puller notifiable passengers")
+        return self.database.get_passenger_queue_entries(p_puller_notified=False)
 
-        p_database.set_passenger_queue_status(p_passengers=p_passengers,
-                                              p_status=QueueStatus.delivered,
-                                              p_log=p_log)
-
-        p_log.append("İşaretleme işlemi tamamlandı")
+    def update_passenger_status(self, p_status: PassengerQueueStatus):
+        self.log.append_text("Updating passenger status for " + p_status.passenger.id_text)
+        self.database.update_queue_status(p_status)

@@ -1,4 +1,5 @@
 {
+  "log_life_span": 1,
   "passengers": [
     {
       "name": "passenger.demo.demo_passenger_1",

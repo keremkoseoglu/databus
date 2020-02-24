@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from client.log import Log
-from passenger.abstract_passenger import AbstractPassenger
+from pqueue.queue_status import PassengerQueueStatus
 from typing import List
 
 
@@ -9,5 +9,5 @@ class AbstractProcessor(ABC):
         pass
 
     @abstractmethod
-    def process(self, p_log: Log, p_passengers: List[AbstractPassenger]):
+    def process(self, p_log: Log, p_passengers: List[PassengerQueueStatus]):
         pass

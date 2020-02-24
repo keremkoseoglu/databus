@@ -1,5 +1,7 @@
 # Databüs
 
+Bu dosya şu an için güncel değildir, daha sonra güncellenecek.
+
 ## Konfigürasyon
 Yeni bir yere kopyalandığında:
 * config/constants.py dosyasını güncelleyip, doğru değerleri barındırdığından emin olun.

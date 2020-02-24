@@ -6,6 +6,15 @@ from typing import List
 
 class AbstractPuller(ABC):
     def __init__(self):
+        # todo
+        # log'u burada
+        # aşağıdaki yordamlarda sil
+        # uygulayan sınıflarda buna göre kod yaz
+        # çağıran yerlerde düzenle
+        pass
+
+    @abstractmethod
+    def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger], p_log: Log):
         pass
 
     @abstractmethod

@@ -1,14 +1,11 @@
 from client.log import Log, LogEntry
-from passenger.abstract_passenger import AbstractPassenger
+from pqueue.queue_status import PassengerQueueStatus, QueueStatus
 from pusher.abstract_pusher import AbstractPusher
-from typing import List
 
 
 class DemoPusher1(AbstractPusher):
 
-    def hello_world(self):
-        print("Demo pusher 1 says hello world!")
-
-    def push(self, p_log: Log, p_passengers: List[AbstractPassenger]):
-        p_log.append("Pusher 1 did its job")
+    def push(self, p_log: Log, p_passenger: PassengerQueueStatus):
+        p_log.append_text("Pushed passenger " + p_passenger.passenger.id_text)
+        p_passenger.set_pusher_status(self.__module__, QueueStatus.complete)
 

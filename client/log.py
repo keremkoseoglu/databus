@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import Enum
+import inspect
 from typing import List
 from uuid import uuid1, UUID
 
@@ -12,17 +13,21 @@ class MessageType(Enum):
 
 
 class LogEntry:
-    __message: str
-    __timestamp: datetime
-    __type: MessageType
-
     def __init__(self,
                  p_message: str = "",
                  p_timestamp: datetime = datetime.now(),
-                 p_type: MessageType = MessageType.info):
+                 p_type: MessageType = MessageType.info,
+                 p_source: str = ""):
         self.__message = p_message
         self.__timestamp = p_timestamp
         self.__type = p_type
+
+        if p_source == "" or p_source is None:
+            frm = inspect.stack()[1]
+            mod = inspect.getmodule(frm[0])
+            self.source = mod.__name__
+        else:
+            self.source = p_source
 
     @property
     def message(self) -> str:
@@ -59,8 +64,21 @@ class Log:
     def guid(self) -> UUID:
         return self.__guid
 
-    def append(self, p_entry: LogEntry):
+    def append_entry(self, p_entry: LogEntry):
+        if p_entry.source == "" or p_entry.source is None:
+            frm = inspect.stack()[1]
+            mod = inspect.getmodule(frm[0])
+            p_entry.source = mod.__name__
         self.__entries.append(p_entry)
 
-    def append(self, p_entry: str):
-        self.__entries.append(LogEntry(p_entry))
+    def append_text(self, p_entry: str, p_source: str = ""):
+        if p_source == "" or p_source is None:
+            frm = inspect.stack()[1]
+            mod = inspect.getmodule(frm[0])
+            source = mod.__name__
+        else:
+            source = p_source
+        self.__entries.append(LogEntry(p_message=p_entry,
+                                       p_source=source))
+
+

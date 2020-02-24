@@ -1,4 +1,4 @@
-from client.client import Client, ClientPassenger
+from client.client import Client, ClientError, ClientPassenger
 from config.constants import *
 import json
 from os import path, scandir
@@ -6,6 +6,7 @@ from typing import List
 
 
 class JsonClient:
+
     @staticmethod
     def build_client_dir_path(p_client_id: str) -> str:
         client_root_path = JsonClient.build_client_root_path()
@@ -38,7 +39,8 @@ class JsonClient:
                     client_passengers.append(client_passenger)
 
                 client_obj = Client(p_id=client_directory,
-                                    p_passengers=client_passengers)
+                                    p_passengers=client_passengers,
+                                    p_log_life_span=config_json["log_life_span"])
 
                 output.append(client_obj)
         return output
@@ -49,8 +51,10 @@ class JsonClient:
 
     @staticmethod
     def get_single(p_id: str) -> Client:
+        if p_id == "" or p_id is None:
+            raise ClientError(ClientError.ErrorCode.parameter_missing)
         all_clients = JsonClient.get_all()
         for client in all_clients:
             if client.id == p_id:
                 return client
-        return None
+        raise ClientError(ClientError.ErrorCode.client_not_found, p_id=p_id)

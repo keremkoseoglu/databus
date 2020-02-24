@@ -1,33 +1,16 @@
 from test.tests import DefaultTest
 
-DefaultTest().run()
+DefaultTest.run()
 
 # todo: 3P
-# artık driver'ı yazma vakti.
-# # - yapıyı aç
-# - factory, prime_driver filan olsun.
-# - müşteri'deki passenger driver seçebilsin.
-# - her driver, sadece kendi passenger'ları üzerinde işlem yapsın
-# test yerine buradan driver içinden demo yürüt
-# QUEUE
-# - pqueue'ya yazdıklarını pull'da' "mark as read" diye döndürebiliyor olmalısın
-# -- sınıflara ekle
-# -- teste ekle
-# - push'a pqueue'dan gelenleri yolla
-# - pusher geriye başarılı / başarısız olanları döndürebilmeli, ona göre pqueue güncelle
-# -- sınıflara ekle
-# -- teste ekle
-# - readme.md
-
-# bunların parametreleri aynı klasörde mi olsun merkezi yerde mi? demo'lara parametre okumayı ekle
-# tamamla
-# - test altına ekle
-# - readme.md altına ekle
-# - readme.md: yeni veri tipi ekliyorsan abstract_Database uygulamalarında da pqueue altında desteklemelisin
-
-# todo: driver
-# konfigürasyon dosyası
-# - log saklama süresi
+# SCHDULER (belli sürelerde driver tetiklemek) - buradaki parametreler mevcut testteki gibi olabilir
+# - abstract, factory, vs olsun
+# - primal uygula:
+# -- her dakika tetiklenecek
+# --- config değişmiş olabilir, tekrar oku, süre tuttuğun tabloyla merge et
+# --- config.json içerisinde zamanı gelenler için
+# ---- log aç
+# ---- ilgili driver'ı çağır
 # işlem
 # - yeni log dosyası aç
 # - tüm klasörlerden elindeki bilgileri tazele
@@ -40,12 +23,29 @@ DefaultTest().run()
 # -- json_database içerisindeki delete_old_logs tamamlanacak
 # -- bu yordamdan faydalanıp, konfigürasyonadaki süreden eski olanları sil
 # - yeni cycle
-# herhangi birinde hata olursa devam edip etmeme kararı?
+# - config dosyasında tek bir scheduler olsun, onunla çalış
+# - main direkt scheduler'a gitsin
+# bunların parametreleri aynı klasörde mi olsun merkezi yerde mi? demo'lara parametre okumayı ekle
+# tamamla
+# - readme.md altına ekle
+# - readme.md: yeni veri tipi ekliyorsan abstract_Database uygulamalarında da pqueue altında desteklemelisin
+# sanki birden fazla attachment yaratıyor fazladan
+# çok parametre alan yordamları input type'lara kır
+# uygun yerlere throws try catch ekle
+# log gibi işi biten queue kayıtlarını da silecek sistem düşün (notification, process, push, vs her şey bitmiş olsun)
+# dışarıdan databus'e gelen bir programcı, kendi client'ını DB'sini filan verebiliyor mu? ID değil de nesne?
+# hata olduğunda birilerine haber verebilmek, veya çalışırken haber almak isteyen subscriber'lar
+# log da komple bir subscriber olabilir belki?
+# her schedule'da klasörleri vs tekrar okuyabilsin
 # lock olması lazım - aynı client için tek cycle çalışmalı. lock koyamazsan readme'ye ekle
-# test altına ekle
-# readme.md altına ekle
+# her processor status'ten sonra tüm attachment'ları filan tekrar yazıyor save ettiğinde, onu flag'e bağlasak?
 
 # todo: final
+# todo: factory'leri dolaş, gereksiz import'lar kalmış olabilir
+# tüm factory'lerin isinstance'larına try except koy
+# tüm opsiyonel parametreleri = diye çağırmış ol
 # loglama diline karar ver, türkçe mi ingilizce mi olacak? ona göre tek mantıkta yürü
 # todo kalmasın
+# sınıfları dolaş, kullanılmamış import kalmasın
+# readme gözden geçir, hatalı klasör veya eksik bilgi vs kalmasın
 

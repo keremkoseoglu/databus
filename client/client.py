@@ -1,45 +1,71 @@
-from config.constants import *
+from client.client_passenger import ClientPassenger
+import datetime
+from enum import Enum
 from typing import List
 
 
-class ClientPassenger:
-    name: str
-    puller_modules: List[str]
-    queue_module: str
-    processor_module: List[str]
-    pusher_modules: List[str]
-    sync_frequency: int
+class ClientError(Exception):
+    class ErrorCode(Enum):
+        client_not_found = 1
+        parameter_missing = 2
 
-    def __init__(self,
-                 p_name: str = "Undefined",
-                 p_puller_modules: List[str] = [],
-                 p_queue_module: str = "",
-                 p_processor_modules: List[str] = [],
-                 p_pusher_modules: List[str] = [],
-                 p_sync_frequency: int = 0):
+    def __init__(self, p_error_code: ErrorCode, p_client_id: str = ""):
+        self.error_code = p_error_code
 
-        self.name = p_name
-        self.puller_modules = p_puller_modules
-        self.queue_module = p_queue_module
-        self.processor_modules = p_processor_modules
-        self.pusher_modules = p_pusher_modules
-        self.sync_frequency = p_sync_frequency
+        if p_client_id is None:
+            self.client_id = ""
+        else:
+            self.client_id = p_client_id
+
+    @property
+    def message(self) -> str:
+        if self.error_code == ClientError.ErrorCode.client_not_found:
+            return "Client " + self.client_id + " not found"
+        if self.error_code == ClientError.ErrorCode.parameter_missing:
+            return "Parameter missing, can't find client"
+        return "Client error"
+
+
+class ClientPassengerError(Exception):
+    class ErrorCode(Enum):
+        passenger_not_found = 1
+
+    def __init__(self, p_error_code: ErrorCode, p_client_id: str = "", p_passenger_name: str = ""):
+        self.error_code = p_error_code
+
+        if p_client_id is None:
+            self.client_id = ""
+        else:
+            self.client_id = p_client_id
+
+        if p_passenger_name is None:
+            self.passenger_name = ""
+        else:
+            self.passenger_name = p_passenger_name
+
+    @property
+    def message(self) -> str:
+        if self.error_code == ClientPassengerError.ErrorCode.passenger_not_found:
+            return self.client_id + " doesn't contain passenger " + self.passenger_name
+        return "Client passenger error: " + self.client_id + " " + self.passenger_name
 
 
 class Client:
-    id: str
-    passengers: List[ClientPassenger]
-
     def __init__(self,
                  p_id: str = "Undefined",
-                 p_passengers: List[ClientPassenger] = []):
+                 p_passengers: List[ClientPassenger] = [],
+                 p_log_life_span: int = 0):
         self.id = p_id
         self.passengers = p_passengers
+        self.log_life_span = p_log_life_span
+
+    @property
+    def log_expiry_date(self) -> datetime.datetime:
+        return datetime.datetime.now() - datetime.timedelta(self.log_life_span)
 
     def get_client_passenger(self, p_name: str) -> ClientPassenger:
         for passenger in self.passengers:
             if passenger.name == p_name:
                 return passenger
-        return None
-
+        raise ClientPassengerError(self.id, ClientPassengerError.ErrorCode.passenger_not_found, p_name=p_name)
 
