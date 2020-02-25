@@ -38,7 +38,8 @@ class JsonDatabase(AbstractDatabase):
                                     p_passenger_module: str = None,
                                     p_processor_status: QueueStatus = None,
                                     p_pusher_status: QueueStatus = None,
-                                    p_puller_notified: bool = None
+                                    p_puller_notified: bool = None,
+                                    p_pulled_before: datetime = None
                                     ) -> List[PassengerQueueStatus]:
 
         self.log.append_text("Reading passenger queue entries")
@@ -46,7 +47,8 @@ class JsonDatabase(AbstractDatabase):
         return self.__json_queue.get_passengers(p_passenger_module,
                                                 p_processor_status,
                                                 p_pusher_status,
-                                                p_puller_notified)
+                                                p_puller_notified,
+                                                p_pulled_before)
 
     def insert_log(self, p_log: Log):
         self.log.append_text("Writing log to disk")

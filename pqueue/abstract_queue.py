@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from client.log import Log
 from database.abstract_database import AbstractDatabase
+from datetime import datetime
 from passenger.abstract_passenger import AbstractPassenger
 from pqueue.queue_status import PassengerQueueStatus
 from typing import List
@@ -11,6 +12,10 @@ class AbstractQueue(ABC):
     def __init__(self, p_database: AbstractDatabase, p_log: Log):
         self.database = p_database
         self.log = p_log
+
+    @abstractmethod
+    def delete_completed_passengers(self, p_passenger_module: str, p_pulled_before: datetime):
+        pass
 
     @abstractmethod
     def erase(self):

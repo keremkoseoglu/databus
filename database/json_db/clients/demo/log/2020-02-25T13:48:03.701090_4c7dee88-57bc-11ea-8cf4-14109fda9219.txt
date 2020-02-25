@@ -1,0 +1,30 @@
+[2020-02-25T13:48:03.488710][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_1
+[2020-02-25T13:48:03.488710][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-25T13:48:03.488710][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-25T13:48:03.488710][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-25T13:48:03.488710][dispatcher.primal_dispatcher][info] Driving
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Driving...
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Deleting old log files
+[2020-02-25T13:48:03.488710][database.json_db.json_database][info] Deleting logs before 2020-02-24T13:48:03.727353
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Pulling new passengers
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Pulling via puller.demo.demo_puller_1
+[2020-02-25T13:48:03.488710][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID1 (4c84dd2e-57bc-11ea-8003-14109fda9219)
+[2020-02-25T13:48:03.488710][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID2 (4c85f9d4-57bc-11ea-8004-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID1 (4c84dd2e-57bc-11ea-8003-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID2 (4c85f9d4-57bc-11ea-8004-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Pulling via puller.demo.demo_puller_2
+[2020-02-25T13:48:03.488710][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID21 (4c880e90-57bc-11ea-8007-14109fda9219)
+[2020-02-25T13:48:03.488710][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID22 (4c88ee34-57bc-11ea-8008-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID21 (4c880e90-57bc-11ea-8007-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID22 (4c88ee34-57bc-11ea-8008-14109fda9219)
+[2020-02-25T13:48:03.488710][driver.primal_driver][info] Writing new passengers to queue
+[2020-02-25T13:48:03.488710][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID1 (4c84dd2e-57bc-11ea-8003-14109fda9219)
+[2020-02-25T13:48:03.488710][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID1 (4c84dd2e-57bc-11ea-8003-14109fda9219)
+[2020-02-25T13:48:03.488710][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID1 (4c84dd2e-57bc-11ea-8003-14109fda9219) to queue
+[2020-02-25T13:48:03.488710][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/4c84dd2e-57bc-11ea-8003-14109fda9219/attachments/abc.txt
+[2020-02-25T13:48:03.488710][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/4c84dd2e-57bc-11ea-8003-14109fda9219/passenger.json
+[2020-02-25T13:48:03.488710][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID2 (4c85f9d4-57bc-11ea-8004-14109fda9219)
+[2020-02-25T13:48:03.488710][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID2 (4c85f9d4-57bc-11ea-8004-14109fda9219)
+[2020-02-25T13:48:03.488710][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID2 (4c85f9d4-57bc-11ea-8004-14109fda9219) to queue
+[2020-02-25T13:48:03.488710][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/4c85f9d4-57bc-11ea-8004-14109fda9219/attachments/abc.txt
+[2020-02-25T13:48:03.488710][database.json_db.json_database][info] Writing log to disk

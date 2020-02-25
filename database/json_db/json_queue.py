@@ -1,5 +1,6 @@
 from client.log import Log, LogEntry, MessageType
 from config.constants import *
+from datetime import datetime
 from enum import Enum
 import json
 from os import mkdir, path, remove, scandir
@@ -40,7 +41,8 @@ class JsonQueue:
     @staticmethod
     def _validate_passenger_status(p_passenger_status: PassengerQueueStatus, p_operation: DataOperation):
         if str(p_passenger_status.passenger.internal_id) == "":
-            raise PassengerError(PassengerError.ErrorCode.internal_id_missing, p_passenger_id=p_passenger_status.passenger.id_text)
+            raise PassengerError(PassengerError.ErrorCode.internal_id_missing,
+                                 p_passenger_id=p_passenger_status.passenger.id_text)
 
         # todo
         # başka kritik alan eksikse hata döndür
@@ -77,7 +79,8 @@ class JsonQueue:
                        p_passenger_module: str = None,
                        p_processor_status: QueueStatus = None,
                        p_pusher_status: QueueStatus = None,
-                       p_puller_notified: bool = None
+                       p_puller_notified: bool = None,
+                       p_pulled_before: datetime = None
                        ) -> List[PassengerQueueStatus]:
         output = []
 
@@ -112,11 +115,15 @@ class JsonQueue:
             if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified:
                 continue
 
+            if p_pulled_before is not None and passenger_json["pull_datetime"] > p_pulled_before:
+                continue
+
             passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"])
             passenger_obj.internal_id = passenger_json["internal_id"]
             passenger_obj.external_id = passenger_json["external_id"]
             passenger_obj.source_system = passenger_json["source_system"]
             passenger_obj.puller_module = passenger_json["puller_module"]
+            passenger_obj.pull_datetime = datetime.strptime(passenger_json["pull_datetime"], '%Y-%m-%dT%H:%M:%S.%f')
             self._log.append_text("Found passenger " + passenger_obj.id_text)
 
             for attachment_json in passenger_json["attachments"]:
@@ -155,6 +162,7 @@ class JsonQueue:
             "passenger_module": p_passenger_status.passenger.__module__,
             "puller_module": p_passenger_status.passenger.puller_module,
             "puller_notified": p_passenger_status.puller_notified,
+            "pull_datetime": p_passenger_status.passenger.pull_datetime.isoformat(),
             "attachments": [],
             "processor_statuses": [],
             "pusher_statuses": []
@@ -202,9 +210,12 @@ class JsonQueue:
                              p_processor_module: str,
                              p_status: QueueStatus):
 
-        self._log.append_text("Setting status " + p_status.name +
-                         " for passenger " + p_passenger.id_text +
-                         " processor " + p_processor_module)
+        self._log.append_text("Setting status " +
+                              p_status.name +
+                              " for passenger " +
+                              p_passenger.id_text +
+                              " processor " +
+                              p_processor_module)
 
         # todo
         # processor module valide edecek yordam yazıp çağır
@@ -227,9 +238,12 @@ class JsonQueue:
         # pusher module valide edecek yordam yazıp çağır
         # status valide edecek yordam yazıp çağır
 
-        self._log.append_text("Setting status " + p_status.name +
-                         " for passenger " + p_passenger.id_text +
-                         " pusher " + p_pusher_module)
+        self._log.append_text("Setting status " +
+                              p_status.name +
+                              " for passenger " +
+                              p_passenger.id_text +
+                              " pusher " +
+                              p_pusher_module)
 
         passenger_json = self._get_passenger_file_as_json(p_passenger.internal_id)
 

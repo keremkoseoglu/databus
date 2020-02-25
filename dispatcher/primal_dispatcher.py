@@ -121,6 +121,8 @@ class PrimalDispatcher(AbstractDispatcher):
             if db is not None:
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)
+            if driver is not None:
+                driver.queue.delete_completed_passengers(p_client_passenger.name, p_client_passenger.queue_expiry_date)
 
     def _read_clients(self):
         dummy_db = self.ticket.database_factory.create_database(

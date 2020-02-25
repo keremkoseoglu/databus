@@ -38,7 +38,8 @@ class AbstractDatabase(ABC):
                                     p_passenger_module: str = None,
                                     p_processor_status: QueueStatus = None,
                                     p_pusher_status: QueueStatus = None,
-                                    p_puller_notified: bool = None
+                                    p_puller_notified: bool = None,
+                                    p_pulled_before: datetime = None
                                     ) -> List[PassengerQueueStatus]:
         pass
 

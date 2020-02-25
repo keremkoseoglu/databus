@@ -1,5 +1,6 @@
 from client.log import Log
 from database.abstract_database import AbstractDatabase
+from datetime import datetime
 from passenger.abstract_passenger import AbstractPassenger
 from pqueue.abstract_queue import AbstractQueue
 from pqueue.queue_status import QueueStatus, PassengerQueueStatus, QueueStatusFactory
@@ -10,6 +11,27 @@ class PrimalQueue(AbstractQueue):
 
     def __init__(self, p_database: AbstractDatabase, p_log: Log):
         super().__init__(p_database, p_log)
+
+    def delete_completed_passengers(self, p_passenger_module: str, p_pulled_before: datetime):
+        self.log.append_text("Deleting " +
+                             p_passenger_module +
+                             " passengers completed before " +
+                             p_pulled_before.isoformat())
+
+        deletable_queue_entries = self.database.get_passenger_queue_entries(
+            p_passenger_module=p_passenger_module,
+            p_processor_status=QueueStatus.complete,
+            p_pusher_status=QueueStatus.complete,
+            p_puller_notified=True,
+            p_pulled_before=p_pulled_before)
+
+        deletable_passengers = []
+
+        for queue_entry in deletable_queue_entries:
+            self.log.append("Initiating deletion for completed passenger " + queue_entry.passenger.id_text)
+            deletable_passengers.append(queue_entry.passenger)
+
+        self.database.delete_passenger_queue(deletable_passengers)
 
     def erase(self):
         self.database.erase_passsenger_queue()

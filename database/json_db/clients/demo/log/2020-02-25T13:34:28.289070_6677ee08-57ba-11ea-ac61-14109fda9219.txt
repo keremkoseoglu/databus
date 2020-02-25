@@ -1,0 +1,48 @@
+[2020-02-25T13:34:27.960303][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_2
+[2020-02-25T13:34:27.960303][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-25T13:34:27.960303][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-25T13:34:27.960303][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-25T13:34:27.960303][dispatcher.primal_dispatcher][info] Driving
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Driving...
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Deleting old log files
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Deleting logs before 2020-02-24T13:34:28.296859
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Pulling new passengers
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Pulling via puller.demo.demo_puller_2
+[2020-02-25T13:34:27.960303][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID21 (6679c8b8-57ba-11ea-800b-14109fda9219)
+[2020-02-25T13:34:27.960303][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID22 (6679fa5e-57ba-11ea-800c-14109fda9219)
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID21 (6679c8b8-57ba-11ea-800b-14109fda9219)
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID22 (6679fa5e-57ba-11ea-800c-14109fda9219)
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Writing new passengers to queue
+[2020-02-25T13:34:27.960303][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID21 (6679c8b8-57ba-11ea-800b-14109fda9219)
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID21 (6679c8b8-57ba-11ea-800b-14109fda9219)
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID21 (6679c8b8-57ba-11ea-800b-14109fda9219) to queue
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/6679c8b8-57ba-11ea-800b-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID22 (6679fa5e-57ba-11ea-800c-14109fda9219)
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID22 (6679fa5e-57ba-11ea-800c-14109fda9219)
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID22 (6679fa5e-57ba-11ea-800c-14109fda9219) to queue
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/6679fa5e-57ba-11ea-800c-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Notifying pullers about seated passengers
+[2020-02-25T13:34:27.960303][pqueue.primal_queue][info] Reading puller notifiable passengers
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b26fdc5a-579f-11ea-8004-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b270bca6-579f-11ea-8007-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/653574fa-57a3-11ea-802d-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][driver.primal_driver][error] Driver error: File not found.
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Reading processable passengers from queue
+[2020-02-25T13:34:27.960303][pqueue.primal_queue][info] Reading processable passengers of type passenger.demo.demo_passenger_2
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b26fdc5a-579f-11ea-8004-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b270bca6-579f-11ea-8007-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/653574fa-57a3-11ea-802d-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][driver.primal_driver][error] Driver error: File not found.
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Processing unprocessed passengers
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Reading deliverable passengers from queue
+[2020-02-25T13:34:27.960303][pqueue.primal_queue][info] Reading deliverable passengers of type passenger.demo.demo_passenger_2
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b26fdc5a-579f-11ea-8004-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/b270bca6-579f-11ea-8007-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/653574fa-57a3-11ea-802d-14109fda9219/passenger.json
+[2020-02-25T13:34:27.960303][driver.primal_driver][error] Driver error: File not found.
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Pushing deliverable passengers
+[2020-02-25T13:34:27.960303][driver.primal_driver][info] Drive complete
+[2020-02-25T13:34:27.960303][database.json_db.json_database][info] Writing log to disk

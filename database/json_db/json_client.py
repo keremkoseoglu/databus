@@ -30,12 +30,14 @@ class JsonClient:
 
                 client_passengers = []
                 for passenger_json in config_json["passengers"]:
-                    client_passenger = ClientPassenger(p_name=passenger_json["name"],
-                                                       p_puller_modules=passenger_json["pullers"],
-                                                       p_queue_module=passenger_json["queue"],
-                                                       p_processor_modules=passenger_json["processors"],
-                                                       p_pusher_modules=passenger_json["pushers"],
-                                                       p_sync_frequency=passenger_json["sync_frequency"])
+                    client_passenger = ClientPassenger(
+                        p_name=passenger_json["name"],
+                        p_puller_modules=passenger_json["pullers"],
+                        p_queue_module=passenger_json["queue"],
+                        p_processor_modules=passenger_json["processors"],
+                        p_pusher_modules=passenger_json["pushers"],
+                        p_sync_frequency=passenger_json["sync_frequency"],
+                        p_queue_life_span=passenger_json["queue_life_span"])
                     client_passengers.append(client_passenger)
 
                 client_obj = Client(p_id=client_directory,

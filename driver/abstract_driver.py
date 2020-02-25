@@ -4,6 +4,7 @@ from client.log import Log
 from database.abstract_database import AbstractDatabase
 from processor.abstract_factory import AbstractProcessorFactory
 from pqueue.abstract_factory import AbstractQueueFactory
+from pqueue.abstract_queue import AbstractQueue
 from puller.abstract_factory import AbstractPullerFactory
 from pusher.abstract_factory import AbstractPusherFactory
 
@@ -36,4 +37,9 @@ class AbstractDriver(ABC):
 
     @abstractmethod
     def drive(self, p_bus_ticket: BusTicket):
+        pass
+
+    @property
+    @abstractmethod
+    def queue(self) -> AbstractQueue:
         pass
