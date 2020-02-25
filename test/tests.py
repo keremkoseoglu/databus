@@ -30,7 +30,7 @@ class DefaultTest:
                                               puller_factory,
                                               pusher_factory)
         log = Log()
-        db = database_factory.create_database(DATABASE_MODULE, DEMO_CLIENT, log, passenger_factory)
+        db = database_factory.create_database(DATABASE_DEFAULT, DEMO_CLIENT, log, passenger_factory)
 
         # Operation
         db.erase_passsenger_queue()

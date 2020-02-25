@@ -49,7 +49,7 @@ class JsonDatabase(AbstractDatabase):
                                                 p_puller_notified)
 
     def insert_log(self, p_log: Log):
-        self.log.append_text("Writing queue to disk")
+        self.log.append_text("Writing log to disk")
         JsonLog.insert(self.client.id, p_log)
 
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):

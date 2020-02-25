@@ -1,6 +1,0 @@
-[2020-02-24T09:03:07.028006][database.json_db.json_database][info] Erasing passenger queue
-[2020-02-24T09:03:07.028006][driver.primal_driver][info] Driving...
-[2020-02-24T09:03:07.028006][driver.primal_driver][error] Driver error: Attribute not found.
-[2020-02-24T09:03:07.028006][driver.primal_driver][info] Driving...
-[2020-02-24T09:03:07.028006][driver.primal_driver][error] Driver error: Attribute not found.
-[2020-02-24T09:03:07.028006][database.json_db.json_database][info] Writing queue to disk

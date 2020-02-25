@@ -1,5 +1,5 @@
 # Database
-DATABASE_MODULE = "database.json_db.json_database"
+DATABASE_DEFAULT = "database.json_db.json_database"
 
 # DataBus
 DATABUS_MODULE_EXTENSIONS = ('.py', '.pyc', '.pyo')
@@ -7,6 +7,12 @@ DATABUS_MODULE_EXTENSIONS = ('.py', '.pyc', '.pyo')
 # Demo
 DEMO_CLIENT = "demo"
 DEMO_DRIVER = "driver.primal_driver"
+
+# Dispatcher
+DISPATCHER_DEFAULT = "dispatcher.primal_dispatcher"
+
+# Driver
+DRIVER_DEFAULT = "driver.primal_driver"
 
 # JSON Database
 JSON_DB_CLIENT_CONFIG = "config.json"
