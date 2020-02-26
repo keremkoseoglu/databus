@@ -1,5 +1,6 @@
 from client.log import Log, LogEntry, MessageType
 from config.constants import *
+from database.json_db.json_toolkit import JsonToolkit
 from datetime import datetime
 from enum import Enum
 import json
@@ -16,7 +17,7 @@ class PassengerError(Exception):
     class ErrorCode(Enum):
         internal_id_missing = 1
 
-    def __init__(self, p_error_code: ErrorCode, p_passenger_id: str = ""):
+    def __init__(self, p_error_code: ErrorCode, p_passenger_id: str = None):
         self.error_code = p_error_code
 
         if p_passenger_id is None:
@@ -90,6 +91,7 @@ class JsonQueue:
 
         for passenger_directory in self._get_passenger_directories():
             passenger_json = self._get_passenger_file_as_json(passenger_directory)
+            pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"])
 
             if p_pusher_status is not None:
                 a_pusher_found = False
@@ -115,7 +117,7 @@ class JsonQueue:
             if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified:
                 continue
 
-            if p_pulled_before is not None and passenger_json["pull_datetime"] > p_pulled_before:
+            if p_pulled_before is not None and pull_datetime > p_pulled_before:
                 continue
 
             passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"])
@@ -123,7 +125,7 @@ class JsonQueue:
             passenger_obj.external_id = passenger_json["external_id"]
             passenger_obj.source_system = passenger_json["source_system"]
             passenger_obj.puller_module = passenger_json["puller_module"]
-            passenger_obj.pull_datetime = datetime.strptime(passenger_json["pull_datetime"], '%Y-%m-%dT%H:%M:%S.%f')
+            passenger_obj.pull_datetime = pull_datetime
             self._log.append_text("Found passenger " + passenger_obj.id_text)
 
             for attachment_json in passenger_json["attachments"]:

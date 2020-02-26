@@ -9,18 +9,37 @@ class AbstractPassenger(ABC):
     _clock_seq: int = 0
 
     def __init__(self,
-                 p_external_id: str = "",
+                 p_external_id: str = None,
                  p_internal_id: UUID = None,
-                 p_source_system: str = "",
-                 p_attachments: List[Attachment] = [],
-                 p_puller_module: str = "",
-                 p_pull_datetime: datetime = datetime.now()):
+                 p_source_system: str = None,
+                 p_attachments: List[Attachment] = None,
+                 p_puller_module: str = None,
+                 p_pull_datetime: datetime = None):
 
-        self.attachments = p_attachments
-        self.external_id = p_external_id
-        self.source_system = p_source_system
-        self.puller_module = p_puller_module
-        self.pull_datetime = p_pull_datetime
+        if p_external_id is None:
+            self.external_id = ""
+        else:
+            self.external_id = p_external_id
+
+        if p_source_system is None:
+            self.source_system = ""
+        else:
+            self.source_system = p_source_system
+
+        if p_puller_module is None:
+            self.puller_module = ""
+        else:
+            self.puller_module = p_puller_module
+
+        if p_pull_datetime is None:
+            self.pull_datetime = datetime.now()
+        else:
+            self.pull_datetime = p_pull_datetime
+
+        if p_attachments is None:
+            self.attachments = []
+        else:
+            self.attachments = p_attachments
 
         if p_internal_id is None:
             AbstractPassenger._clock_seq += 1

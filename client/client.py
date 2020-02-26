@@ -9,7 +9,7 @@ class ClientError(Exception):
         client_not_found = 1
         parameter_missing = 2
 
-    def __init__(self, p_error_code: ErrorCode, p_client_id: str = ""):
+    def __init__(self, p_error_code: ErrorCode, p_client_id: str = None):
         self.error_code = p_error_code
 
         if p_client_id is None:
@@ -30,7 +30,7 @@ class ClientPassengerError(Exception):
     class ErrorCode(Enum):
         passenger_not_found = 1
 
-    def __init__(self, p_error_code: ErrorCode, p_client_id: str = "", p_passenger_name: str = ""):
+    def __init__(self, p_error_code: ErrorCode, p_client_id: str = None, p_passenger_name: str = None):
         self.error_code = p_error_code
 
         if p_client_id is None:
@@ -53,11 +53,15 @@ class ClientPassengerError(Exception):
 class Client:
     def __init__(self,
                  p_id: str = "Undefined",
-                 p_passengers: List[ClientPassenger] = [],
+                 p_passengers: List[ClientPassenger] = None,
                  p_log_life_span: int = 0):
         self.id = p_id
-        self.passengers = p_passengers
         self.log_life_span = p_log_life_span
+
+        if p_passengers is None:
+            self.passengers = []
+        else:
+            self.passengers = p_passengers
 
     @property
     def log_expiry_date(self) -> datetime.datetime:
@@ -67,5 +71,5 @@ class Client:
         for passenger in self.passengers:
             if passenger.name == p_name:
                 return passenger
-        raise ClientPassengerError(self.id, ClientPassengerError.ErrorCode.passenger_not_found, p_name=p_name)
+        raise ClientPassengerError(ClientPassengerError.ErrorCode.passenger_not_found, self.id, p_name)
 

@@ -14,13 +14,18 @@ class MessageType(Enum):
 
 class LogEntry:
     def __init__(self,
-                 p_message: str = "",
+                 p_message: str = None,
                  p_timestamp: datetime = datetime.now(),
                  p_type: MessageType = MessageType.info,
-                 p_source: str = ""):
-        self.__message = p_message
-        self.__timestamp = p_timestamp
-        self.__type = p_type
+                 p_source: str = None):
+        self._message = p_message
+        self._timestamp = p_timestamp
+        self._type = p_type
+
+        if p_message is None:
+            self._message = ""
+        else:
+            self._message = p_message
 
         if p_source == "" or p_source is None:
             frm = inspect.stack()[1]
@@ -31,54 +36,50 @@ class LogEntry:
 
     @property
     def message(self) -> str:
-        return self.__message
+        return self._message
 
     @property
     def timestamp(self) -> datetime:
-        return self.__timestamp
+        return self._timestamp
 
     @property
     def type(self) -> MessageType:
-        return self.__type
+        return self._type
 
 
 class Log:
-    __creation_datetime: datetime
-    __entries: List[LogEntry]
-    __guid: UUID
-
     def __init__(self):
-        self.__creation_datetime = datetime.now()
-        self.__guid = uuid1()
-        self.__entries = []
+        self._creation_datetime = datetime.now()
+        self._guid = uuid1()
+        self._entries = []
 
     @property
     def creation_datetime(self) -> datetime:
-        return self.__creation_datetime
+        return self._creation_datetime
 
     @property
     def entries(self) -> List[LogEntry]:
-        return self.__entries
+        return self._entries
 
     @property
     def guid(self) -> UUID:
-        return self.__guid
+        return self._guid
 
     def append_entry(self, p_entry: LogEntry):
         if p_entry.source == "" or p_entry.source is None:
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
             p_entry.source = mod.__name__
-        self.__entries.append(p_entry)
+        self._entries.append(p_entry)
 
-    def append_text(self, p_entry: str, p_source: str = ""):
+    def append_text(self, p_entry: str, p_source: str = None):
         if p_source == "" or p_source is None:
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
             source = mod.__name__
         else:
             source = p_source
-        self.__entries.append(LogEntry(p_message=p_entry,
-                                       p_source=source))
+        self._entries.append(LogEntry(p_message=p_entry,
+                                      p_source=source))
 
 

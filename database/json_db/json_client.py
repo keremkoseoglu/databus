@@ -59,4 +59,4 @@ class JsonClient:
         for client in all_clients:
             if client.id == p_id:
                 return client
-        raise ClientError(ClientError.ErrorCode.client_not_found, p_id=p_id)
+        raise ClientError(ClientError.ErrorCode.client_not_found, p_client_id=p_id)

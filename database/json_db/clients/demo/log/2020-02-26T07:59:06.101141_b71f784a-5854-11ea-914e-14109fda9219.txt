@@ -1,0 +1,18 @@
+[2020-02-26T07:59:05.836238][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_1
+[2020-02-26T07:59:05.836238][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-26T07:59:05.836238][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-26T07:59:05.836238][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-26T07:59:05.836238][dispatcher.primal_dispatcher][info] Driving
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Driving...
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Deleting old log files
+[2020-02-26T07:59:05.836238][database.json_db.json_database][info] Deleting logs before 2020-02-25T07:59:06.127158
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Pulling new passengers
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Pulling via puller.demo.demo_puller_1
+[2020-02-26T07:59:05.836238][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_1 (b726325c-5854-11ea-8003-14109fda9219)
+[2020-02-26T07:59:05.836238][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_2 (b72745b6-5854-11ea-8004-14109fda9219)
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_1 (b726325c-5854-11ea-8003-14109fda9219)
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_2 (b72745b6-5854-11ea-8004-14109fda9219)
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Pulling via puller.demo.demo_puller_3
+[2020-02-26T07:59:05.836238][puller.demo.demo_puller_3][info] Got passenger DEMO_SYSTEM - ID_3_1 (b72962d8-5854-11ea-8007-14109fda9219)
+[2020-02-26T07:59:05.836238][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_3_1 (b72962d8-5854-11ea-8007-14109fda9219)
+[2020-02-26T07:59:05.836238][database.json_db.json_database][info] Writing log to disk

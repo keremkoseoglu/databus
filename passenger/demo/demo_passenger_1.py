@@ -6,15 +6,13 @@ from typing import List
 
 
 class DemoPassenger1(AbstractPassenger):
-    dataset: str
-
     def __init__(self,
-                 p_external_id: str = "",
+                 p_external_id: str = None,
                  p_internal_id: UUID = None,
-                 p_source_system: str = "",
-                 p_attachments: List[Attachment] = [],
-                 p_puller_module: str = "",
-                 p_pull_datetime: datetime = datetime.now()):
+                 p_source_system: str = None,
+                 p_attachments: List[Attachment] = None,
+                 p_puller_module: str = None,
+                 p_pull_datetime: datetime = None):
 
         super().__init__(p_external_id=p_external_id,
                          p_internal_id=p_internal_id,

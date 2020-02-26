@@ -18,7 +18,7 @@ class DemoPuller2(AbstractPuller):
         output = []
 
         passenger1 = DemoPassenger2()
-        passenger1.external_id = "ID21"
+        passenger1.external_id = "ID_2_1"
         passenger1.dataset = "Puller 2 pulled first DemoPassenger2"
         passenger1.source_system = "DEMO_SYSTEM"
         passenger1.puller_module = self.__module__
@@ -26,7 +26,7 @@ class DemoPuller2(AbstractPuller):
         p_log.append_text("Got passenger " + passenger1.id_text)
 
         passenger2 = DemoPassenger2()
-        passenger2.external_id = "ID22"
+        passenger2.external_id = "ID_2_2"
         passenger2.dataset = "Puller 2 pulled second DemoPassenger2"
         passenger2.source_system = "DEMO_SYSTEM"
         passenger2.puller_module = self.__module__

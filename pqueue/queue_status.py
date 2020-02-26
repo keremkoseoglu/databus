@@ -29,12 +29,22 @@ class PusherQueueStatus:
 class PassengerQueueStatus:
     def __init__(self,
                  p_passenger: AbstractPassenger,
-                 p_pusher_statuses: List[PusherQueueStatus] = [],
-                 p_processor_statuses: List[ProcessorQueueStatus] = [],
+                 p_pusher_statuses: List[PusherQueueStatus] = None,
+                 p_processor_statuses: List[ProcessorQueueStatus] = None,
                  p_puller_notified: bool = False):
+
         self.passenger = p_passenger
-        self.processor_statuses = p_processor_statuses
-        self.pusher_statuses = p_pusher_statuses
+
+        if p_pusher_statuses is None:
+            self.pusher_statuses = []
+        else:
+            self.pusher_statuses = p_pusher_statuses
+
+        if p_processor_statuses is None:
+            self.processor_statuses = []
+        else:
+            self.processor_statuses = p_processor_statuses
+
         self.puller_notified = p_puller_notified
 
     def set_processor_status(self, p_processor_module: str, p_status: QueueStatus):

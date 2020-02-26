@@ -19,18 +19,18 @@ class DemoPuller1(AbstractPuller):
         output = []
 
         passenger1 = DemoPassenger1()
-        passenger1.external_id = "ID1"
+        passenger1.external_id = "ID_1_1"
         passenger1.dataset = "Puller 1 pulled first DemoPassenger1"
         passenger1.source_system = "DEMO_SYSTEM"
         passenger1.puller_module = self.__module__
-        passenger1.attachments.append(Attachment(p_name="abc.txt",
+        passenger1.attachments.append(Attachment(p_name="puller1_file1.txt",
                                                  p_format=AttachmentFormat.text,
                                                  p_text_content="Lorem Ipsum"))
         output.append(passenger1)
         p_log.append_text("Got passenger " + passenger1.id_text)
 
         passenger2 = DemoPassenger1()
-        passenger2.external_id = "ID2"
+        passenger2.external_id = "ID_1_2"
         passenger2.dataset = "Puller 1 pulled second DemoPassenger1"
         passenger2.source_system = "DEMO_SYSTEM"
         passenger2.puller_module = self.__module__

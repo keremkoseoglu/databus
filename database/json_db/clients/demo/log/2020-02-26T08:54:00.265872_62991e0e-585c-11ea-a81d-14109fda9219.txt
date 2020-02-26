@@ -1,0 +1,20 @@
+[2020-02-26T08:53:59.858102][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_1
+[2020-02-26T08:53:59.858102][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-26T08:53:59.858102][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-26T08:53:59.858102][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-26T08:53:59.858102][dispatcher.primal_dispatcher][info] Driving
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Driving...
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Deleting old log files
+[2020-02-26T08:53:59.858102][database.json_db.json_database][info] Deleting logs before 2020-02-25T08:54:00.291421
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Pulling new passengers
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Pulling via puller.demo.demo_puller_1
+[2020-02-26T08:53:59.858102][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_1 (629f1a98-585c-11ea-8003-14109fda9219)
+[2020-02-26T08:53:59.858102][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_2 (62a06380-585c-11ea-8004-14109fda9219)
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_1 (629f1a98-585c-11ea-8003-14109fda9219)
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_2 (62a06380-585c-11ea-8004-14109fda9219)
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Pulling via puller.demo.demo_puller_3
+[2020-02-26T08:53:59.858102][puller.demo.demo_puller_3][info] Got passenger DEMO_SYSTEM - ID_3_1 (62a25b5e-585c-11ea-8007-14109fda9219)
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_3_1 (62a25b5e-585c-11ea-8007-14109fda9219)
+[2020-02-26T08:53:59.858102][driver.primal_driver][info] Writing new passengers to queue
+[2020-02-26T08:53:59.858102][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_1 (629f1a98-585c-11ea-8003-14109fda9219)
+[2020-02-26T08:53:59.858102][database.json_db.json_database][info] Writing log to disk

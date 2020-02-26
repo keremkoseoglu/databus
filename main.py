@@ -11,7 +11,6 @@ from processor.primal_factory import PrimalProcessorFactory
 from test.tests import DefaultTest
 
 # todo
-# sanki birden fazla attachment yaratıyor fazladan
 # çok parametre alan yordamları input type'lara kır
 # dışarıdan databus'e gelen bir programcı, kendi client'ını DB'sini filan verebiliyor mu? ID değil de nesne? bunu örnek bir dış proje ile dene
 # hata olduğunda birilerine haber verebilmek, veya çalışırken haber almak isteyen subscriber'lar
@@ -28,8 +27,9 @@ from test.tests import DefaultTest
 # __ geçenleri _ ile değiştir kodda
 # todo kalmasın
 # sınıfları dolaş, kullanılmamış import kalmasın
-# config.constants hala lazım mı? onu bir json yapsak?
+# config.constants hala lazım mı? onu bir json yapsak? veya içindekileri parametre yapalım?
 # readme gözden geçir, hatalı klasör veya eksik bilgi vs kalmasın
+
 
 def run_live():
     dispatcher_ticket = DispatcherTicket(
@@ -49,8 +49,13 @@ def run_live():
 
 
 def run_test():
-    DefaultTest.run()
+    DefaultTest().run()
 
+try:
+    # todo bunu ayrı bir yordam yap, daha düzgün bir yere koy, testten yürümesin
+    DefaultTest().erase_demo_client_queue()
+except:
+    pass
 
 run_live()
 

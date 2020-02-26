@@ -11,12 +11,21 @@ from pusher.abstract_factory import AbstractPusherFactory
 
 class BusTicket:
     def __init__(self,
-                 p_client_passenger: ClientPassenger = ClientPassenger(),
-                 p_log: Log = Log(),
+                 p_client_passenger: ClientPassenger = None,
+                 p_log: Log = None,
                  p_database: AbstractDatabase = None):
-        self.client_passenger = p_client_passenger
+
+        if p_client_passenger is None:
+            self.client_passenger = ClientPassenger()
+        else:
+            self.client_passenger = p_client_passenger
+
+        if p_log is None:
+            self.log = Log()
+        else:
+            self.log = p_log
+
         self.database = p_database
-        self.log = p_log
 
     @property
     def client_id(self) -> str:

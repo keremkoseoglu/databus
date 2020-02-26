@@ -81,9 +81,9 @@ class PrimalDispatcher(AbstractDispatcher):
         log = Log()
         try:
             log.append_text("Dispatching client " +
-                             p_client.id +
-                             " passenger " +
-                             p_client_passenger.name)
+                            p_client.id +
+                            " passenger " +
+                            p_client_passenger.name)
 
             log.append_text("Creating database " +
                             self.ticket.database_module)

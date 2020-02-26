@@ -3,7 +3,7 @@
   "passengers": [
     {
       "name": "passenger.demo.demo_passenger_1",
-      "pullers": [ "puller.demo.demo_puller_1", "puller.demo.demo_puller_2" ],
+      "pullers": [ "puller.demo.demo_puller_1", "puller.demo.demo_puller_3" ],
       "queue": "pqueue.primal_queue",
       "processors": [ "processor.demo.demo_processor_1", "processor.demo.demo_processor_2" ],
       "pushers": ["pusher.demo.demo_pusher_1", "pusher.demo.demo_pusher_2"],

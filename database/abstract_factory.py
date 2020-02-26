@@ -10,7 +10,11 @@ class DatabaseCreationError(Exception):
         cant_create_instance: 1
         parameter_missing: 2
 
-    def __init__(self, p_error_code: ErrorCode, p_module: str = "", p_client_id: str = ""):
+    def __init__(self,
+                 p_error_code: ErrorCode,
+                 p_module: str = None,
+                 p_client_id: str = None):
+
         self.error_code = p_error_code
 
         if p_module is None:
