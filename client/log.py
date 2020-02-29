@@ -79,7 +79,6 @@ class Log:
             source = mod.__name__
         else:
             source = p_source
-        self._entries.append(LogEntry(p_message=p_entry,
-                                      p_source=source))
+        self._entries.append(LogEntry(p_message=p_entry, p_source=source))
 
 

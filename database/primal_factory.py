@@ -10,8 +10,9 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory):
                         p_module: str,
                         p_client_id: str,
                         p_log: Log,
-                        p_passenger_factory: AbstractPassengerFactory) -> AbstractDatabase:
-        if p_module == "" or p_module is None or p_client_id == "" or p_client_id is None:
+                        p_passenger_factory: AbstractPassengerFactory
+                        ) -> AbstractDatabase:
+        if p_module == "" or p_module is None:
             raise DatabaseCreationError(DatabaseCreationError.ErrorCode.parameter_missing)
 
         module = __import__(p_module, fromlist=[""])

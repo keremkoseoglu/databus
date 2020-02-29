@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from client.log import Log
 from enum import Enum
 from pusher.abstract_pusher import AbstractPusher
 
@@ -27,5 +28,5 @@ class PusherCreationError(Exception):
 
 class AbstractPusherFactory(ABC):
     @abstractmethod
-    def create_pusher(self, p_module: str) -> AbstractPusher:
+    def create_pusher(self, p_module: str, p_log: Log) -> AbstractPusher:
         pass

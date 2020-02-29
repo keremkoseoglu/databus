@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from client.log import Log
 from enum import Enum
 from processor.abstract_processor import AbstractProcessor
 
@@ -27,5 +28,5 @@ class ProcessorCreationError(Exception):
 
 class AbstractProcessorFactory(ABC):
     @abstractmethod
-    def create_processor(self, p_module: str) -> AbstractProcessor:
+    def create_processor(self, p_module: str, p_log: Log) -> AbstractProcessor:
         pass

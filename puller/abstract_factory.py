@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from client.log import Log
 from enum import Enum
 from puller.abstract_puller import AbstractPuller
 
@@ -27,5 +28,5 @@ class PullerCreationError(Exception):
 
 class AbstractPullerFactory(ABC):
     @abstractmethod
-    def create_puller(self, p_module: str) -> AbstractPuller:
+    def create_puller(self, p_module: str, p_log: Log) -> AbstractPuller:
         pass

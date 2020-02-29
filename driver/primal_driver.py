@@ -85,8 +85,8 @@ class PrimalDriver(AbstractDriver):
                                                  " about " +
                                                      np.passenger.id_text)
 
-                    puller_obj = self.puller_factory.create_puller(np.passenger.puller_module)
-                    puller_obj.notify_passengers_seated([np.passenger], self._bus.ticket.log)
+                    puller_obj = self.puller_factory.create_puller(np.passenger.puller_module, self._bus.ticket.log)
+                    puller_obj.notify_passengers_seated([np.passenger])
                     np.puller_notified = True
                     self._bus.queue.update_passenger_status(np)
                 except Exception as e:
@@ -108,8 +108,10 @@ class PrimalDriver(AbstractDriver):
                                                       " via " +
                                                      processor_status.processor_module)
                     try:
-                        processor_obj = self.processor_factory.create_processor(processor_status.processor_module)
-                        processor_obj.process(self._bus.ticket.log, [processable_passenger.passenger])
+                        processor_obj = self.processor_factory.create_processor(
+                            processor_status.processor_module,
+                            self._bus.ticket.log)
+                        processor_obj.process([processable_passenger.passenger])
                         processor_status.status = QueueStatus.complete
                         self._bus.queue.update_passenger_status(processable_passenger)
                     except Exception as e:
@@ -123,8 +125,8 @@ class PrimalDriver(AbstractDriver):
 
             for puller_module in self._bus.ticket.client_passenger.puller_modules:
                 self._bus.ticket.log.append_text("Pulling via " + puller_module)
-                puller_obj = self.puller_factory.create_puller(puller_module)
-                new_passengers = puller_obj.pull(self._bus.ticket.log)
+                puller_obj = self.puller_factory.create_puller(puller_module, self._bus.ticket.log)
+                new_passengers = puller_obj.pull()
                 for new_passenger in new_passengers:
                     self._bus.new_passengers.append(new_passenger)
                     self._bus.ticket.log.append_text("Got new passenger: " + new_passenger.id_text)
@@ -145,8 +147,9 @@ class PrimalDriver(AbstractDriver):
                                                       " via " +
                                                      pusher_status.pusher_module)
                     try:
-                        pusher_obj = self.pusher_factory.create_pusher(pusher_status.pusher_module)
-                        pusher_obj.push(self._bus.ticket.log, deliverable_passenger)
+                        pusher_obj = self.pusher_factory.create_pusher(pusher_status.pusher_module,
+                                                                       self._bus.ticket.log)
+                        pusher_obj.push(deliverable_passenger)
                         pusher_status.status = QueueStatus.complete
                         self._bus.queue.update_passenger_status(deliverable_passenger)
                     except Exception as e:

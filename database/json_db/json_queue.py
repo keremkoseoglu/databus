@@ -1,14 +1,15 @@
 from client.log import Log, LogEntry, MessageType
-from config.constants import *
+from database.json_db.constants import *
 from database.json_db.json_toolkit import JsonToolkit
 from datetime import datetime
 from enum import Enum
 import json
 from os import mkdir, path, remove, scandir
 from passenger.abstract_passenger import AbstractPassenger
-from passenger.attachment import Attachment, AttachmentFormat
+from passenger.attachment import Attachment, AttachmentError, AttachmentFormat, Validator as AttachmentValidator
 from passenger.abstract_factory import AbstractPassengerFactory
 from pqueue.queue_status import QueueStatus, PassengerQueueStatus, ProcessorQueueStatus, PusherQueueStatus
+from pqueue.queue_status import Validator as QueueStatusValidator
 import shutil
 from typing import List
 
@@ -16,6 +17,8 @@ from typing import List
 class PassengerError(Exception):
     class ErrorCode(Enum):
         internal_id_missing = 1
+        puller_module_missing = 2
+        already_exists = 3
 
     def __init__(self, p_error_code: ErrorCode, p_passenger_id: str = None):
         self.error_code = p_error_code
@@ -29,6 +32,10 @@ class PassengerError(Exception):
     def message(self) -> str:
         if self.error_code == PassengerError.ErrorCode.internal_id_missing:
             return "Passenger " + self.passenger_id + " is missing internal ID"
+        if self.error_code == PassengerError.ErrorCode.puller_module_missing:
+            return "Passenger " + self.passenger_id + " is missing puller module"
+        if self.error_code == PassengerError.ErrorCode.already_exists:
+            return "Passenger " + self.passenger_id + " exists already"
         return "Passenger error"
 
 
@@ -38,23 +45,6 @@ class JsonQueue:
         update = 2
 
     client_id: str
-
-    @staticmethod
-    def _validate_passenger_status(p_passenger_status: PassengerQueueStatus, p_operation: DataOperation):
-        if str(p_passenger_status.passenger.internal_id) == "":
-            raise PassengerError(PassengerError.ErrorCode.internal_id_missing,
-                                 p_passenger_id=p_passenger_status.passenger.id_text)
-
-        # todo
-        # başka kritik alan eksikse hata döndür
-        # ismi aynı attachment'lar varsa hata üret
-        # attachment format validasyonu
-
-        if p_operation == JsonQueue.DataOperation.insert:
-            # todo
-            # böyle bir klasör zaten varsa exception döndür
-            # pass sil
-            pass
 
     def __init__(self, p_client_id: str, p_log: Log, p_passenger_factory: AbstractPassengerFactory):
         self.client_id = p_client_id
@@ -84,10 +74,6 @@ class JsonQueue:
                        p_pulled_before: datetime = None
                        ) -> List[PassengerQueueStatus]:
         output = []
-
-        # todo
-        # processor status valide edecek yordam yazıp çağır
-        # pusher status valide edecek yordamı yazıp çağır
 
         for passenger_directory in self._get_passenger_directories():
             passenger_json = self._get_passenger_file_as_json(passenger_directory)
@@ -129,10 +115,7 @@ class JsonQueue:
             self._log.append_text("Found passenger " + passenger_obj.id_text)
 
             for attachment_json in passenger_json["attachments"]:
-                # todo burada attachment içeriklerini de okuyup koymalısın
-                attachment_obj = Attachment(p_name=attachment_json["name"],
-                                            p_format=AttachmentFormat[attachment_json["format"]])
-                passenger_obj.attachments.append(attachment_obj)
+                passenger_obj.attachments.append(self._get_attachment_obj(passenger_obj.internal_id, attachment_json))
 
             paqs = PassengerQueueStatus(p_passenger=passenger_obj,
                                         p_pusher_statuses=[],
@@ -155,7 +138,7 @@ class JsonQueue:
 
     def insert_passenger(self, p_passenger_status: PassengerQueueStatus):
         self._log.append_text("Adding passenger " + p_passenger_status.passenger.id_text + " to queue")
-        JsonQueue._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.insert)
+        self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.insert)
 
         passenger_dict = {
             "external_id": p_passenger_status.passenger.external_id,
@@ -189,7 +172,7 @@ class JsonQueue:
                                                  attachment.text_content,
                                                  passenger_dict["internal_id"])
             else:
-                assert False  # Bu daha önce kontrol edilmiş olmalı
+                raise AttachmentError(AttachmentError.ErrorCode.invalid_format, attachment.format)
 
         for processor_status in p_passenger_status.processor_statuses:
             processor_status_dict = {
@@ -219,10 +202,6 @@ class JsonQueue:
                               " processor " +
                               p_processor_module)
 
-        # todo
-        # processor module valide edecek yordam yazıp çağır
-        # status valide edecek yordam yazıp çağır
-
         passenger_json = self._get_passenger_file_as_json(p_passenger.internal_id)
 
         for processor_status in passenger_json["processor_statuses"]:
@@ -235,10 +214,6 @@ class JsonQueue:
                           p_passenger: AbstractPassenger,
                           p_pusher_module: str,
                           p_status: QueueStatus):
-
-        # todo
-        # pusher module valide edecek yordam yazıp çağır
-        # status valide edecek yordam yazıp çağır
 
         self._log.append_text("Setting status " +
                               p_status.name +
@@ -257,7 +232,7 @@ class JsonQueue:
 
     def update_passenger(self, p_passenger_status: PassengerQueueStatus):
         self._log.append_text("Updating passenger " + p_passenger_status.passenger.id_text)
-        JsonQueue._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.update)
+        self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.update)
         self.delete_passengers([p_passenger_status.passenger])
         self.insert_passenger(p_passenger_status)
 
@@ -275,6 +250,24 @@ class JsonQueue:
 
     def _get_attachment_directory_path(self, p_internal_id: str) -> str:
         return path.join(self._get_queue_root_path(), p_internal_id, JSON_DB_QUEUE_ATTACHMENT_DIR)
+
+    def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: {}) -> Attachment:
+        output = Attachment(p_name=p_attachment_json["name"],
+                            p_format=AttachmentFormat[p_attachment_json["format"]])
+
+        full_path = self._get_attachment_file_path(output.name, p_internal_id)
+        self._log.append_text("Reading attachment from disk: " + full_path)
+
+        if output.format == AttachmentFormat.text:
+            with open(full_path, "r") as text_file:
+                output.text_content = text_file.read()
+        elif output.format == AttachmentFormat.binary:
+            with open(full_path, "rb") as bin_file:
+                output.binary_content = bin_file.read()
+        else:
+            raise AttachmentError(AttachmentError.ErrorCode.invalid_format, output.format)
+
+        return output
 
     def _get_passenger_file_as_json(self, p_internal_id: str) -> dict:
         passenger_file_path = self._get_passenger_file_path(p_internal_id)
@@ -297,6 +290,36 @@ class JsonQueue:
                          JSON_DB_CLIENT_DIR,
                          self.client_id,
                          JSON_DB_QUEUE_DIR)
+
+    def _validate_passenger_status(self, p_passenger_status: PassengerQueueStatus, p_operation: DataOperation):
+        self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text)
+
+        if str(p_passenger_status.passenger.internal_id) == "":
+            raise PassengerError(PassengerError.ErrorCode.internal_id_missing,
+                                 p_passenger_id=p_passenger_status.passenger.id_text)
+
+        QueueStatusValidator.validate_queue_module(
+            "Puller",
+            p_passenger_status.passenger.id_text,
+            p_passenger_status.passenger.puller_module)
+
+        for processor_status in p_passenger_status.processor_statuses:
+            QueueStatusValidator.validate_queue_module(
+                "Processor",
+                p_passenger_status.passenger.id_text,
+                processor_status.processor_module)
+
+        for pusher_status in p_passenger_status.pusher_statuses:
+            QueueStatusValidator.validate_queue_module(
+                "Pusher",
+                p_passenger_status.passenger.id_text,
+                pusher_status.pusher_module)
+
+        AttachmentValidator.validate_attachments(p_passenger_status.passenger.attachments)
+
+        if p_operation == JsonQueue.DataOperation.insert and \
+                p_passenger_status.passenger.internal_id in self._get_passenger_directories():
+            raise PassengerError(PassengerError.ErrorCode.already_exists, p_passenger_status.passenger.id_text)
 
     def _write_attachment_file_text(self, p_file_name: str, p_file_content: str, p_internal_id: str):
         full_path = self._get_attachment_file_path(p_file_name, p_internal_id)

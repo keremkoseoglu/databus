@@ -1,0 +1,32 @@
+[2020-02-29T14:37:44.216118][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_2
+[2020-02-29T14:37:44.216118][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-29T14:37:44.216118][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-29T14:37:44.216118][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-29T14:37:44.216118][dispatcher.primal_dispatcher][info] Driving
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Driving...
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Deleting old log files
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Deleting logs before 2020-02-28T14:37:44.460948
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Pulling new passengers
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Pulling via puller.demo.demo_puller_2
+[2020-02-29T14:37:44.216118][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID_2_1 (e6d41358-5ae7-11ea-800a-a82066455b02)
+[2020-02-29T14:37:44.216118][puller.demo.demo_puller_2][info] Got passenger DEMO_SYSTEM - ID_2_2 (e6d487e8-5ae7-11ea-800b-a82066455b02)
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_2_1 (e6d41358-5ae7-11ea-800a-a82066455b02)
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_2_2 (e6d487e8-5ae7-11ea-800b-a82066455b02)
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Writing new passengers to queue
+[2020-02-29T14:37:44.216118][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_2_1 (e6d41358-5ae7-11ea-800a-a82066455b02)
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_2_1 (e6d41358-5ae7-11ea-800a-a82066455b02)
+[2020-02-29T14:37:44.216118][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_2_1 (e6d41358-5ae7-11ea-800a-a82066455b02) to queue
+[2020-02-29T14:37:44.216118][driver.primal_driver][error] Driver error: Inappropriate argument type.
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Notifying pullers about seated passengers
+[2020-02-29T14:37:44.216118][pqueue.primal_queue][info] Reading puller notifiable passengers
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Reading processable passengers from queue
+[2020-02-29T14:37:44.216118][pqueue.primal_queue][info] Reading processable passengers of type passenger.demo.demo_passenger_2
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Processing unprocessed passengers
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Reading deliverable passengers from queue
+[2020-02-29T14:37:44.216118][pqueue.primal_queue][info] Reading deliverable passengers of type passenger.demo.demo_passenger_2
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Pushing deliverable passengers
+[2020-02-29T14:37:44.216118][driver.primal_driver][info] Drive complete
+[2020-02-29T14:37:44.216118][database.json_db.json_database][info] Writing log to disk

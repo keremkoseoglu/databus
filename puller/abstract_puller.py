@@ -5,18 +5,14 @@ from typing import List
 
 
 class AbstractPuller(ABC):
-    def __init__(self):
-        # todo
-        # log'u burada
-        # aşağıdaki yordamlarda sil
-        # uygulayan sınıflarda buna göre kod yaz
-        # çağıran yerlerde düzenle
+    def __init__(self, p_log: Log = None):
+        self.log = p_log
         pass
 
     @abstractmethod
-    def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger], p_log: Log):
+    def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
         pass
 
     @abstractmethod
-    def pull(self, p_log: Log) -> List[AbstractPassenger]:
+    def pull(self) -> List[AbstractPassenger]:
         pass

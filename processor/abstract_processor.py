@@ -5,9 +5,10 @@ from typing import List
 
 
 class AbstractProcessor(ABC):
-    def __init__(self):
+    def __init__(self, p_log: Log = None):
+        self.log = p_log
         pass
 
     @abstractmethod
-    def process(self, p_log: Log, p_passengers: List[PassengerQueueStatus]):
+    def process(self, p_passengers: List[PassengerQueueStatus]):
         pass

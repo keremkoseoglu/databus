@@ -48,9 +48,16 @@ class PrimalQueue(AbstractQueue):
 
     def get_deliverable_passengers(self, p_passenger_module: str) -> List[PassengerQueueStatus]:
         self.log.append_text("Reading deliverable passengers of type " + p_passenger_module)
-        output = self.database.get_passenger_queue_entries(p_passenger_module=p_passenger_module,
-                                                           p_pusher_status=QueueStatus.incomplete)
-        # todo: aralarında bir tanesinin bile process'i eksikse deliverable değildir
+        output = []
+
+        candidates = self.database.get_passenger_queue_entries(
+            p_passenger_module=p_passenger_module,
+            p_pusher_status=QueueStatus.incomplete)
+
+        for candidate in candidates:
+            if candidate.all_processors_complete:
+                output.append(candidate)
+
         return output
 
     def get_processable_passengers(self, p_passenger_module: str) -> List[PassengerQueueStatus]:

@@ -1,5 +1,5 @@
 from client.log import Log
-from config.constants import *
+from database.json_db.constants import *
 from database.json_db.json_client import JsonClient
 from datetime import datetime
 from os import path, remove, scandir

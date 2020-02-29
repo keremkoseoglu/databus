@@ -1,5 +1,5 @@
 from client.client import Client, ClientError, ClientPassenger
-from config.constants import *
+from database.json_db.constants import *
 import json
 from os import path, scandir
 from typing import List

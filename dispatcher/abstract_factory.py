@@ -25,8 +25,5 @@ class DispatcherCreationError(Exception):
 
 class AbstractDispatcherFactory(ABC):
     @abstractmethod
-    def create_dispatcher(self,
-                          p_module: str,
-                          p_ticket: DispatcherTicket
-                          ) -> AbstractDispatcher:
+    def create_dispatcher(self, p_module: str, p_ticket: DispatcherTicket ) -> AbstractDispatcher:
         pass

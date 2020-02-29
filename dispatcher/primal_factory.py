@@ -4,10 +4,7 @@ import inspect
 
 
 class PrimalDispatcherFactory(AbstractDispatcherFactory):
-    def create_dispatcher(self,
-                          p_module: str,
-                          p_ticket: DispatcherTicket
-                          ) -> AbstractDispatcher:
+    def create_dispatcher(self, p_module: str, p_ticket: DispatcherTicket) -> AbstractDispatcher:
         if p_module == "" or p_module is None:
             raise DispatcherCreationError(DispatcherCreationError.ErrorCode.parameter_missing)
 

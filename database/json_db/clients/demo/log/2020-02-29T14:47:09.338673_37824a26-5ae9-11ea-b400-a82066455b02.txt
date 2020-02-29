@@ -1,0 +1,171 @@
+[2020-02-29T14:47:09.223124][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_1
+[2020-02-29T14:47:09.223124][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-29T14:47:09.223124][dispatcher.primal_dispatcher][info] Creating driver driver.primal_driver
+[2020-02-29T14:47:09.223124][dispatcher.primal_dispatcher][info] Creating ticket
+[2020-02-29T14:47:09.223124][dispatcher.primal_dispatcher][info] Driving
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Driving...
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Deleting old log files
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Deleting logs before 2020-02-28T14:47:09.349846
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Pulling new passengers
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Pulling via puller.demo.demo_puller_1
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Pulling via puller.demo.demo_puller_3
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_3][info] Got passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Writing new passengers to queue
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Notifying pullers about seated passengers
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Reading puller notifiable passengers
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Notifying puller.demo.demo_puller_1 about DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_1][info] Demo puller 1 notified about seated passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378615ca-5ae9-11ea-8004-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Notifying puller.demo.demo_puller_1 about DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_1][info] Demo puller 1 notified about seated passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 37857728-5ae9-11ea-8003-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Notifying puller.demo.demo_puller_3 about DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][puller.demo.demo_puller_3][info] Demo puller 3 notified about seated passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378741d4-5ae9-11ea-8007-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Reading processable passengers from queue
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Reading processable passengers of type passenger.demo.demo_passenger_1
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing unprocessed passengers
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) via processor.demo.demo_processor_1
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378615ca-5ae9-11ea-8004-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) via processor.demo.demo_processor_2
+[2020-02-29T14:47:09.223124][processor.demo.demo_processor_2][warning] Doing nothing
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378615ca-5ae9-11ea-8004-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) via processor.demo.demo_processor_1
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 37857728-5ae9-11ea-8003-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) via processor.demo.demo_processor_2
+[2020-02-29T14:47:09.223124][processor.demo.demo_processor_2][warning] Doing nothing
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 37857728-5ae9-11ea-8003-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) via processor.demo.demo_processor_1
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378741d4-5ae9-11ea-8007-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) via processor.demo.demo_processor_2
+[2020-02-29T14:47:09.223124][processor.demo.demo_processor_2][warning] Doing nothing
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Deleting passenger directory 378741d4-5ae9-11ea-8007-a82066455b02
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02) to queue
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing text attachment to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Writing passenger file to disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Reading deliverable passengers from queue
+[2020-02-29T14:47:09.223124][pqueue.primal_queue][info] Reading deliverable passengers of type passenger.demo.demo_passenger_1
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Reading passenger queue entries
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378615ca-5ae9-11ea-8004-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (378615ca-5ae9-11ea-8004-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (37857728-5ae9-11ea-8003-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/37857728-5ae9-11ea-8003-a82066455b02/attachments/puller1_file1.txt
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading passenger file /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/passenger.json
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (378741d4-5ae9-11ea-8007-a82066455b02)
+[2020-02-29T14:47:09.223124][database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Dropbox/software/Tesuji/Parametre/databus/database/json_db/clients/demo/pqueue/378741d4-5ae9-11ea-8007-a82066455b02/attachments/puller3_file1.txt
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Pushing deliverable passengers
+[2020-02-29T14:47:09.223124][driver.primal_driver][info] Drive complete
+[2020-02-29T14:47:09.223124][database.json_db.json_database][info] Writing log to disk

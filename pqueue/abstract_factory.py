@@ -32,8 +32,5 @@ class QueueCreationError(Exception):
 
 class AbstractQueueFactory:
     @abstractmethod
-    def create_queue(self,
-                     p_module: str,
-                     p_database: AbstractDatabase,
-                     p_log: Log) -> AbstractQueue:
+    def create_queue(self, p_module: str, p_database: AbstractDatabase, p_log: Log) -> AbstractQueue:
         pass

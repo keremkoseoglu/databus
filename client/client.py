@@ -51,10 +51,7 @@ class ClientPassengerError(Exception):
 
 
 class Client:
-    def __init__(self,
-                 p_id: str = "Undefined",
-                 p_passengers: List[ClientPassenger] = None,
-                 p_log_life_span: int = 0):
+    def __init__(self, p_id: str = "Undefined", p_passengers: List[ClientPassenger] = None, p_log_life_span: int = 0):
         self.id = p_id
         self.log_life_span = p_log_life_span
 

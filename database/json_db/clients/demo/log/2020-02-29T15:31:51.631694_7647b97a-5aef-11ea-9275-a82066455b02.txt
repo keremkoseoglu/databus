@@ -1,0 +1,5 @@
+[2020-02-29T15:31:51.410485][dispatcher.primal_dispatcher][info] Dispatching client demo passenger passenger.demo.demo_passenger_1
+[2020-02-29T15:31:51.410485][dispatcher.primal_dispatcher][info] Creating database database.json_db.json_database
+[2020-02-29T15:31:51.410485][dispatcher.primal_dispatcher][info] Creating driver dispatcher.primal_dispatcher
+[2020-02-29T15:31:51.410485][dispatcher.primal_dispatcher][error] Attribute not found.
+[2020-02-29T15:31:51.410485][database.json_db.json_database][info] Writing log to disk

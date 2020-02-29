@@ -6,11 +6,7 @@ from pqueue.abstract_queue import AbstractQueue
 
 
 class PrimalQueueFactory(AbstractQueueFactory):
-    def create_queue(self,
-                     p_module: str,
-                     p_database: AbstractDatabase,
-                     p_log: Log) -> AbstractQueue:
-
+    def create_queue(self, p_module: str, p_database: AbstractDatabase, p_log: Log) -> AbstractQueue:
         if p_module == "" or p_module is None or p_database is None or p_log is None:
             raise QueueCreationError(QueueCreationError.ErrorCode.parameter_missing, p_module=str(p_module))
 

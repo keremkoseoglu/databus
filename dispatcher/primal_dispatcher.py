@@ -1,7 +1,6 @@
 from client.client import Client
 from client.client_passenger import ClientPassenger
 from client.log import Log, LogEntry, MessageType
-from config.constants import *
 from datetime import datetime, timedelta
 from dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
 from driver.abstract_driver import BusTicket
@@ -128,7 +127,7 @@ class PrimalDispatcher(AbstractDispatcher):
         dummy_db = self.ticket.database_factory.create_database(
             p_log=Log(),
             p_module=self.ticket.database_module,
-            p_client_id=DEMO_CLIENT,
+            p_client_id=None,
             p_passenger_factory=self.ticket.passenger_factory)
 
         self._dispatch_state.clients = dummy_db.get_clients()

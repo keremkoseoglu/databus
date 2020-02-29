@@ -9,13 +9,14 @@ from typing import List
 
 
 class AbstractDatabase(ABC):
-    def __init__(self,
-                 p_client_id: str,
-                 p_log: Log,
-                 p_passenger_factory: AbstractPassengerFactory):
-        self.client = self._get_client(p_client_id)
+    def __init__(self, p_client_id: str, p_log: Log, p_passenger_factory: AbstractPassengerFactory):
         self.log = p_log
         self.passenger_factory = p_passenger_factory
+
+        if p_client_id is None:
+            self.client = None
+        else:
+            self.client = self._get_client(p_client_id)
 
     @abstractmethod
     def delete_old_logs(self, p_before: datetime):

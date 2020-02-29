@@ -11,8 +11,11 @@ class PrimalPassengerFactory(AbstractPassengerFactory):
         module = __import__(p_module, fromlist=[""])
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if name != "AbstractPassenger":
-                obj_instance = obj()
-                if isinstance(obj_instance, AbstractPassenger):
-                    return obj_instance
+                try:
+                    obj_instance = obj()
+                    if isinstance(obj_instance, AbstractPassenger):
+                        return obj_instance
+                except:
+                    pass
 
         raise PassengerCreationError(PassengerCreationError.ErrorCode.cant_create_instance, p_module=p_module)

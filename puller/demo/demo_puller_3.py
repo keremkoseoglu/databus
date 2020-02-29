@@ -8,11 +8,11 @@ from typing import List
 
 class DemoPuller3(AbstractPuller):
 
-    def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger], p_log: Log):
+    def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
         for seated_passenger in p_seated_passengers:
-            p_log.append_text(("Demo puller 3 notified about seated passenger " + seated_passenger.id_text))
+            self.log.append_text(("Demo puller 3 notified about seated passenger " + seated_passenger.id_text))
 
-    def pull(self, p_log: Log) -> List[DemoPassenger1]:
+    def pull(self) -> List[DemoPassenger1]:
         output = []
 
         passenger1 = DemoPassenger1()
@@ -24,6 +24,6 @@ class DemoPuller3(AbstractPuller):
                                                  p_format=AttachmentFormat.text,
                                                  p_text_content="Lorem Ipsum"))
         output.append(passenger1)
-        p_log.append_text("Got passenger " + passenger1.id_text)
+        self.log.append_text("Got passenger " + passenger1.id_text)
 
         return output
