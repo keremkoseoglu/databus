@@ -82,7 +82,7 @@ class PrimalDriver(AbstractDriver):
                 try:
                     self._bus.ticket.log.append_text("Notifying " +
                                                      np.passenger.puller_module +
-                                                 " about " +
+                                                     " about " +
                                                      np.passenger.id_text)
 
                     puller_obj = self.puller_factory.create_puller(np.passenger.puller_module, self._bus.ticket.log)
@@ -105,7 +105,7 @@ class PrimalDriver(AbstractDriver):
                         continue
                     self._bus.ticket.log.append_text("Processing " +
                                                      processable_passenger.passenger.id_text +
-                                                      " via " +
+                                                     " via " +
                                                      processor_status.processor_module)
                     try:
                         processor_obj = self.processor_factory.create_processor(
@@ -144,7 +144,7 @@ class PrimalDriver(AbstractDriver):
                         continue
                     self._bus.ticket.log.append_text("Delivering " +
                                                      deliverable_passenger.passenger.id_text +
-                                                      " via " +
+                                                     " via " +
                                                      pusher_status.pusher_module)
                     try:
                         pusher_obj = self.pusher_factory.create_pusher(pusher_status.pusher_module,

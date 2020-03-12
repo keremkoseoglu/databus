@@ -1,4 +1,3 @@
-from client.log import Log
 from pqueue.queue_status import PassengerQueueStatus, QueueStatus
 from pusher.abstract_pusher import AbstractPusher
 

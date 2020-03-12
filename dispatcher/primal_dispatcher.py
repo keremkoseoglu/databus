@@ -78,6 +78,8 @@ class PrimalDispatcher(AbstractDispatcher):
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
         log = Log()
+        db = None
+        driver = None
         try:
             log.append_text("Dispatching client " +
                             p_client.id +

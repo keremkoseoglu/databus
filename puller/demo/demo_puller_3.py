@@ -1,4 +1,3 @@
-from client.log import Log
 from passenger.abstract_passenger import AbstractPassenger
 from passenger.demo.demo_passenger_1 import DemoPassenger1
 from passenger.attachment import Attachment, AttachmentFormat

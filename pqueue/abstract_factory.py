@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from client.log import Log
 from database.abstract_database import AbstractDatabase
 from enum import Enum

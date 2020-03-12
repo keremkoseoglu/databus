@@ -1,13 +1,9 @@
-from client.log import Log, LogEntry, MessageType
 from pqueue.queue_status import PassengerQueueStatus, QueueStatus
 from processor.abstract_processor import AbstractProcessor
 from typing import List
 
 
 class DemoProcessor1(AbstractProcessor):
-
-    def hello_world(self):
-        print("Demo processor 1 says hello world!")
 
     def process(self, p_passengers: List[PassengerQueueStatus]):
         if len(p_passengers) > 1:

@@ -1,4 +1,3 @@
-from client.log import Log
 from passenger.abstract_passenger import AbstractPassenger
 from passenger.demo.demo_passenger_2 import DemoPassenger2
 from puller.abstract_puller import AbstractPuller
@@ -6,9 +5,6 @@ from typing import List
 
 
 class DemoPuller2(AbstractPuller):
-
-    def hello_world(self):
-        print("Demo puller 2 says hello world!")
 
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
         for seated_passenger in p_seated_passengers:

@@ -7,9 +7,6 @@ from typing import List
 
 class DemoPuller1(AbstractPuller):
 
-    def hello_world(self):
-        print("Demo puller 1 says hello world!")
-
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
         for seated_passenger in p_seated_passengers:
             self.log.append_text(("Demo puller 1 notified about seated passenger " + seated_passenger.id_text))
