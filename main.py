@@ -1,16 +1,16 @@
-from database.primal_factory import PrimalDatabaseFactory
-from dispatcher.abstract_factory import DispatcherTicket
-from dispatcher.primal_factory import PrimalDispatcherFactory
-from driver.primal_factory import PrimalDriverFactory
-from passenger.primal_factory import PrimalPassengerFactory
-from pqueue.primal_factory import PrimalQueueFactory
-from puller.primal_factory import PrimalPullerFactory
-from pusher.primal_factory import PrimalPusherFactory
-from processor.primal_factory import PrimalProcessorFactory
+from databus.database.primal_factory import PrimalDatabaseFactory
+from databus.dispatcher.abstract_factory import DispatcherTicket
+from databus.dispatcher.primal_factory import PrimalDispatcherFactory
+from databus.driver.primal_factory import PrimalDriverFactory
+from databus.passenger.primal_factory import PrimalPassengerFactory
+from databus.pqueue.primal_factory import PrimalQueueFactory
+from databus.puller.primal_factory import PrimalPullerFactory
+from databus.pusher.primal_factory import PrimalPusherFactory
+from databus.processor.primal_factory import PrimalProcessorFactory
 
-_DEFAULT_DATABASE = "database.json_db.json_database"
-_DEFAULT_DRIVER = "driver.primal_driver"
-_DEFAULT_DISPATCHER = "dispatcher.primal_dispatcher"
+_DEFAULT_DATABASE = "databus.database.json_db.json_database"
+_DEFAULT_DRIVER = "databus.driver.primal_driver"
+_DEFAULT_DISPATCHER = "databus.dispatcher.primal_dispatcher"
 
 if __name__ == "__main__":
 
