@@ -13,11 +13,6 @@ class AbstractDatabase(ABC):
         self.log = p_log
         self.passenger_factory = p_passenger_factory
 
-        if p_client_id is None:
-            self.client = None
-        else:
-            self.client = self._get_client(p_client_id)
-
     @abstractmethod
     def delete_old_logs(self, p_before: datetime):
         pass

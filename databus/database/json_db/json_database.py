@@ -17,6 +17,10 @@ class JsonDatabase(AbstractDatabase):
         super().__init__(p_client_id, p_log, p_passenger_factory, p_arguments)
         self._args = JsonDatabaseArguments(p_arguments)
         self._json_client = JsonClient(self._args)
+        if p_client_id is None:
+            self.client = None
+        else:
+            self.client = self._get_client(p_client_id)
         self._json_log = JsonLog(self._args)
         self._json_queue = JsonQueue(p_client_id, p_log, self.passenger_factory, self._args)
 
