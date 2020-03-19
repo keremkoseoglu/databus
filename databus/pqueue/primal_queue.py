@@ -34,7 +34,7 @@ class PrimalQueue(AbstractQueue):
         self.database.delete_passenger_queue(deletable_passengers)
 
     def erase(self):
-        self.database.erase_passsenger_queue()
+        self.database.erase_passenger_queue()
 
     def insert(self, p_passengers: List[AbstractPassenger]):
         if len(p_passengers) <= 0:

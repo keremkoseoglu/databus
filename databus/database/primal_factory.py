@@ -10,7 +10,8 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory):
                         p_module: str,
                         p_client_id: str,
                         p_log: Log,
-                        p_passenger_factory: AbstractPassengerFactory
+                        p_passenger_factory: AbstractPassengerFactory,
+                        p_arguments: dict
                         ) -> AbstractDatabase:
         if p_module == "" or p_module is None:
             raise DatabaseCreationError(DatabaseCreationError.ErrorCode.parameter_missing)
@@ -19,7 +20,7 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory):
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if name != "AbstractDatabase" and name != "datetime":
                 try:
-                    obj_instance = obj(p_client_id, p_log, p_passenger_factory)
+                    obj_instance = obj(p_client_id, p_log, p_passenger_factory, p_arguments)
                     if isinstance(obj_instance, AbstractDatabase):
                         return obj_instance
                 except:

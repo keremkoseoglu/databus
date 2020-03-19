@@ -93,7 +93,8 @@ class PrimalDispatcher(AbstractDispatcher):
                 p_passenger_factory=self.ticket.passenger_factory,
                 p_client_id=p_client.id,
                 p_module=self.ticket.database_module,
-                p_log=log)
+                p_log=log,
+                p_arguments=self.ticket.database_arguments)
 
             log.append_text("Creating driver " + self.ticket.driver_module)
 
@@ -130,7 +131,8 @@ class PrimalDispatcher(AbstractDispatcher):
             p_log=Log(),
             p_module=self.ticket.database_module,
             p_client_id=None,
-            p_passenger_factory=self.ticket.passenger_factory)
+            p_passenger_factory=self.ticket.passenger_factory,
+            p_arguments=self.ticket.database_arguments)
 
         self._dispatch_state.clients = dummy_db.get_clients()
         self._tick_count.collect_clients(self._dispatch_state.clients)

@@ -1,5 +1,5 @@
 from databus.client.log import Log, LogEntry, MessageType
-from databus.database.json_db.constants import *
+from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.json_db.json_toolkit import JsonToolkit
 from datetime import datetime
 from enum import Enum
@@ -46,10 +46,15 @@ class JsonQueue:
 
     client_id: str
 
-    def __init__(self, p_client_id: str, p_log: Log, p_passenger_factory: AbstractPassengerFactory):
+    def __init__(self,
+                 p_client_id: str,
+                 p_log: Log,
+                 p_passenger_factory: AbstractPassengerFactory,
+                 p_args: JsonDatabaseArguments):
         self.client_id = p_client_id
         self._log = p_log
         self._passenger_factory = p_passenger_factory
+        self._args = p_args
 
     def delete_passengers(self, p_passengers: List[AbstractPassenger]):
         all_passenger_directories = self._get_passenger_directories()
@@ -249,7 +254,7 @@ class JsonQueue:
         return path.join(self._get_attachment_directory_path(p_internal_id), p_file_name)
 
     def _get_attachment_directory_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(), p_internal_id, JSON_DB_QUEUE_ATTACHMENT_DIR)
+        return path.join(self._get_queue_root_path(), p_internal_id, self._args.queue_attachment_dir)
 
     def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: {}) -> Attachment:
         output = Attachment(p_name=p_attachment_json["name"],
@@ -277,7 +282,7 @@ class JsonQueue:
         return passengers_json
 
     def _get_passenger_file_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(), p_internal_id, JSON_DB_QUEUE_PASSENGER)
+        return path.join(self._get_queue_root_path(), p_internal_id, self._args.queue_passenger)
 
     def _get_passenger_directories(self) -> List[str]:
         return [f.name for f in scandir(self._get_queue_root_path()) if f.is_dir()]
@@ -286,10 +291,10 @@ class JsonQueue:
         return path.join(self._get_queue_root_path(), p_internal_id)
 
     def _get_queue_root_path(self) -> str:
-        return path.join(JSON_DB_DATABASE_DIR,
-                         JSON_DB_CLIENT_DIR,
+        return path.join(self._args.database_dir,
+                         self._args.client_dir,
                          self.client_id,
-                         JSON_DB_QUEUE_DIR)
+                         self._args.queue_dir)
 
     def _validate_passenger_status(self, p_passenger_status: PassengerQueueStatus, p_operation: DataOperation):
         self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text)

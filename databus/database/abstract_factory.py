@@ -42,6 +42,7 @@ class AbstractDatabaseFactory(ABC):
                         p_module: str,
                         p_client_id: str,
                         p_log: Log,
-                        p_passenger_factory: AbstractPassengerFactory
+                        p_passenger_factory: AbstractPassengerFactory,
+                        p_arguments: dict
                         ) -> AbstractDatabase:
         pass

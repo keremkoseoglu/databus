@@ -23,6 +23,7 @@ if __name__ == "__main__":
         p_processor_factory=PrimalProcessorFactory(),
         p_pusher_factory=PrimalPusherFactory(),
         p_database_module=_DEFAULT_DATABASE,
+        p_database_arguments={},
         p_driver_module=_DEFAULT_DRIVER)
 
     PrimalDispatcherFactory().create_dispatcher(

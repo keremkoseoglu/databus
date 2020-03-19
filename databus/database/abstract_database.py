@@ -9,7 +9,7 @@ from typing import List
 
 
 class AbstractDatabase(ABC):
-    def __init__(self, p_client_id: str, p_log: Log, p_passenger_factory: AbstractPassengerFactory):
+    def __init__(self, p_client_id: str, p_log: Log, p_passenger_factory: AbstractPassengerFactory, p_arguments: dict):
         self.log = p_log
         self.passenger_factory = p_passenger_factory
 
@@ -27,7 +27,7 @@ class AbstractDatabase(ABC):
         pass
 
     @abstractmethod
-    def erase_passsenger_queue(self):
+    def erase_passenger_queue(self):
         pass
 
     @abstractmethod

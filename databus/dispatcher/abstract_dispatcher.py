@@ -18,6 +18,7 @@ class DispatcherTicket:
                  p_processor_factory: AbstractProcessorFactory,
                  p_pusher_factory: AbstractPusherFactory,
                  p_database_module: str = None,
+                 p_database_arguments: dict = None,
                  p_driver_module: str = None
                  ):
         self.database_factory = p_database_factory
@@ -33,6 +34,11 @@ class DispatcherTicket:
             self.database_module = ""
         else:
             self.database_module = p_database_module
+
+        if p_database_arguments is None:
+            self.database_arguments = {}
+        else:
+            self.database_arguments = p_database_arguments
 
         if p_driver_module is None:
             self.driver_module = ""
