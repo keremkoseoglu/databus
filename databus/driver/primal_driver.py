@@ -111,7 +111,7 @@ class PrimalDriver(AbstractDriver):
                         processor_obj = self.processor_factory.create_processor(
                             processor_status.processor_module,
                             self._bus.ticket.log)
-                        processor_obj.process([processable_passenger.passenger])
+                        processor_obj.process([processable_passenger])
                         processor_status.status = QueueStatus.complete
                         self._bus.queue.update_passenger_status(processable_passenger)
                     except Exception as e:
