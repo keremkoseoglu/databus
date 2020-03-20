@@ -46,14 +46,14 @@ class PassengerQueueStatus:
     @property
     def all_processors_complete(self) -> bool:
         for processor_status in self.processor_statuses:
-            if processor_status != QueueStatus.complete:
+            if processor_status.status != QueueStatus.complete:
                 return False
         return True
 
     @property
     def all_pushers_complete(self) -> bool:
         for pusher_status in self.pusher_statuses:
-            if pusher_status != QueueStatus.complete:
+            if pusher_status.status != QueueStatus.complete:
                 return False
         return True
 
