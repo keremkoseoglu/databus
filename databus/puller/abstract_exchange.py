@@ -31,7 +31,7 @@ class ExchangeSettings:
             self.password = p_password
 
 
-class Exchange(AbstractPuller, ABC):
+class AbstractExchange(AbstractPuller, ABC):
     _SOURCE_SYSTEM = "Exchange"
 
     def __init__(self, p_log: Log = None):
