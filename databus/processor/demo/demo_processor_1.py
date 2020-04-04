@@ -1,11 +1,15 @@
+""" Demo processor module """
+from typing import List
 from databus.pqueue.queue_status import PassengerQueueStatus, QueueStatus
 from databus.processor.abstract_processor import AbstractProcessor
-from typing import List
+
 
 
 class DemoProcessor1(AbstractProcessor):
+    """ Demo processor class """
 
     def process(self, p_passengers: List[PassengerQueueStatus]):
+        """ Demo process """
         if len(p_passengers) > 1:
             self.log.append_text("Marking last passenger as processed & pushed")
             last_passenger = p_passengers[len(p_passengers)-1]

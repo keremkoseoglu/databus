@@ -1,3 +1,4 @@
+""" Log module """
 from datetime import datetime
 from enum import Enum
 import inspect
@@ -6,6 +7,7 @@ from uuid import uuid1, UUID
 
 
 class MessageType(Enum):
+    """ Message type """
     undefined = 0
     info = 1
     warning = 2
@@ -13,6 +15,7 @@ class MessageType(Enum):
 
 
 class LogEntry:
+    """ Log entry class """
     def __init__(self,
                  p_message: str = None,
                  p_timestamp: datetime = datetime.now(),
@@ -36,18 +39,22 @@ class LogEntry:
 
     @property
     def message(self) -> str:
+        """ Log entry as string """
         return self._message
 
     @property
     def timestamp(self) -> datetime:
+        """ Log entry creation time """
         return self._timestamp
 
     @property
     def type(self) -> MessageType:
+        """ Log entry message type """
         return self._type
 
 
 class Log:
+    """ Log class """
     def __init__(self):
         self._creation_datetime = datetime.now()
         self._guid = uuid1()
@@ -55,17 +62,21 @@ class Log:
 
     @property
     def creation_datetime(self) -> datetime:
+        """ Log creation time """
         return self._creation_datetime
 
     @property
     def entries(self) -> List[LogEntry]:
+        """ All log entries """
         return self._entries
 
     @property
     def guid(self) -> UUID:
+        """ Unique log ID """
         return self._guid
 
     def append_entry(self, p_entry: LogEntry):
+        """ Adds new entry to log """
         if p_entry.source == "" or p_entry.source is None:
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
@@ -73,6 +84,7 @@ class Log:
         self._entries.append(p_entry)
 
     def append_text(self, p_entry: str, p_source: str = None):
+        """ Adds simple text to log """
         if p_source == "" or p_source is None:
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
@@ -80,5 +92,3 @@ class Log:
         else:
             source = p_source
         self._entries.append(LogEntry(p_message=p_entry, p_source=source))
-
-

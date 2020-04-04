@@ -1,11 +1,13 @@
+""" Abstract passenger module """
 from abc import ABC
 from datetime import datetime
-from databus.passenger.attachment import Attachment
 from typing import List
 from uuid import uuid1, UUID
+from databus.passenger.attachment import Attachment
 
 
 class AbstractPassenger(ABC):
+    """ Abstract passenger class """
     _clock_seq: int = 0
 
     def __init__(self,
@@ -49,4 +51,5 @@ class AbstractPassenger(ABC):
 
     @property
     def id_text(self) -> str:
+        """ Returns the unique ID of the passenger as text """
         return self.source_system + " - " + self.external_id + " (" + str(self.internal_id) + ")"

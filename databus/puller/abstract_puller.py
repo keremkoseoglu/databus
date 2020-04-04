@@ -1,18 +1,22 @@
+""" Abstract puller module """
 from abc import ABC, abstractmethod
+from typing import List
 from databus.client.log import Log
 from databus.passenger.abstract_passenger import AbstractPassenger
-from typing import List
 
 
 class AbstractPuller(ABC):
+    """ Abstract puller class """
     def __init__(self, p_log: Log = None):
         self.log = p_log
-        pass
 
     @abstractmethod
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
-        pass
+        """ Called after a passenger is properly queued.
+        You would typically write a code here to ensure that the passenger is not
+        returned any more when the puller works again.
+        """
 
     @abstractmethod
     def pull(self) -> List[AbstractPassenger]:
-        pass
+        """ Pulls passengers from the source system """

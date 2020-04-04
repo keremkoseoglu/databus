@@ -1,17 +1,22 @@
+""" Demo puller module """
+from typing import List
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.demo.demo_passenger_1 import DemoPassenger1
 from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.puller.abstract_puller import AbstractPuller
-from typing import List
 
 
 class DemoPuller1(AbstractPuller):
+    """ Demo puller class """
 
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
+        """ Handles passengers which are queued already """
         for seated_passenger in p_seated_passengers:
-            self.log.append_text(("Demo puller 1 notified about seated passenger " + seated_passenger.id_text))
+            self.log.append_text(
+                "Demo puller 1 notified about seated passenger " + seated_passenger.id_text)
 
     def pull(self) -> List[DemoPassenger1]:
+        """ Fake pull from imaginary source system """
         output = []
 
         passenger1 = DemoPassenger1()

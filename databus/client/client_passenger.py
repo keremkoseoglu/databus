@@ -1,8 +1,10 @@
+""" Client passenger module """
 from datetime import datetime, timedelta
 from typing import List
 
 
 class ClientPassenger:
+    """ Client passenger class """
     def __init__(self,
                  p_name: str = "Undefined",
                  p_puller_modules: List[str] = None,
@@ -38,5 +40,5 @@ class ClientPassenger:
 
     @property
     def queue_expiry_date(self) -> datetime:
+        """ Returns queue expirt date """
         return datetime.now() - timedelta(days=5)
-

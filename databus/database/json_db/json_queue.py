@@ -1,26 +1,32 @@
-from databus.client.log import Log, LogEntry, MessageType
-from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
-from databus.database.json_db.json_toolkit import JsonToolkit
+""" Queue module for JSON database """
 from datetime import datetime
 from enum import Enum
 import json
 from os import mkdir, path, remove, scandir
+import shutil
+from typing import List
+from databus.client.log import Log, LogEntry, MessageType
+from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
+from databus.database.json_db.json_toolkit import JsonToolkit
 from databus.passenger.abstract_passenger import AbstractPassenger
-from databus.passenger.attachment import Attachment, AttachmentError, AttachmentFormat, Validator as AttachmentValidator
+from databus.passenger.attachment import Attachment, AttachmentError, AttachmentFormat
+from databus.passenger.attachment import Validator as AttachmentValidator
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.pqueue.queue_status import QueueStatus, PassengerQueueStatus, ProcessorQueueStatus, PusherQueueStatus
 from databus.pqueue.queue_status import Validator as QueueStatusValidator
-import shutil
-from typing import List
+
 
 
 class PassengerError(Exception):
+    """ Base exception class for passenger errors """
     class ErrorCode(Enum):
+        """ Error code enum """
         internal_id_missing = 1
         puller_module_missing = 2
         already_exists = 3
 
     def __init__(self, p_error_code: ErrorCode, p_passenger_id: str = None):
+        super().__init__()
         self.error_code = p_error_code
 
         if p_passenger_id is None:
@@ -30,6 +36,7 @@ class PassengerError(Exception):
 
     @property
     def message(self) -> str:
+        """ Returns error message as text """
         if self.error_code == PassengerError.ErrorCode.internal_id_missing:
             return "Passenger " + self.passenger_id + " is missing internal ID"
         if self.error_code == PassengerError.ErrorCode.puller_module_missing:
@@ -40,11 +47,11 @@ class PassengerError(Exception):
 
 
 class JsonQueue:
+    """ Queue implementation for JSON database """
     class DataOperation(Enum):
+        """ Data operation enum """
         insert = 1
         update = 2
-
-    client_id: str
 
     def __init__(self,
                  p_client_id: str,
@@ -57,6 +64,7 @@ class JsonQueue:
         self._args = p_args
 
     def delete_passengers(self, p_passengers: List[AbstractPassenger]):
+        """ Deletes the given passengers from the disk """
         all_passenger_directories = self._get_passenger_directories()
         for passenger in p_passengers:
             if passenger.internal_id in all_passenger_directories:
@@ -65,6 +73,7 @@ class JsonQueue:
                 shutil.rmtree(passenger_dir_path)
 
     def erase_passenger_queue(self):
+        """ Deletes all passengers from the disk """
         all_passenger_directories = self._get_passenger_directories()
         for passenger_directory in all_passenger_directories:
             self._log.append_text("Deleting passenger directory " + passenger_directory)
@@ -78,6 +87,7 @@ class JsonQueue:
                        p_puller_notified: bool = None,
                        p_pulled_before: datetime = None
                        ) -> List[PassengerQueueStatus]:
+        """ Returns passengers """
         output = []
 
         for passenger_directory in self._get_passenger_directories():
@@ -142,6 +152,7 @@ class JsonQueue:
         return output
 
     def insert_passenger(self, p_passenger_status: PassengerQueueStatus):
+        """ Creates a new folder & puts files within """
         self._log.append_text("Adding passenger " + p_passenger_status.passenger.id_text + " to queue")
         self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.insert)
 
@@ -199,6 +210,7 @@ class JsonQueue:
                              p_passenger: AbstractPassenger,
                              p_processor_module: str,
                              p_status: QueueStatus):
+        """ Updates processor status within the JSON file """
 
         self._log.append_text("Setting status " +
                               p_status.name +
@@ -219,7 +231,7 @@ class JsonQueue:
                           p_passenger: AbstractPassenger,
                           p_pusher_module: str,
                           p_status: QueueStatus):
-
+        """ Updates pusher status within the JSON file """
         self._log.append_text("Setting status " +
                               p_status.name +
                               " for passenger " +
@@ -236,6 +248,7 @@ class JsonQueue:
         self._write_passenger_json_into_file(passenger_json)
 
     def update_passenger(self, p_passenger_status: PassengerQueueStatus):
+        """ Updates passenger """
         self._log.append_text("Updating passenger " + p_passenger_status.passenger.id_text)
         self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.update)
         self.delete_passengers([p_passenger_status.passenger])
@@ -296,7 +309,9 @@ class JsonQueue:
                          self.client_id,
                          self._args.queue_dir)
 
-    def _validate_passenger_status(self, p_passenger_status: PassengerQueueStatus, p_operation: DataOperation):
+    def _validate_passenger_status(self, 
+                                   p_passenger_status: PassengerQueueStatus, 
+                                   p_operation: DataOperation):
         self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text)
 
         if str(p_passenger_status.passenger.internal_id) == "":
@@ -326,13 +341,19 @@ class JsonQueue:
                 p_passenger_status.passenger.internal_id in self._get_passenger_directories():
             raise PassengerError(PassengerError.ErrorCode.already_exists, p_passenger_status.passenger.id_text)
 
-    def _write_attachment_file_text(self, p_file_name: str, p_file_content: str, p_internal_id: str):
+    def _write_attachment_file_text(self, 
+                                    p_file_name: str, 
+                                    p_file_content: str, 
+                                    p_internal_id: str):
         full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
         self._log.append_text("Writing text attachment to disk: " + full_path)
         with open(full_path, "w") as text_file:
             text_file.write(p_file_content)
 
-    def _write_attachment_file_bin(self, p_file_name: str, p_file_content: bytearray, p_internal_id: str):
+    def _write_attachment_file_bin(self,
+                                   p_file_name: str,
+                                   p_file_content: bytearray,
+                                   p_internal_id: str):
         full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
         self._log.append_text("Writing binary attachment to disk: " + full_path)
         with open(full_path, "wb") as bin_file:
@@ -343,5 +364,3 @@ class JsonQueue:
         self._log.append_text("Writing passenger file to disk: " + passenger_file_path)
         with open(passenger_file_path, "w") as json_file:
             json.dump(p_json, json_file)
-
-

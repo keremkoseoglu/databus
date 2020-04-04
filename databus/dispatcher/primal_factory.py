@@ -1,12 +1,19 @@
-from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
-from databus.dispatcher.abstract_factory import AbstractDispatcherFactory, DispatcherCreationError, DispatcherTicket
+""" Default dispatcher factory module """
 import inspect
+from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
+from databus.dispatcher.abstract_factory import \
+    AbstractDispatcherFactory, DispatcherCreationError
 
 
 class PrimalDispatcherFactory(AbstractDispatcherFactory):
+    """ Default dispatcher factory class """
     _DEFAULT_DISPATCHER = "databus.dispatcher.primal_dispatcher"
 
-    def create_dispatcher(self, p_module: str = None, p_ticket: DispatcherTicket = None) -> AbstractDispatcher:
+    def create_dispatcher(self,
+                          p_module: str = None,
+                          p_ticket: DispatcherTicket = None) -> AbstractDispatcher:
+        """ Dispatcher factory """
+
         if p_module == "" or p_module is None:
             dispatcher_module = PrimalDispatcherFactory._DEFAULT_DISPATCHER
         else:
@@ -24,7 +31,9 @@ class PrimalDispatcherFactory(AbstractDispatcherFactory):
                     obj_instance = obj(dispatcher_ticket)
                     if isinstance(obj_instance, AbstractDispatcher):
                         return obj_instance
-                except:
+                except Exception:
                     pass
 
-        raise DispatcherCreationError(DispatcherCreationError.ErrorCode.cant_create_instance, p_module=dispatcher_module)
+        raise DispatcherCreationError(
+            DispatcherCreationError.ErrorCode.cant_create_instance, 
+            p_module=dispatcher_module)

@@ -1,3 +1,4 @@
+""" Abstract dispatcher module """
 from abc import ABC, abstractmethod
 from databus.database.abstract_factory import AbstractDatabaseFactory
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
@@ -17,6 +18,7 @@ from databus.processor.primal_factory import PrimalProcessorFactory
 
 
 class DispatcherTicket:
+    """ Factory parameters for dispatcher creation """
     _DEFAULT_DRIVER = "databus.driver.primal_driver"
     _DEFAULT_DATABASE = "databus.database.json_db.json_database"
     _DEFAULT_DATABASE_ARGS = {
@@ -95,9 +97,10 @@ class DispatcherTicket:
 
 
 class AbstractDispatcher(ABC):
+    """ Abstract dispatcher class """
     def __init__(self, p_ticket: DispatcherTicket = None):
         self.ticket = p_ticket
 
     @abstractmethod
     def start(self):
-        pass
+        """ Activates dispatcher timer """

@@ -1,11 +1,16 @@
+""" Json database argument module """
 from enum import Enum
 
 
 class JsonDatabaseArgumentError(Exception):
+    """ Json database argument exception """
+
     class ErrorCode(Enum):
+        """ Error code """
         invalid_argument: 1
 
     def __init__(self, p_error_code: ErrorCode, p_argument: str = ""):
+        super().__init__()
         self.error_code = p_error_code
 
         if p_argument is None:
@@ -15,12 +20,14 @@ class JsonDatabaseArgumentError(Exception):
 
     @property
     def message(self) -> str:
+        """ Error message as string """
         if self.error_code == JsonDatabaseArgumentError.ErrorCode.invalid_argument:
             return "Invalid JsonDatabase argument: " + self.argument
         return "JsonDatabase argument error"
 
 
 class JsonDatabaseArguments:
+    """ Json database argument class """
     KEY_CLIENT_CONFIG = "client_config"
     KEY_CLIENT_DIR = "client_dir"
     KEY_DATABASE_DIR = "database_dir"
@@ -58,4 +65,6 @@ class JsonDatabaseArguments:
             elif key == JsonDatabaseArguments.KEY_QUEUE_PASSENGER:
                 self.queue_passenger = p_arguments[key]
             else:
-                raise JsonDatabaseArgumentError(JsonDatabaseArgumentError.ErrorCode.invalid_argument, p_argument=key)
+                raise JsonDatabaseArgumentError(
+                    JsonDatabaseArgumentError.ErrorCode.invalid_argument,
+                    p_argument=key)

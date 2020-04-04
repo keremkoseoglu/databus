@@ -1,23 +1,28 @@
-from databus.client.client import Client, ClientError, ClientPassenger
-from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
+""" Json database implementation module for client """
 import json
 from os import path, scandir
 from typing import List
+from databus.client.client import Client, ClientError, ClientPassenger
+from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 
 
 class JsonClient:
+    """ JSON database implementation for client """
 
     def __init__(self, args: JsonDatabaseArguments):
         self._args = args
 
     def build_client_dir_path(self, p_client_id: str) -> str:
+        """ Builds the concrete path for client directory """
         client_root_path = self.build_client_root_path()
         return path.join(client_root_path, p_client_id)
 
     def build_client_root_path(self) -> str:
+        """ Builds the concrete root path of client directories """
         return path.join(self._args.database_dir, self._args.client_dir)
 
     def get_all(self) -> List[Client]:
+        """ Returns all clients """
         output = []
         for client_directory in self.get_client_directories():
             config_file_path = path.join(self._args.database_dir,
@@ -48,9 +53,11 @@ class JsonClient:
         return output
 
     def get_client_directories(self) -> List[str]:
+        """ Returns all client directories """
         return [f.name for f in scandir(self.build_client_root_path()) if f.is_dir()]
 
     def get_single(self, p_id: str) -> Client:
+        """ Returns a single client """
         if p_id == "" or p_id is None:
             raise ClientError(ClientError.ErrorCode.parameter_missing)
         all_clients = self.get_all()

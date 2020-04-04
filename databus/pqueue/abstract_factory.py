@@ -1,12 +1,16 @@
+""" Abstract queue factory module """
 from abc import abstractmethod
+from enum import Enum
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
-from enum import Enum
 from databus.pqueue.abstract_queue import AbstractQueue
 
 
 class QueueCreationError(Exception):
+    """ Queue creation exception """
+
     class ErrorCode(Enum):
+        """ Queue creation error code """
         cant_create_instance: 1
         parameter_missing: 2
 
@@ -23,14 +27,19 @@ class QueueCreationError(Exception):
 
     @property
     def message(self) -> str:
+        """ Error message as text """
         if self.error_code == QueueCreationError.ErrorCode.cant_create_instance:
             return "Can't create " + self.module + " queue instance"
-        elif self.error_code == QueueCreationError.ErrorCode.parameter_missing:
+        if self.error_code == QueueCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create database instance"
         return "Database creation error"
 
 
 class AbstractQueueFactory:
+    """ Abstract queue factory class """
     @abstractmethod
-    def create_queue(self, p_module: str, p_database: AbstractDatabase, p_log: Log) -> AbstractQueue:
-        pass
+    def create_queue(self, 
+                     p_module: str, 
+                     p_database: AbstractDatabase, 
+                     p_log: Log) -> AbstractQueue:
+        """ Queue factory """

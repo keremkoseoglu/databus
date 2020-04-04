@@ -1,3 +1,4 @@
+""" Abstract driver module """
 from abc import ABC, abstractmethod
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log
@@ -10,6 +11,8 @@ from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
 class BusTicket:
+    """ Driver constructor parameters """
+
     def __init__(self,
                  p_client_passenger: ClientPassenger = None,
                  p_log: Log = None,
@@ -29,10 +32,12 @@ class BusTicket:
 
     @property
     def client_id(self) -> str:
+        """ ID of the client """
         return self.database.client.id
 
 
 class AbstractDriver(ABC):
+    """ Abstract driver class """
 
     def __init__(self,
                  p_queue_factory: AbstractQueueFactory,
@@ -46,9 +51,9 @@ class AbstractDriver(ABC):
 
     @abstractmethod
     def drive(self, p_bus_ticket: BusTicket):
-        pass
+        """ Carries passengers from source system to target system """
 
     @property
     @abstractmethod
     def queue(self) -> AbstractQueue:
-        pass
+        """ Queue object """

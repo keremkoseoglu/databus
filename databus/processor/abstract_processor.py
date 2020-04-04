@@ -1,14 +1,15 @@
+""" Abstract processor module """
 from abc import ABC, abstractmethod
+from typing import List
 from databus.client.log import Log
 from databus.pqueue.queue_status import PassengerQueueStatus
-from typing import List
 
 
 class AbstractProcessor(ABC):
+    """ Abstract processor class """
     def __init__(self, p_log: Log = None):
         self.log = p_log
-        pass
 
     @abstractmethod
     def process(self, p_passengers: List[PassengerQueueStatus]):
-        pass
+        """ Processes the given passengers """

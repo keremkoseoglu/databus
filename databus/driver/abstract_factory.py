@@ -1,6 +1,7 @@
+""" Abstract driver factory module """
 from abc import ABC, abstractmethod
-from databus.driver.abstract_driver import AbstractDriver
 from enum import Enum
+from databus.driver.abstract_driver import AbstractDriver
 from databus.processor.abstract_factory import AbstractProcessorFactory
 from databus.pqueue.abstract_factory import AbstractQueueFactory
 from databus.puller.abstract_factory import AbstractPullerFactory
@@ -8,7 +9,10 @@ from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
 class DriverCreationError(Exception):
+    """ Driver creation exception """
+
     class ErrorCode(Enum):
+        """ Driver creation error code """
         cant_create_instance: 1
         parameter_missing: 2
 
@@ -22,11 +26,13 @@ class DriverCreationError(Exception):
 
     @property
     def message(self) -> str:
+        """ Error message as string """
         if self.error_code == DriverCreationError.ErrorCode.cant_create_instance:
             return "Can't create " + self.module + " driver instance"
         return "Driver creation error"
 
 
+""" Abstract driver factory class """
 class AbstractDriverFactory(ABC):
     @abstractmethod
     def create_driver(self,
@@ -36,4 +42,4 @@ class AbstractDriverFactory(ABC):
                       p_puller_factory: AbstractPullerFactory,
                       p_pusher_factory: AbstractPusherFactory
                       ) -> AbstractDriver:
-        pass
+        """ Driver creation """

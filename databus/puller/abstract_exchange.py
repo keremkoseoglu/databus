@@ -1,11 +1,9 @@
+""" Abstract module to pull E-Mails from Exchange Server """
 from abc import ABC, abstractmethod
 from datetime import datetime
-import json
 from typing import List
 from uuid import uuid1
-
 from exchangelib import DELEGATE, Account, Credentials
-
 from databus.client.log import Log
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
@@ -14,6 +12,7 @@ from databus.puller.abstract_puller import AbstractPuller
 
 
 class ExchangeSettings:
+    """ Parameters to connect to Exchange Server """
     def __init__(self, p_email: str = None, p_username: str = None, p_password: str = None):
         if p_email is None:
             self.email = ""
@@ -32,22 +31,32 @@ class ExchangeSettings:
 
 
 class AbstractExchange(AbstractPuller, ABC):
+    """ Abstract class to pull E-Mails from Exchange Server """
     _SOURCE_SYSTEM = "Exchange"
 
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
-        self._settings = self.get_settings()        
-        self.log.append_text("Exchange user: " + self._settings.username + " - " + self._settings.email)
+        self._settings = self.get_settings()       
+         
+        self.log.append_text(
+            "Exchange user: " + 
+            self._settings.username + 
+            " - " + 
+            self._settings.email)
 
     @abstractmethod
     def get_settings(self) -> ExchangeSettings:
-        pass
+        """ Returns parameters to connect to Exchange server """
 
     @abstractmethod
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
-        pass
+        """ This method is called whenever the E-Mail from Exchange is properly queued.
+        You can delete the E-Mail from Exchange Inbox here, or maybe move it to
+        another folder?
+        """
 
     def pull(self) -> List[AbstractPassenger]:
+        """ Reads E-Mails from the given Exchange Server account """
         output = []
 
         credentials = Credentials(username=self._settings.username,
@@ -61,7 +70,7 @@ class AbstractExchange(AbstractPuller, ABC):
         for item in account.inbox.all().order_by('-datetime_received'):
             email_passenger = Email(p_external_id=item.id,
                                     p_internal_id=uuid1(),
-                                    p_source_system=Exchange._SOURCE_SYSTEM,
+                                    p_source_system=AbstractExchange._SOURCE_SYSTEM,
                                     p_attachments=[],
                                     p_puller_module=self.__module__,
                                     p_pull_datetime=datetime.now())

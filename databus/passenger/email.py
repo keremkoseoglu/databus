@@ -1,13 +1,14 @@
+""" E-Mail passenger module """
 from datetime import datetime
 import os
 from typing import List
 from uuid import UUID
-
 from databus.passenger.abstract_passenger import AbstractPassenger
-from databus.passenger.attachment import Attachment, AttachmentFormat
+from databus.passenger.attachment import Attachment
 
 
 class Email(AbstractPassenger):
+    """ E-Mail passenger class """
     _EXCEL_EXTENSIONS = [".xls", ".xlsx"]
 
     def __init__(self,
@@ -26,6 +27,7 @@ class Email(AbstractPassenger):
 
     @property
     def excel_attachments(self) -> List[Attachment]:
+        """ Returns a list of Excel attachments """
         output = []
         for candidate in self.attachments:
             if "." not in candidate.name:
@@ -36,5 +38,3 @@ class Email(AbstractPassenger):
                 continue
             output.append(candidate)
         return output
-
-

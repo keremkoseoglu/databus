@@ -1,3 +1,4 @@
+""" Default driver module """
 from databus.client.log import Log, LogEntry, MessageType
 from databus.driver.abstract_driver import AbstractDriver, BusTicket
 from databus.pqueue.abstract_queue import AbstractQueue
@@ -9,6 +10,7 @@ from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
 class Bus:
+    """ Bus object """
     def __init__(self,
                  p_ticket: BusTicket = BusTicket(),
                  p_queue: AbstractQueue = None):
@@ -20,6 +22,7 @@ class Bus:
 
 
 class PrimalDriver(AbstractDriver):
+    """ Default driver class """
 
     def __init__(self,
                  p_queue_factory: AbstractQueueFactory,
@@ -30,6 +33,7 @@ class PrimalDriver(AbstractDriver):
         self._bus = Bus()
 
     def drive(self, p_bus_ticket: BusTicket):
+        """ Pulls passengers from source systems and pushes them to target systems """
         p_bus_ticket.log.append_text("Driving...")
         self._bus.ticket = p_bus_ticket
 
@@ -38,8 +42,8 @@ class PrimalDriver(AbstractDriver):
                 p_bus_ticket.client_passenger.queue_module,
                 p_bus_ticket.database,
                 p_bus_ticket.log)
-        except Exception as e:
-            self._log_exception(e, p_log=p_bus_ticket.log)
+        except Exception as queue_error:
+            self._log_exception(queue_error, p_log=p_bus_ticket.log)
             return
 
         self._bus = Bus(p_ticket=p_bus_ticket, p_queue=queue)
@@ -56,6 +60,7 @@ class PrimalDriver(AbstractDriver):
 
     @property
     def queue(self) -> AbstractQueue:
+        """ Queue object """
         return self._bus.queue
 
     def _delete_old_log_files(self):
@@ -63,8 +68,8 @@ class PrimalDriver(AbstractDriver):
             self._bus.ticket.log.append_text("Deleting old log files")
             log_expiry_date = self._bus.ticket.database.client.log_expiry_date
             self._bus.ticket.database.delete_old_logs(log_expiry_date)
-        except Exception as e:
-            self._log_exception(e)
+        except Exception as del_error:
+            self._log_exception(del_error)
 
     def _log_exception(self, p_exception: Exception, p_log: Log = None):
         if p_log is None:
@@ -78,28 +83,33 @@ class PrimalDriver(AbstractDriver):
     def _notify_pullers_about_seated_passengers(self):
         self._bus.ticket.log.append_text("Notifying pullers about seated passengers")
         try:
-            for np in self._bus.queue.get_puller_notifiable_passengers():
+            for npass in self._bus.queue.get_puller_notifiable_passengers():
                 try:
                     self._bus.ticket.log.append_text("Notifying " +
-                                                     np.passenger.puller_module +
+                                                     npass.passenger.puller_module +
                                                      " about " +
-                                                     np.passenger.id_text)
+                                                     npass.passenger.id_text)
 
-                    puller_obj = self.puller_factory.create_puller(np.passenger.puller_module, self._bus.ticket.log)
-                    puller_obj.notify_passengers_seated([np.passenger])
-                    np.puller_notified = True
-                    self._bus.queue.update_passenger_status(np)
-                except Exception as e:
-                    self._log_exception(e)
-        except Exception as e:
-            self._log_exception(e)
+                    puller_obj = self.puller_factory.create_puller(
+                        npass.passenger.puller_module,
+                        self._bus.ticket.log)
+
+                    puller_obj.notify_passengers_seated([npass.passenger])
+                    npass.puller_notified = True
+                    self._bus.queue.update_passenger_status(npass)
+                except Exception as notif_error:
+                    self._log_exception(notif_error)
+        except Exception as notif_error:
+            self._log_exception(notif_error)
 
     def _process_passengers(self):
         try:
             self._bus.ticket.log.append_text("Processing unprocessed passengers")
 
             for processable_passenger in self._bus.processable_passengers:
-                self._bus.ticket.log.append_text("Processing " + processable_passenger.passenger.id_text)
+                self._bus.ticket.log.append_text(
+                    "Processing " + processable_passenger.passenger.id_text)
+
                 for processor_status in processable_passenger.processor_statuses:
                     if processor_status.status == QueueStatus.complete:
                         continue
@@ -138,7 +148,9 @@ class PrimalDriver(AbstractDriver):
             self._bus.ticket.log.append_text("Pushing deliverable passengers")
 
             for deliverable_passenger in self._bus.deliverable_passengers:
-                self._bus.ticket.log.append_text("Delivering " + deliverable_passenger.passenger.id_text)
+                self._bus.ticket.log.append_text(
+                    "Delivering " + deliverable_passenger.passenger.id_text)
+                    
                 for pusher_status in deliverable_passenger.pusher_statuses:
                     if pusher_status.status == QueueStatus.complete:
                         continue
@@ -165,7 +177,8 @@ class PrimalDriver(AbstractDriver):
                 self._bus.ticket.client_passenger.name)
 
             for undelivered_passenger in self._bus.deliverable_passengers:
-                self._bus.ticket.log.append_text("Undelivered passenger: " + undelivered_passenger.passenger.id_text)
+                self._bus.ticket.log.append_text(
+                    "Undelivered passenger: " + undelivered_passenger.passenger.id_text)
         except Exception as e:
             self._log_exception(e)
 
@@ -177,7 +190,8 @@ class PrimalDriver(AbstractDriver):
                 self._bus.ticket.client_passenger.name)
 
             for unprocessed_passenger in self._bus.processable_passengers:
-                self._bus.ticket.log.append_text("Unprocessed passenger: " + unprocessed_passenger.passenger.id_text)
+                self._bus.ticket.log.append_text(
+                    "Unprocessed passenger: " + unprocessed_passenger.passenger.id_text)
         except Exception as e:
             self._log_exception(e)
 

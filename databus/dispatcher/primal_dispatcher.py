@@ -1,40 +1,48 @@
+""" Default dispatcher module """
+from datetime import datetime, timedelta
+from time import sleep
+from typing import List
 from databus.client.client import Client
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log, LogEntry, MessageType
-from datetime import datetime, timedelta
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
 from databus.driver.abstract_driver import BusTicket
-from time import sleep
-from typing import List
+
 
 
 class ClientPassengerTickCount:
+    """ Keeps track of passenger ticks """
     def __init__(self):
         self._ticks = {}
 
     def collect(self, p_client_id: str, p_passenger_id: str):
+        """ Inserts the client & passenger if they weren't before """
         key = ClientPassengerTickCount._build_key(p_client_id, p_passenger_id)
         if key not in self._ticks:
             self._ticks[key] = 0
 
     def collect_clients(self, p_clients: List[Client]):
+        """ Inserts missing clients """
         for client in p_clients:
             for passenger in client.passengers:
                 self.collect(client.id, passenger.name)
 
     def get_tick(self, p_client_id: str, p_passenger_id: str):
+        """ Returns the current tick count """
         self.collect(p_client_id, p_passenger_id)
         key = ClientPassengerTickCount._build_key(p_client_id, p_passenger_id)
         return self._ticks[key]
 
     def reset_tick(self, p_client_id: str, p_passenger_id: str):
+        """ Resets tick """
         self.collect(p_client_id, p_passenger_id)
         key = ClientPassengerTickCount._build_key(p_client_id, p_passenger_id)
         self._ticks[key] = 0
 
     def tick(self):
-        for t in self._ticks:
-            self._ticks[t] += 1
+        """ Increases tick counts for all client passengers """
+        for self_tick in self._ticks:
+            self._ticks[self_tick] += 1
 
     @staticmethod
     def _build_key(p_client_id: str, p_passenger_id: str):
@@ -42,11 +50,13 @@ class ClientPassengerTickCount:
 
 
 class DispatchState:
+    """ State of the dispatcher """
     def __init__(self):
         self.clients = List[Client]
 
 
 class PrimalDispatcher(AbstractDispatcher):
+    """ Default dispatcher implementation """
     def __init__(self, p_ticket: DispatcherTicket = None):
         super().__init__(p_ticket)
         self._dispatch_state = DispatchState()
@@ -54,6 +64,7 @@ class PrimalDispatcher(AbstractDispatcher):
         self._tick_count = ClientPassengerTickCount()
 
     def start(self):
+        """ Starts the dispatcher timer """
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
             self._dispatch()
@@ -73,8 +84,8 @@ class PrimalDispatcher(AbstractDispatcher):
                         continue
                     self._tick_count.reset_tick(client.id, client_passenger.name)
                     self._drive_passenger(client, client_passenger)
-                except Exception as e:
-                    print(e.__doc__)
+                except Exception as drive_error:
+                    print(drive_error.__doc__)
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
         log = Log()
@@ -124,7 +135,9 @@ class PrimalDispatcher(AbstractDispatcher):
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)
             if driver is not None:
-                driver.queue.delete_completed_passengers(p_client_passenger.name, p_client_passenger.queue_expiry_date)
+                driver.queue.delete_completed_passengers(
+                    p_client_passenger.name,
+                    p_client_passenger.queue_expiry_date)
 
     def _read_clients(self):
         dummy_db = self.ticket.database_factory.create_database(
@@ -144,4 +157,3 @@ class PrimalDispatcher(AbstractDispatcher):
             return
         seconds_to_sleep = (self._next_dispatch_time - now).seconds
         sleep(seconds_to_sleep)
-
