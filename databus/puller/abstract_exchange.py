@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List
 from uuid import uuid1
 from exchangelib import DELEGATE, Account, Credentials
-from databus.client.log import Log
+from databus.client.log import Log, LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.passenger.email import Email
@@ -50,10 +50,15 @@ class AbstractExchange(AbstractPuller, ABC):
         This method is expected to be called from notify_passengers_seated in your concrete class.
         """
         for seated_passenger in p_seated_passengers:
+            self.log.append_text("Attempting to delete mail from inbox: " + seated_passenger.id_text)
+            found_in_inbox = False
             for inbox_item in self._get_all_inbox_items():
                 if seated_passenger.external_id == inbox_item.id:
                     inbox_item.soft_delete()
+                    self.log.append_text("Deleted!")
                     break
+            if not found_in_inbox:
+                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning))
 
     @abstractmethod
     def get_settings(self) -> ExchangeSettings:
