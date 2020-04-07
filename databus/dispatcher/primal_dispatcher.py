@@ -85,7 +85,7 @@ class PrimalDispatcher(AbstractDispatcher):
                     self._tick_count.reset_tick(client.id, client_passenger.name)
                     self._drive_passenger(client, client_passenger)
                 except Exception as drive_error:
-                    print(drive_error.__doc__)
+                    print(str(drive_error))
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
         log = Log()

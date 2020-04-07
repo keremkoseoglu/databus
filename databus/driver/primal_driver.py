@@ -77,7 +77,7 @@ class PrimalDriver(AbstractDriver):
         else:
             log = p_log
 
-        log.append_entry(LogEntry(p_message="Driver error: " + p_exception.__doc__,
+        log.append_entry(LogEntry(p_message="Driver error: " + str(p_exception),
                                   p_type=MessageType.error))
 
     def _notify_pullers_about_seated_passengers(self):
