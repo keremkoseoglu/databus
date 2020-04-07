@@ -18,6 +18,7 @@ class DatabaseCreationError(Exception):
                  p_error_code: ErrorCode,
                  p_module: str = None,
                  p_client_id: str = None):
+        super().__init__()
         self.error_code = p_error_code
 
         if p_module is None:
@@ -51,4 +52,3 @@ class AbstractDatabaseFactory(ABC):
                         p_arguments: dict
                         ) -> AbstractDatabase:
         """ Abstract method for database creation """
-        pass

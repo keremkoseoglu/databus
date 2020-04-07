@@ -36,13 +36,24 @@ class AbstractExchange(AbstractPuller, ABC):
 
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
-        self._settings = self.get_settings()       
+        self._settings = self.get_settings()
+        self.account = AbstractExchange._login(self._settings)    
          
         self.log.append_text(
             "Exchange user: " + 
             self._settings.username + 
             " - " + 
             self._settings.email)
+
+    def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
+        """ Deletes seated passengers from the Exchange inbox
+        This method is expected to be called from notify_passengers_seated in your concrete class.
+        """
+        for seated_passenger in p_seated_passengers:
+            for inbox_item in self._get_all_inbox_items():
+                if seated_passenger.external_id == inbox_item.id:
+                    inbox_item.soft_delete()
+                    break
 
     @abstractmethod
     def get_settings(self) -> ExchangeSettings:
@@ -59,15 +70,7 @@ class AbstractExchange(AbstractPuller, ABC):
         """ Reads E-Mails from the given Exchange Server account """
         output = []
 
-        credentials = Credentials(username=self._settings.username,
-                                  password=self._settings.password)
-
-        account = Account(primary_smtp_address=self._settings.email, 
-                          credentials=credentials, 
-                          autodiscover=True, 
-                          access_type=DELEGATE)
-
-        for item in account.inbox.all().order_by('-datetime_received'):
+        for item in self._get_all_inbox_items():
             email_passenger = Email(p_external_id=item.id,
                                     p_internal_id=uuid1(),
                                     p_source_system=AbstractExchange._SOURCE_SYSTEM,
@@ -86,3 +89,18 @@ class AbstractExchange(AbstractPuller, ABC):
             output.append(email_passenger)
         
         return output
+
+    @staticmethod
+    def _login(settings: ExchangeSettings) -> Account:
+        credentials = Credentials(username=settings.username,
+                                  password=settings.password)
+
+        account = Account(primary_smtp_address=settings.email, 
+                            credentials=credentials, 
+                            autodiscover=True, 
+                            access_type=DELEGATE)
+
+        return account
+
+    def _get_all_inbox_items(self) -> []:
+        return self.account.inbox.all().order_by('-datetime_received')
