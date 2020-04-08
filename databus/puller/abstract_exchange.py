@@ -52,7 +52,7 @@ class AbstractExchange(AbstractPuller, ABC):
         for seated_passenger in p_seated_passengers:
             self.log.append_text("Attempting to delete mail from inbox: " + seated_passenger.id_text)
             found_in_inbox = False
-            for inbox_item in self._get_all_inbox_items():
+            for inbox_item in self.account.inbox.all().order_by('-datetime_received'):
                 if seated_passenger.external_id == inbox_item.id:
                     inbox_item.soft_delete()
                     self.log.append_text("Deleted!")
@@ -75,7 +75,7 @@ class AbstractExchange(AbstractPuller, ABC):
         """ Reads E-Mails from the given Exchange Server account """
         output = []
 
-        for item in self._get_all_inbox_items():
+        for item in self.account.inbox.all().order_by('-datetime_received'):
             email_passenger = Email(p_external_id=item.id,
                                     p_internal_id=uuid1(),
                                     p_source_system=AbstractExchange._SOURCE_SYSTEM,
@@ -106,6 +106,3 @@ class AbstractExchange(AbstractPuller, ABC):
                             access_type=DELEGATE)
 
         return account
-
-    def _get_all_inbox_items(self) -> []:
-        return self.account.inbox.all().order_by('-datetime_received')
