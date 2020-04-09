@@ -36,7 +36,7 @@ class LogEntry:
             self.source = mod.__name__
         else:
             self.source = p_source
-
+    
     @property
     def message(self) -> str:
         """ Log entry as string """
@@ -74,6 +74,14 @@ class Log:
     def guid(self) -> UUID:
         """ Unique log ID """
         return self._guid
+
+    @property
+    def has_error(self) -> bool:
+        """ Returns true if there is any error message present """
+        for entry in self._entries:
+            if entry.type == MessageType.error:
+                return True
+        return False
 
     def append_entry(self, p_entry: LogEntry):
         """ Adds new entry to log """
