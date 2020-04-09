@@ -53,7 +53,7 @@ class AbstractExchange(AbstractPuller, ABC):
             self.log.append_text("Attempting to delete mail from inbox: " + seated_passenger.id_text)
             found_in_inbox = False
             for inbox_item in self.account.inbox.all().order_by('-datetime_received'):
-                if seated_passenger.external_id == inbox_item.id:
+                if seated_passenger.external_id == inbox_item.message_id:
                     inbox_item.soft_delete()
                     self.log.append_text("Deleted!")
                     break
@@ -76,7 +76,7 @@ class AbstractExchange(AbstractPuller, ABC):
         output = []
 
         for item in self.account.inbox.all().order_by('-datetime_received'):
-            email_passenger = Email(p_external_id=item.id,
+            email_passenger = Email(p_external_id=item.message_id,
                                     p_internal_id=uuid1(),
                                     p_source_system=AbstractExchange._SOURCE_SYSTEM,
                                     p_attachments=[],
