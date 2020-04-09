@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 from uuid import uuid1
-from exchangelib import DELEGATE, Account, Credentials
+from exchangelib import DELEGATE, Account, Credentials, Mailbox, Message
 from databus.client.log import Log, LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
@@ -95,6 +95,19 @@ class AbstractExchange(AbstractPuller, ABC):
             output.append(email_passenger)
         
         return output
+
+    def send_email(self, to: [str], subject: str, body: str):
+        to_recipients = []
+        for recipient in to:
+            to_recipients.append(Mailbox(email_address=recipient))
+        
+        email_message = Message(account=self.account,
+                                folder=self.account.sent,
+                                subject=subject,
+                                body=body,
+                                to_recipients=to_recipients)
+        
+        email_message.send_and_save()
 
     @staticmethod
     def _login(settings: ExchangeSettings) -> Account:
