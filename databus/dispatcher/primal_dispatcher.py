@@ -131,6 +131,8 @@ class PrimalDispatcher(AbstractDispatcher):
                 log.append_entry(LogEntry(p_message=e.__doc__, p_type=MessageType.error))
         finally:
             self._tick_count.reset_tick(p_client.id, p_client_passenger.name)
+            if self.ticket.dispatcher_observer is not None and log is not None:
+                self.ticket.dispatcher_observer.drive_passenger_complete(p_client, p_client_passenger, log)
             if db is not None:
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)

@@ -28,7 +28,7 @@ class PrimalQueue(AbstractQueue):
         deletable_passengers = []
 
         for queue_entry in deletable_queue_entries:
-            self.log.append(
+            self.log.append_text(
                 "Initiating deletion for completed passenger " + queue_entry.passenger.id_text)
             deletable_passengers.append(queue_entry.passenger)
 

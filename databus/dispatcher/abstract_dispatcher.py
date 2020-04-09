@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from databus.database.abstract_factory import AbstractDatabaseFactory
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.primal_factory import PrimalDatabaseFactory
+from databus.dispatcher.observer import DispatcherObserver
 from databus.driver.abstract_factory import AbstractDriverFactory
 from databus.driver.primal_factory import PrimalDriverFactory
 from databus.passenger.abstract_factory import AbstractPassengerFactory
@@ -42,7 +43,8 @@ class DispatcherTicket:
                  p_pusher_factory: AbstractPusherFactory = None,
                  p_database_module: str = None,
                  p_database_arguments: dict = None,
-                 p_driver_module: str = None
+                 p_driver_module: str = None,
+                 p_dispatcher_observer: DispatcherObserver = None
                  ):
 
         if p_database_factory is None:
@@ -94,6 +96,8 @@ class DispatcherTicket:
             self.driver_module = DispatcherTicket._DEFAULT_DRIVER
         else:
             self.driver_module = p_driver_module
+
+        self.dispatcher_observer = p_dispatcher_observer
 
 
 class AbstractDispatcher(ABC):
