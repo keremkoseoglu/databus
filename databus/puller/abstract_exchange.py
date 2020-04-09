@@ -54,6 +54,7 @@ class AbstractExchange(AbstractPuller, ABC):
             found_in_inbox = False
             for inbox_item in self.account.inbox.all().order_by('-datetime_received'):
                 if seated_passenger.external_id == inbox_item.message_id:
+                    found_in_inbox = True
                     inbox_item.soft_delete()
                     self.log.append_text("Deleted!")
                     break
