@@ -19,7 +19,6 @@ class EmailFilterExcelAttachment(AbstractProcessor):
                 pqs.set_processor_status(self.__module__, QueueStatus.complete)
             else:
                 self.log.append_text((email.id_text + " doesn't have Excel attachments"))
-                pqs.puller_notified = True
                 pqs.set_all_processor_statuses(QueueStatus.complete)
                 pqs.set_all_pusher_statuses(QueueStatus.complete)
 

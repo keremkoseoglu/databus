@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="databus-keremkoseoglu",
-    version="0.1.5",
+    version="0.1.6",
     author="Kerem Koseoglu",
     author_email="kerem@keremkoseoglu.com",
     description="A framework to transfer data between systems",
