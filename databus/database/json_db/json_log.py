@@ -9,20 +9,6 @@ from databus.database.json_db.json_database_arguments import JsonDatabaseArgumen
 
 class JsonLog:
     """ JSON log class """
-
-    @staticmethod
-    def _build_log_file_content(p_log: Log) -> str:
-        output = ""
-        for entry in p_log.entries:
-            new_line = "[" + entry.timestamp.isoformat() + "]"
-            new_line += "[" + entry.source + "]"
-            new_line += "[" + str(entry.type.name) + "]"
-            new_line += " " + entry.message
-            if output != "":
-                output += "\r\n"
-            output += new_line
-        return output
-
     def __init__(self, args: JsonDatabaseArguments):
         self._args = args
         self._client = JsonClient(args)
@@ -63,7 +49,7 @@ class JsonLog:
 
     def insert(self, p_client_id: str, p_log: Log):
         """ Writes log file to disk """
-        log_file_content = JsonLog._build_log_file_content(p_log)
+        log_file_content = p_log.entries_as_string
         log_file_path = self.build_log_file_path(p_client_id, p_log)
 
         log_file = open(log_file_path, "w+")

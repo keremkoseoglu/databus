@@ -71,6 +71,20 @@ class Log:
         return self._entries
 
     @property
+    def entries_as_string(self) -> str:
+        """ Converts all log entries into string format """
+        output = ""
+        for entry in self.entries:
+            new_line = "[" + entry.timestamp.isoformat() + "]"
+            new_line += "[" + entry.source + "]"
+            new_line += "[" + str(entry.type.name) + "]"
+            new_line += " " + entry.message
+            if output != "":
+                output += "\r\n"
+            output += new_line
+        return output
+
+    @property
     def guid(self) -> UUID:
         """ Unique log ID """
         return self._guid
