@@ -5,7 +5,7 @@ from databus.puller.abstract_factory import AbstractPullerFactory, PullerCreatio
 from databus.puller.abstract_puller import AbstractPuller
 
 
-class PrimalPullerFactory(AbstractPullerFactory):
+class PrimalPullerFactory(AbstractPullerFactory):  # pylint: disable=R0903
     """ Default puller factory class """
 
     def create_puller(self, p_module: str, p_log: Log) -> AbstractPuller:
@@ -20,9 +20,9 @@ class PrimalPullerFactory(AbstractPullerFactory):
                     obj_instance = obj(p_log)
                     if isinstance(obj_instance, AbstractPuller):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     continue
 
         raise PullerCreationError(
-            PullerCreationError.ErrorCode.cant_create_instance, 
+            PullerCreationError.ErrorCode.cant_create_instance,
             p_module=p_module)

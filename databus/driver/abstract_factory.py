@@ -17,6 +17,7 @@ class DriverCreationError(Exception):
         parameter_missing: 2
 
     def __init__(self, p_error_code: ErrorCode, p_module: str = ""):
+        super().__init__()
         self.error_code = p_error_code
 
         if p_module is None:
@@ -32,10 +33,10 @@ class DriverCreationError(Exception):
         return "Driver creation error"
 
 
-""" Abstract driver factory class """
-class AbstractDriverFactory(ABC):
+class AbstractDriverFactory(ABC): # pylint: disable=R0903
+    """ Abstract driver factory class """
     @abstractmethod
-    def create_driver(self,
+    def create_driver(self, # pylint: disable=R0913
                       p_module: str,
                       p_queue_factory: AbstractQueueFactory,
                       p_processor_factory: AbstractProcessorFactory,

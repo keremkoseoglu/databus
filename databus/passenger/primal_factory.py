@@ -4,7 +4,7 @@ from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.abstract_factory import AbstractPassengerFactory, PassengerCreationError
 
 
-class PrimalPassengerFactory(AbstractPassengerFactory):
+class PrimalPassengerFactory(AbstractPassengerFactory): # pylint: disable=R0903
     """ Default passenger factory class """
 
     def create_passenger(self, p_module: str) -> AbstractPassenger:
@@ -19,7 +19,7 @@ class PrimalPassengerFactory(AbstractPassengerFactory):
                     obj_instance = obj()
                     if isinstance(obj_instance, AbstractPassenger):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     pass
 
         raise PassengerCreationError(

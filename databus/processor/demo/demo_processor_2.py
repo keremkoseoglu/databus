@@ -5,7 +5,7 @@ from databus.pqueue.queue_status import PassengerQueueStatus
 from databus.processor.abstract_processor import AbstractProcessor
 
 
-class DemoProcessor1(AbstractProcessor):
+class DemoProcessor1(AbstractProcessor): # pylint: disable=R0903
     """ Demo processor class """
 
     def process(self, p_passengers: List[PassengerQueueStatus]):

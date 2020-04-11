@@ -8,7 +8,7 @@ from databus.passenger.attachment import Attachment
 
 class DemoPassenger2(AbstractPassenger):
     """ Demo passenger class """
-    def __init__(self,
+    def __init__(self, # pylint: disable=R0913
                  p_external_id: str = None,
                  p_internal_id: UUID = None,
                  p_source_system: str = None,

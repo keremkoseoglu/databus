@@ -18,7 +18,7 @@ from databus.processor.abstract_factory import AbstractProcessorFactory
 from databus.processor.primal_factory import PrimalProcessorFactory
 
 
-class DispatcherTicket:
+class DispatcherTicket: # pylint: disable=R0902, R0903
     """ Factory parameters for dispatcher creation """
     _DEFAULT_DRIVER = "databus.driver.primal_driver"
     _DEFAULT_DATABASE = "databus.database.json_db.json_database"
@@ -45,7 +45,7 @@ class DispatcherTicket:
                  p_database_arguments: dict = None,
                  p_driver_module: str = None,
                  p_dispatcher_observer: DispatcherObserver = None
-                 ):
+                 ): # pylint: disable=R0912, R0913
 
         if p_database_factory is None:
             self.database_factory = PrimalDatabaseFactory()
@@ -100,7 +100,7 @@ class DispatcherTicket:
         self.dispatcher_observer = p_dispatcher_observer
 
 
-class AbstractDispatcher(ABC):
+class AbstractDispatcher(ABC): # pylint: disable=R0903
     """ Abstract dispatcher class """
     def __init__(self, p_ticket: DispatcherTicket = None):
         self.ticket = p_ticket

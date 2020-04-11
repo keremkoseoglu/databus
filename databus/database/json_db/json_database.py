@@ -49,7 +49,7 @@ class JsonDatabase(AbstractDatabase):
         """ Returns a single client """
         return self._json_client.get_all()
 
-    def get_passenger_queue_entries(self,
+    def get_passenger_queue_entries(self, # pylint: disable=R0913
                                     p_passenger_module: str = None,
                                     p_processor_status: QueueStatus = None,
                                     p_pusher_status: QueueStatus = None,

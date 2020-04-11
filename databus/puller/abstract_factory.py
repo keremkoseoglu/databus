@@ -32,7 +32,7 @@ class PullerCreationError(Exception):
         return "Puller creation error"
 
 
-class AbstractPullerFactory(ABC):
+class AbstractPullerFactory(ABC): # pylint: disable=R0903
     """ Abstract puller factory class """
     @abstractmethod
     def create_puller(self, p_module: str, p_log: Log) -> AbstractPuller:

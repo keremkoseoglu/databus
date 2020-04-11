@@ -12,7 +12,8 @@ from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentError, AttachmentFormat
 from databus.passenger.attachment import Validator as AttachmentValidator
 from databus.passenger.abstract_factory import AbstractPassengerFactory
-from databus.pqueue.queue_status import QueueStatus, PassengerQueueStatus, ProcessorQueueStatus, PusherQueueStatus
+from databus.pqueue.queue_status import \
+    QueueStatus, PassengerQueueStatus, ProcessorQueueStatus, PusherQueueStatus
 from databus.pqueue.queue_status import Validator as QueueStatusValidator
 
 
@@ -80,7 +81,7 @@ class JsonQueue:
             passenger_dir_path = self._get_passenger_directory_path(passenger_directory)
             shutil.rmtree(passenger_dir_path)
 
-    def get_passengers(self,
+    def get_passengers(self, # pylint: disable=R0912, R0913, R0914
                        p_passenger_module: str = None,
                        p_processor_status: QueueStatus = None,
                        p_pusher_status: QueueStatus = None,
@@ -92,7 +93,7 @@ class JsonQueue:
 
         for passenger_directory in self._get_passenger_directories():
             passenger_json = self._get_passenger_file_as_json(passenger_directory)
-            pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"])
+            pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"]) # pylint: disable=C0301
 
             if p_pusher_status is not None:
                 a_pusher_found = False
@@ -112,16 +113,16 @@ class JsonQueue:
                 if not a_processor_found:
                     continue
 
-            if p_passenger_module is not None and passenger_json["passenger_module"] != p_passenger_module:
+            if p_passenger_module is not None and passenger_json["passenger_module"] != p_passenger_module: # pylint: disable=C0301
                 continue
 
-            if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified:
+            if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified: # pylint: disable=C0301
                 continue
 
             if p_pulled_before is not None and pull_datetime > p_pulled_before:
                 continue
 
-            passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"])
+            passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"]) # pylint: disable=C0301
             passenger_obj.internal_id = passenger_json["internal_id"]
             passenger_obj.external_id = passenger_json["external_id"]
             passenger_obj.source_system = passenger_json["source_system"]
@@ -130,7 +131,9 @@ class JsonQueue:
             self._log.append_text("Found passenger " + passenger_obj.id_text)
 
             for attachment_json in passenger_json["attachments"]:
-                passenger_obj.attachments.append(self._get_attachment_obj(passenger_obj.internal_id, attachment_json))
+                attachment_obj = self._get_attachment_obj(passenger_obj.internal_id,
+                                                          attachment_json)
+                passenger_obj.attachments.append(attachment_obj)
 
             paqs = PassengerQueueStatus(p_passenger=passenger_obj,
                                         p_pusher_statuses=[],
@@ -153,7 +156,7 @@ class JsonQueue:
 
     def insert_passenger(self, p_passenger_status: PassengerQueueStatus):
         """ Creates a new folder & puts files within """
-        self._log.append_text("Adding passenger " + p_passenger_status.passenger.id_text + " to queue")
+        self._log.append_text("Adding passenger " + p_passenger_status.passenger.id_text + " to queue") # pylint: disable=C0301
         self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.insert)
 
         passenger_dict = {
@@ -267,7 +270,9 @@ class JsonQueue:
         return path.join(self._get_attachment_directory_path(p_internal_id), p_file_name)
 
     def _get_attachment_directory_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(), p_internal_id, self._args.queue_attachment_dir)
+        return path.join(self._get_queue_root_path(),
+                         p_internal_id,
+                         self._args.queue_attachment_dir)
 
     def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: {}) -> Attachment:
         output = Attachment(p_name=p_attachment_json["name"],
@@ -309,10 +314,10 @@ class JsonQueue:
                          self.client_id,
                          self._args.queue_dir)
 
-    def _validate_passenger_status(self, 
-                                   p_passenger_status: PassengerQueueStatus, 
+    def _validate_passenger_status(self,
+                                   p_passenger_status: PassengerQueueStatus,
                                    p_operation: DataOperation):
-        self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text)
+        self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text) # pylint: disable=C0301
 
         if str(p_passenger_status.passenger.internal_id) == "":
             raise PassengerError(PassengerError.ErrorCode.internal_id_missing,
@@ -339,11 +344,12 @@ class JsonQueue:
 
         if p_operation == JsonQueue.DataOperation.insert and \
                 p_passenger_status.passenger.internal_id in self._get_passenger_directories():
-            raise PassengerError(PassengerError.ErrorCode.already_exists, p_passenger_status.passenger.id_text)
+            raise PassengerError(PassengerError.ErrorCode.already_exists,
+                                 p_passenger_status.passenger.id_text)
 
-    def _write_attachment_file_text(self, 
-                                    p_file_name: str, 
-                                    p_file_content: str, 
+    def _write_attachment_file_text(self,
+                                    p_file_name: str,
+                                    p_file_content: str,
                                     p_internal_id: str):
         full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
         self._log.append_text("Writing text attachment to disk: " + full_path)

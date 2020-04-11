@@ -5,7 +5,7 @@ from databus.dispatcher.abstract_factory import \
     AbstractDispatcherFactory, DispatcherCreationError
 
 
-class PrimalDispatcherFactory(AbstractDispatcherFactory):
+class PrimalDispatcherFactory(AbstractDispatcherFactory): # pylint: disable=R0903
     """ Default dispatcher factory class """
     _DEFAULT_DISPATCHER = "databus.dispatcher.primal_dispatcher"
 
@@ -22,7 +22,7 @@ class PrimalDispatcherFactory(AbstractDispatcherFactory):
         if p_ticket is None:
             dispatcher_ticket = DispatcherTicket()
         else:
-            dispatcher_ticket = p_ticket 
+            dispatcher_ticket = p_ticket
 
         module = __import__(dispatcher_module, fromlist=[""])
         for name, obj in inspect.getmembers(module, inspect.isclass):
@@ -31,9 +31,9 @@ class PrimalDispatcherFactory(AbstractDispatcherFactory):
                     obj_instance = obj(dispatcher_ticket)
                     if isinstance(obj_instance, AbstractDispatcher):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     pass
 
         raise DispatcherCreationError(
-            DispatcherCreationError.ErrorCode.cant_create_instance, 
+            DispatcherCreationError.ErrorCode.cant_create_instance,
             p_module=dispatcher_module)

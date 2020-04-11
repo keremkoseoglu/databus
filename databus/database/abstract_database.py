@@ -38,7 +38,7 @@ class AbstractDatabase(ABC):
         """ Returns a cliene """
 
     @abstractmethod
-    def get_passenger_queue_entries(self,
+    def get_passenger_queue_entries(self, # pylint: disable=R0913
                                     p_passenger_module: str = None,
                                     p_processor_status: QueueStatus = None,
                                     p_pusher_status: QueueStatus = None,

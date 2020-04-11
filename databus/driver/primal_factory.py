@@ -8,10 +8,10 @@ from databus.puller.abstract_factory import AbstractPullerFactory
 from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
-class PrimalDriverFactory(AbstractDriverFactory):
+class PrimalDriverFactory(AbstractDriverFactory): # pylint: disable=R0903
     """ Default driver factory class """
 
-    def create_driver(self,
+    def create_driver(self, # pylint: disable=R0913
                       p_module: str,
                       p_queue_factory: AbstractQueueFactory,
                       p_processor_factory: AbstractProcessorFactory,
@@ -32,7 +32,7 @@ class PrimalDriverFactory(AbstractDriverFactory):
                                        p_pusher_factory)
                     if isinstance(obj_instance, AbstractDriver):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     pass
 
         raise DriverCreationError(

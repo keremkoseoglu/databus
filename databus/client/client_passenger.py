@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from typing import List
 
 
-class ClientPassenger:
+class ClientPassenger:  # pylint: disable=R0903
     """ Client passenger class """
-    def __init__(self,
+    def __init__(self, # pylint: disable=R0913
                  p_name: str = "Undefined",
                  p_puller_modules: List[str] = None,
                  p_queue_module: str = None,

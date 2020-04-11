@@ -26,7 +26,7 @@ class JsonDatabaseArgumentError(Exception):
         return "JsonDatabase argument error"
 
 
-class JsonDatabaseArguments:
+class JsonDatabaseArguments: # pylint: disable=R0902, R0903
     """ Json database argument class """
     KEY_CLIENT_CONFIG = "client_config"
     KEY_CLIENT_DIR = "client_dir"

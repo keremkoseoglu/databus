@@ -31,7 +31,7 @@ class ProcessorCreationError(Exception):
         return "Processor creation error"
 
 
-class AbstractProcessorFactory(ABC):
+class AbstractProcessorFactory(ABC): # pylint: disable=R0903
     """ Abstract processor factory """
     @abstractmethod
     def create_processor(self, p_module: str, p_log: Log) -> AbstractProcessor:

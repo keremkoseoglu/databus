@@ -6,9 +6,9 @@ from databus.database.abstract_factory import AbstractDatabaseFactory, DatabaseC
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 
 
-class PrimalDatabaseFactory(AbstractDatabaseFactory):
+class PrimalDatabaseFactory(AbstractDatabaseFactory): # pylint: disable=R0903
     """ Default database factory class """
-    def create_database(self,
+    def create_database(self, # pylint: disable=R0913
                         p_module: str,
                         p_client_id: str,
                         p_log: Log,
@@ -26,7 +26,7 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory):
                     obj_instance = obj(p_client_id, p_log, p_passenger_factory, p_arguments)
                     if isinstance(obj_instance, AbstractDatabase):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     continue
 
         raise DatabaseCreationError(DatabaseCreationError.ErrorCode.cant_create_instance,

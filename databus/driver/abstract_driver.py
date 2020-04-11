@@ -10,7 +10,7 @@ from databus.puller.abstract_factory import AbstractPullerFactory
 from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
-class BusTicket:
+class BusTicket: # pylint: disable=R0903
     """ Driver constructor parameters """
 
     def __init__(self,

@@ -30,7 +30,7 @@ class PassengerCreationError(Exception):
         return "Passenger creation error"
 
 
-class AbstractPassengerFactory(ABC):
+class AbstractPassengerFactory(ABC): # pylint: disable=R0903
     """ Abstract passenger factory class """
     @abstractmethod
     def create_passenger(self, p_module: str) -> AbstractPassenger:

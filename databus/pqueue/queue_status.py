@@ -13,14 +13,14 @@ class QueueStatus(Enum):
     complete = 2
 
 
-class ProcessorQueueStatus:
+class ProcessorQueueStatus: # pylint: disable=R0903
     """ Processor queue status class """
     def __init__(self, p_processor_module: str, p_status: QueueStatus = QueueStatus.undefined):
         self.processor_module = p_processor_module
         self.status = p_status
 
 
-class PusherQueueStatus:
+class PusherQueueStatus: # pylint: disable=R0903
     """ Pusher queue status class """
     def __init__(self, p_pusher_module: str, p_status: QueueStatus = QueueStatus.undefined):
         self.pusher_module = p_pusher_module
@@ -88,7 +88,7 @@ class PassengerQueueStatus:
                 pusher_status.status = p_status
 
 
-class QueueStatusFactory:
+class QueueStatusFactory: # pylint: disable=R0903
     """ Queue status factory class """
     @staticmethod
     def get_passenger_queue_status(p_passenger: AbstractPassenger,
@@ -111,7 +111,7 @@ class QueueStatusFactory:
 
 class QueueStatusError(Exception):
     """ Queue status exception class """
-    
+
     class ErrorCode(Enum):
         """ Queue status error code """
         module_missing = 1
@@ -129,11 +129,11 @@ class QueueStatusError(Exception):
     def message(self) -> str:
         """ Returns error message as string """
         if self.error_code == QueueStatusError.ErrorCode.module_missing:
-            return "Passenger " + self.passenger_id + " is missing " + self.queue_status_type + " module"
+            return "Passenger " + self.passenger_id + " is missing " + self.queue_status_type + " module" # pylint: disable=C0301
         return "Passenger error"
 
 
-class Validator:
+class Validator: # pylint: disable=R0903
     """ Queue module validator class """
     @staticmethod
     def validate_queue_module(p_queue_status_type: str,

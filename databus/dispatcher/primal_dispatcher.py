@@ -49,13 +49,13 @@ class ClientPassengerTickCount:
         return p_client_id + ":-:" + p_passenger_id
 
 
-class DispatchState:
+class DispatchState: # pylint: disable=R0903
     """ State of the dispatcher """
     def __init__(self):
         self.clients = List[Client]
 
 
-class PrimalDispatcher(AbstractDispatcher):
+class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
     """ Default dispatcher implementation """
     def __init__(self, p_ticket: DispatcherTicket = None):
         super().__init__(p_ticket)
@@ -84,12 +84,12 @@ class PrimalDispatcher(AbstractDispatcher):
                         continue
                     self._tick_count.reset_tick(client.id, client_passenger.name)
                     self._drive_passenger(client, client_passenger)
-                except Exception as drive_error:
+                except Exception as drive_error: # pylint: disable=W0703
                     print(str(drive_error))
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
         log = Log()
-        db = None
+        db = None # pylint: disable=C0103
         driver = None
         try:
             log.append_text("Dispatching client " +
@@ -100,7 +100,7 @@ class PrimalDispatcher(AbstractDispatcher):
             log.append_text("Creating database " +
                             self.ticket.database_module)
 
-            db = self.ticket.database_factory.create_database(
+            db = self.ticket.database_factory.create_database( # pylint: disable=C0103
                 p_passenger_factory=self.ticket.passenger_factory,
                 p_client_id=p_client.id,
                 p_module=self.ticket.database_module,
@@ -126,13 +126,15 @@ class PrimalDispatcher(AbstractDispatcher):
             log.append_text("Driving")
             driver.drive(ticket)
 
-        except Exception as e:
+        except Exception as drive_error: # pylint: disable=W0703
             if log is not None:
-                log.append_entry(LogEntry(p_message=e.__doc__, p_type=MessageType.error))
+                log.append_entry(LogEntry(p_message=str(drive_error), p_type=MessageType.error))
         finally:
             self._tick_count.reset_tick(p_client.id, p_client_passenger.name)
             if self.ticket.dispatcher_observer is not None and log is not None:
-                self.ticket.dispatcher_observer.drive_passenger_complete(p_client, p_client_passenger, log)
+                self.ticket.dispatcher_observer.drive_passenger_complete(p_client,
+                                                                         p_client_passenger,
+                                                                         log)
             if db is not None:
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)

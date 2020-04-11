@@ -1,4 +1,4 @@
-""" Attachment module 
+""" Attachment module
 All settings, data, files, etc of a passengers are
 considered to be separate attachment files.
 If you need to store some settings and definitions
@@ -49,7 +49,7 @@ class AttachmentFormat(Enum):
     binary = 2
 
 
-class Attachment:
+class Attachment: # pylint: disable=R0903
     """ Attachment class """
     def __init__(self,
                  p_name: str = None,

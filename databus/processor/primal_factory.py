@@ -5,7 +5,7 @@ from databus.processor.abstract_factory import AbstractProcessorFactory, Process
 from databus.processor.abstract_processor import AbstractProcessor
 
 
-class PrimalProcessorFactory(AbstractProcessorFactory):
+class PrimalProcessorFactory(AbstractProcessorFactory): # pylint: disable=R0903
     """ Default processor factory class """
 
     def create_processor(self, p_module: str, p_log: Log) -> AbstractProcessor:
@@ -20,7 +20,7 @@ class PrimalProcessorFactory(AbstractProcessorFactory):
                     obj_instance = obj(p_log)
                     if isinstance(obj_instance, AbstractProcessor):
                         return obj_instance
-                except Exception:
+                except Exception: # pylint: disable=W0703
                     pass
 
         raise ProcessorCreationError(

@@ -9,7 +9,7 @@ from databus.puller.abstract_factory import AbstractPullerFactory
 from databus.pusher.abstract_factory import AbstractPusherFactory
 
 
-class Bus:
+class Bus: # pylint: disable=R0903
     """ Bus object """
     def __init__(self,
                  p_ticket: BusTicket = BusTicket(),
@@ -42,7 +42,7 @@ class PrimalDriver(AbstractDriver):
                 p_bus_ticket.client_passenger.queue_module,
                 p_bus_ticket.database,
                 p_bus_ticket.log)
-        except Exception as queue_error:
+        except Exception as queue_error: # pylint: disable=W0703
             self._log_exception(queue_error, p_log=p_bus_ticket.log)
             return
 
@@ -68,7 +68,7 @@ class PrimalDriver(AbstractDriver):
             self._bus.ticket.log.append_text("Deleting old log files")
             log_expiry_date = self._bus.ticket.database.client.log_expiry_date
             self._bus.ticket.database.delete_old_logs(log_expiry_date)
-        except Exception as del_error:
+        except Exception as del_error: # pylint: disable=W0703
             self._log_exception(del_error)
 
     def _log_exception(self, p_exception: Exception, p_log: Log = None):
@@ -97,9 +97,9 @@ class PrimalDriver(AbstractDriver):
                     puller_obj.notify_passengers_seated([npass.passenger])
                     npass.puller_notified = True
                     self._bus.queue.update_passenger_status(npass)
-                except Exception as notif_error:
+                except Exception as notif_error: # pylint: disable=W0703
                     self._log_exception(notif_error)
-        except Exception as notif_error:
+        except Exception as notif_error: # pylint: disable=W0703
             self._log_exception(notif_error)
 
     def _process_passengers(self):
@@ -124,10 +124,10 @@ class PrimalDriver(AbstractDriver):
                         processor_obj.process([processable_passenger])
                         processor_status.status = QueueStatus.complete
                         self._bus.queue.update_passenger_status(processable_passenger)
-                    except Exception as e:
-                        self._log_exception(e)
-        except Exception as e:
-            self._log_exception(e)
+                    except Exception as process_error: # pylint: disable=W0703
+                        self._log_exception(process_error)
+        except Exception as process_error: # pylint: disable=W0703
+            self._log_exception(process_error)
 
     def _pull_new_passengers(self):
         try:
@@ -140,8 +140,8 @@ class PrimalDriver(AbstractDriver):
                 for new_passenger in new_passengers:
                     self._bus.new_passengers.append(new_passenger)
                     self._bus.ticket.log.append_text("Got new passenger: " + new_passenger.id_text)
-        except Exception as e:
-            self._log_exception(e)
+        except Exception as pull_error: # pylint: disable=W0703
+            self._log_exception(pull_error)
 
     def _push_passengers(self):
         try:
@@ -150,7 +150,7 @@ class PrimalDriver(AbstractDriver):
             for deliverable_passenger in self._bus.deliverable_passengers:
                 self._bus.ticket.log.append_text(
                     "Delivering " + deliverable_passenger.passenger.id_text)
-                    
+
                 for pusher_status in deliverable_passenger.pusher_statuses:
                     if pusher_status.status == QueueStatus.complete:
                         continue
@@ -164,10 +164,10 @@ class PrimalDriver(AbstractDriver):
                         pusher_obj.push(deliverable_passenger)
                         pusher_status.status = QueueStatus.complete
                         self._bus.queue.update_passenger_status(deliverable_passenger)
-                    except Exception as e:
-                        self._log_exception(e)
-        except Exception as e:
-            self._log_exception(e)
+                    except Exception as push_error: # pylint: disable=W0703
+                        self._log_exception(push_error)
+        except Exception as push_error: #pylint: disable=W0703
+            self._log_exception(push_error)
 
     def _read_deliverable_passengers(self):
         try:
@@ -179,8 +179,8 @@ class PrimalDriver(AbstractDriver):
             for undelivered_passenger in self._bus.deliverable_passengers:
                 self._bus.ticket.log.append_text(
                     "Undelivered passenger: " + undelivered_passenger.passenger.id_text)
-        except Exception as e:
-            self._log_exception(e)
+        except Exception as read_error: # pylint: disable=W0703
+            self._log_exception(read_error)
 
     def _read_processable_passengers(self):
         try:
@@ -192,8 +192,8 @@ class PrimalDriver(AbstractDriver):
             for unprocessed_passenger in self._bus.processable_passengers:
                 self._bus.ticket.log.append_text(
                     "Unprocessed passenger: " + unprocessed_passenger.passenger.id_text)
-        except Exception as e:
-            self._log_exception(e)
+        except Exception as read_error: # pylint: disable=W0703
+            self._log_exception(read_error)
 
     def _seat_passengers(self):
         try:
@@ -203,5 +203,5 @@ class PrimalDriver(AbstractDriver):
                 return
 
             self._bus.queue.insert(self._bus.new_passengers)
-        except Exception as e:
-            self._log_exception(e)
+        except Exception as seat_error: # pylint: disable=W0703
+            self._log_exception(seat_error)

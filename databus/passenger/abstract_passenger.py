@@ -6,11 +6,11 @@ from uuid import uuid1, UUID
 from databus.passenger.attachment import Attachment
 
 
-class AbstractPassenger(ABC):
+class AbstractPassenger(ABC): # pylint: disable=R0903
     """ Abstract passenger class """
     _clock_seq: int = 0
 
-    def __init__(self,
+    def __init__(self, # pylint: disable=R0913
                  p_external_id: str = None,
                  p_internal_id: UUID = None,
                  p_source_system: str = None,

@@ -32,7 +32,7 @@ class PusherCreationError(Exception):
         return "Pusher creation error"
 
 
-class AbstractPusherFactory(ABC):
+class AbstractPusherFactory(ABC): # pylint: disable=R0903
     """ Abstract pusher factory class """
     @abstractmethod
     def create_pusher(self, p_module: str, p_log: Log) -> AbstractPusher:

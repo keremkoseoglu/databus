@@ -30,7 +30,7 @@ class DispatcherCreationError(Exception):
         return "Dispatcher creation error"
 
 
-class AbstractDispatcherFactory(ABC):
+class AbstractDispatcherFactory(ABC): # pylint: disable=R0903
     """ Abstract dispatcher factory class """
     @abstractmethod
     def create_dispatcher(self, p_module: str, p_ticket: DispatcherTicket) -> AbstractDispatcher:

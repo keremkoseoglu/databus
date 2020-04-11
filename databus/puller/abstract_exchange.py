@@ -11,7 +11,7 @@ from databus.passenger.email import Email
 from databus.puller.abstract_puller import AbstractPuller
 
 
-class ExchangeSettings:
+class ExchangeSettings: # pylint: disable=R0903
     """ Parameters to connect to Exchange Server """
     def __init__(self, p_email: str = None, p_username: str = None, p_password: str = None):
         if p_email is None:
@@ -37,12 +37,12 @@ class AbstractExchange(AbstractPuller, ABC):
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
         self._settings = self.get_settings()
-        self.account = AbstractExchange._login(self._settings)    
-         
+        self.account = AbstractExchange._login(self._settings)
+
         self.log.append_text(
-            "Exchange user: " + 
-            self._settings.username + 
-            " - " + 
+            "Exchange user: " +
+            self._settings.username +
+            " - " +
             self._settings.email)
 
     def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
@@ -50,16 +50,17 @@ class AbstractExchange(AbstractPuller, ABC):
         This method is expected to be called from notify_passengers_seated in your concrete class.
         """
         for seated_passenger in p_seated_passengers:
-            self.log.append_text("Attempting to delete mail from inbox: " + seated_passenger.id_text)
+            log_txt = "Attempting to delete mail from inbox: " + seated_passenger.id_text
+            self.log.append_text(log_txt)
             found_in_inbox = False
-            for inbox_item in self.account.inbox.all().order_by('-datetime_received'):
+            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
                 if seated_passenger.external_id == inbox_item.message_id:
                     found_in_inbox = True
                     inbox_item.soft_delete()
                     self.log.append_text("Deleted!")
                     break
             if not found_in_inbox:
-                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning))
+                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
     @abstractmethod
     def get_settings(self) -> ExchangeSettings:
@@ -76,7 +77,7 @@ class AbstractExchange(AbstractPuller, ABC):
         """ Reads E-Mails from the given Exchange Server account """
         output = []
 
-        for item in self.account.inbox.all().order_by('-datetime_received'):
+        for item in self.account.inbox.all().order_by('-datetime_received'):  # pylint: disable=E1101
             email_passenger = Email(p_external_id=item.message_id,
                                     p_internal_id=uuid1(),
                                     p_source_system=AbstractExchange._SOURCE_SYSTEM,
@@ -93,20 +94,21 @@ class AbstractExchange(AbstractPuller, ABC):
 
             self.log.append_text("Got mail from Exchange: " + email_passenger.id_text)
             output.append(email_passenger)
-        
+
         return output
 
-    def send_email(self, to: [str], subject: str, body: str):
+    def send_email(self, to: [str], subject: str, body: str): # pylint: disable=C0103
+        """ Sends an E-Mail via Exchange Server """
         to_recipients = []
         for recipient in to:
             to_recipients.append(Mailbox(email_address=recipient))
-        
+
         email_message = Message(account=self.account,
                                 folder=self.account.sent,
                                 subject=subject,
                                 body=body,
                                 to_recipients=to_recipients)
-        
+
         email_message.send_and_save()
 
     @staticmethod
@@ -114,9 +116,9 @@ class AbstractExchange(AbstractPuller, ABC):
         credentials = Credentials(username=settings.username,
                                   password=settings.password)
 
-        account = Account(primary_smtp_address=settings.email, 
-                            credentials=credentials, 
-                            autodiscover=True, 
-                            access_type=DELEGATE)
+        account = Account(primary_smtp_address=settings.email,
+                          credentials=credentials,
+                          autodiscover=True,
+                          access_type=DELEGATE)
 
         return account

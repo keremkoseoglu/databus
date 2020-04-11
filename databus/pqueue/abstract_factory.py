@@ -18,6 +18,7 @@ class QueueCreationError(Exception):
                  p_error_code: ErrorCode,
                  p_module: str = ""):
 
+        super().__init__()
         self.error_code = p_error_code
 
         if p_module is None:
@@ -35,11 +36,11 @@ class QueueCreationError(Exception):
         return "Database creation error"
 
 
-class AbstractQueueFactory:
+class AbstractQueueFactory: # pylint: disable=R0903
     """ Abstract queue factory class """
     @abstractmethod
-    def create_queue(self, 
-                     p_module: str, 
-                     p_database: AbstractDatabase, 
+    def create_queue(self,
+                     p_module: str,
+                     p_database: AbstractDatabase,
                      p_log: Log) -> AbstractQueue:
         """ Queue factory """

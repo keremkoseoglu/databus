@@ -36,7 +36,7 @@ class LogEntry:
             self.source = mod.__name__
         else:
             self.source = p_source
-    
+
     @property
     def message(self) -> str:
         """ Log entry as string """

@@ -41,10 +41,10 @@ class DatabaseCreationError(Exception):
         return "Database creation error"
 
 
-class AbstractDatabaseFactory(ABC):
+class AbstractDatabaseFactory(ABC): # pylint: disable=R0903
     """ Abstract database factory """
     @abstractmethod
-    def create_database(self,
+    def create_database(self, # pylint: disable=R0913
                         p_module: str,
                         p_client_id: str,
                         p_log: Log,
