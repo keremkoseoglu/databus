@@ -3,8 +3,7 @@ import setuptools
 import databus
 
 
-@property
-def databus_requirements() -> []:
+def get_databus_requirements() -> []:
     output = [] 
     lib_folder = os.path.dirname(os.path.realpath(__file__))
     requirement_path = lib_folder + '/requirements.txt'
@@ -32,5 +31,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=databus.PYTHON_VERSION,
-    install_requires=databus_requirements
+    install_requires=get_databus_requirements()
 )
