@@ -1,5 +1,20 @@
+import os
 import setuptools
 import databus
+
+
+@property
+def databus_requirements() -> []:
+    output = [] 
+    lib_folder = os.path.dirname(os.path.realpath(__file__))
+    requirement_path = lib_folder + '/requirements.txt'
+
+    if os.path.isfile(requirement_path):
+        with open(requirement_path) as f:
+            output = f.read().splitlines()
+
+    return output
+
 
 setuptools.setup(
     name="databus-keremkoseoglu",
@@ -17,4 +32,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=databus.PYTHON_VERSION,
+    install_requires=databus_requirements
 )
