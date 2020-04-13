@@ -1,5 +1,5 @@
 """ Databus initialization module """
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 AUTHOR = "Kerem Koseoglu"
 EMAIL = "kerem@keremkoseoglu.com"
 DESCRIPTION = "Databus is a framework to transfer data between systems."
