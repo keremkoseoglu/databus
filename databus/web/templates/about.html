@@ -1,0 +1,12 @@
+{% extends "default_template.html" %}
+
+{% block body %}
+<h1>About</h1>
+<p class="lead">{{ description }}</p>
+<p>
+    <b>Version:</b> {{ version }}<br>
+    <b>Requires:</b> Python {{ python_version }}<br>
+    <b>Author:</b> <a href="mailto:{{ email }}">{{ author }}</a><br>
+</p>
+
+{% endblock %}

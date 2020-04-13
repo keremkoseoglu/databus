@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 from uuid import uuid1
-from exchangelib import DELEGATE, Account, Credentials, Mailbox, Message
+from exchangelib import DELEGATE, Account, Configuration, Credentials, Mailbox, Message
 from databus.client.log import Log, LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
@@ -13,7 +13,11 @@ from databus.puller.abstract_puller import AbstractPuller
 
 class ExchangeSettings: # pylint: disable=R0903
     """ Parameters to connect to Exchange Server """
-    def __init__(self, p_email: str = None, p_username: str = None, p_password: str = None):
+    def __init__(self,
+                 p_email: str = None,
+                 p_username: str = None,
+                 p_password: str = None,
+                 p_server: str = None):
         if p_email is None:
             self.email = ""
         else:
@@ -28,6 +32,11 @@ class ExchangeSettings: # pylint: disable=R0903
             self.password = ""
         else:
             self.password = p_password
+
+        if p_server is None:
+            self.server = ""
+        else:
+            self.server = p_server
 
 
 class AbstractExchange(AbstractPuller, ABC):
@@ -116,9 +125,18 @@ class AbstractExchange(AbstractPuller, ABC):
         credentials = Credentials(username=settings.username,
                                   password=settings.password)
 
-        account = Account(primary_smtp_address=settings.email,
-                          credentials=credentials,
-                          autodiscover=True,
-                          access_type=DELEGATE)
+        if settings.server == "":
+            account = Account(primary_smtp_address=settings.email,
+                              credentials=credentials,
+                              autodiscover=True,
+                              access_type=DELEGATE)
+        else:
+            config = Configuration(server=settings.server, credentials=credentials)
+
+            account = Account(primary_smtp_address=settings.email,
+                              credentials=credentials,
+                              autodiscover=False,
+                              config=config,
+                              access_type=DELEGATE)
 
         return account

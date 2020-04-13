@@ -1,0 +1,6 @@
+""" Databus initialization module """
+__version__ = "0.6.0"
+AUTHOR = "Kerem Koseoglu"
+EMAIL = "kerem@keremkoseoglu.com"
+DESCRIPTION = "Databus is a framework to transfer data between systems."
+PYTHON_VERSION = ">=3.7"

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Databus</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/darkly/bootstrap.css') }}">
+    
+</head>
+<body>
+
+  
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark"><div class="container">
+    <a class="navbar-brand" href="{{ url_for('_home') }}">Databus</a>
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_log_list') }}">Logs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_queue_list') }}">Queue</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_about') }}">About</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+        </ul>
+        <img src="{{ url_for('static', filename='img/bus_50.png') }}">
+    </div>
+  </div></nav>
+
+  <div class="container">
+    &nbsp;<br>
+    {% block body %}
+    {% endblock %}
+  </div>
+
+
+
+<script src="{{ url_for('static', filename='js/jquery-3.5.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+</body>
+</html>

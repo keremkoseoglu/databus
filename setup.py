@@ -1,11 +1,12 @@
 import setuptools
+import databus
 
 setuptools.setup(
     name="databus-keremkoseoglu",
-    version="0.5.1",
-    author="Kerem Koseoglu",
-    author_email="kerem@keremkoseoglu.com",
-    description="A framework to transfer data between systems",
+    version=databus.__version__,
+    author=databus.AUTHOR,
+    author_email=databus.EMAIL,
+    description=databus.DESCRIPTION,
     long_description="A framework to transfer data between systems",
     long_description_content_type="text/markdown",
     url="https://github.com/keremkoseoglu/databus",
@@ -15,5 +16,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires=databus.PYTHON_VERSION,
 )

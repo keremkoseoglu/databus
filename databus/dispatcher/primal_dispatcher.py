@@ -1,4 +1,5 @@
 """ Default dispatcher module """
+import asyncio
 from datetime import datetime, timedelta
 from time import sleep
 from typing import List
@@ -7,7 +8,7 @@ from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log, LogEntry, MessageType
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
 from databus.driver.abstract_driver import BusTicket
-
+from databus.web import app
 
 
 class ClientPassengerTickCount:
@@ -57,6 +58,7 @@ class DispatchState: # pylint: disable=R0903
 
 class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
     """ Default dispatcher implementation """
+
     def __init__(self, p_ticket: DispatcherTicket = None):
         super().__init__(p_ticket)
         self._dispatch_state = DispatchState()
@@ -65,6 +67,13 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
 
     def start(self):
         """ Starts the dispatcher timer """
+        # todo: config dosyasından (dispatcher ticket) gelecek yeni ayarlar:
+        # - web server başlat / başlatma
+        # - web server port no
+        # - başlatılmayacaksa aşağıdaki kod çalışmasın
+        # - başlatılacaksa port no parametrik olsun
+        # self._start_web_server()
+
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
             self._dispatch()
@@ -161,3 +170,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             return
         seconds_to_sleep = (self._next_dispatch_time - now).seconds
         sleep(seconds_to_sleep)
+
+    def _start_web_server(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(app.run_web_server(self)) # pylint: disable=W0612
