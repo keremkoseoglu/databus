@@ -72,7 +72,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         # - web server port no
         # - başlatılmayacaksa aşağıdaki kod çalışmasın
         # - başlatılacaksa port no parametrik olsun
-        # self._start_web_server()
+        self._start_web_server()
 
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
