@@ -1,5 +1,5 @@
 """ Abstract module to pull E-Mails from Exchange Server """
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from datetime import datetime
 from typing import List
 from uuid import uuid1
@@ -45,7 +45,7 @@ class AbstractExchange(AbstractPuller, ABC):
 
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
-        self._settings = self.get_settings()
+        self._settings = self.settings
         self.account = AbstractExchange._login(self._settings)
 
         self.log.append_text(
@@ -53,6 +53,10 @@ class AbstractExchange(AbstractPuller, ABC):
             self._settings.username +
             " - " +
             self._settings.email)
+
+    @abstractproperty
+    def settings(self) -> ExchangeSettings:
+        """ Returns parameters to connect to Exchange server """
 
     def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
         """ Deletes seated passengers from the Exchange inbox
@@ -70,10 +74,6 @@ class AbstractExchange(AbstractPuller, ABC):
                     break
             if not found_in_inbox:
                 self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
-
-    @abstractmethod
-    def get_settings(self) -> ExchangeSettings:
-        """ Returns parameters to connect to Exchange server """
 
     @abstractmethod
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
