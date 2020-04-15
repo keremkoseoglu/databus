@@ -155,8 +155,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             self._sleep_until_next_dispatch_time()
 
     async def _start_web_server(self):
-        # todo: branch: alternatif web server'ı inline başlatma
-        # todo: branch: config dosyasından (dispatcher ticket) gelecek yeni ayarlar:
+        # todo: alternatif web server'ı inline başlatma
+        # todo: config dosyasından (dispatcher ticket) gelecek yeni ayarlar:
         # - web server başlat / başlatma
         # - web server port no
         # - başlatılmayacaksa aşağıdaki kod çalışmasın
