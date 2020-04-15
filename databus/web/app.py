@@ -4,6 +4,7 @@ Theme help: https://bootswatch.com/darkly/
 """
 import io
 from flask import Flask, render_template, request, send_file
+from waitress import serve
 import databus
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.passenger.attachment import AttachmentFormat
@@ -19,12 +20,12 @@ _APP = Flask(__name__)
 _DISPATCHER: AbstractDispatcher
 
 
-async def run_web_server(dispatcher: AbstractDispatcher):
+def run_web_server(dispatcher: AbstractDispatcher):
     """ Starts the Flask Web Server """
     global _DISPATCHER # pylint: disable=W0603
     _DISPATCHER = dispatcher
-    print(_DISPATCHER.ticket.database_module)
-    _APP.run()
+    serve(_APP, port=dispatcher.ticket.web_server_port)
+    #_APP.run(port=dispatcher.ticket.web_server_port)
 
 ##############################
 # Home page
@@ -33,7 +34,6 @@ async def run_web_server(dispatcher: AbstractDispatcher):
 @_APP.route("/")
 def _home():
     global _DISPATCHER # pylint: disable=W0603
-    print(_DISPATCHER.ticket.database_module)
     return render_template("home.html")
 
 ##############################

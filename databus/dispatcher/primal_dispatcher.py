@@ -1,6 +1,6 @@
 """ Default dispatcher module """
-import asyncio
 from datetime import datetime, timedelta
+from threading import Thread
 from time import sleep
 from typing import List
 from databus.client.client import Client
@@ -67,9 +67,9 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
 
     def start(self):
         """ Starts the dispatcher timer and web server """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self._startup())
-        loop.close()
+        if self.ticket.run_web_server:
+            Thread(target=self._start_web_server, daemon=True).start()
+        self._start_dispatch_timer()
 
     def _dispatch(self):
         self._dispatch_state = DispatchState()
@@ -148,20 +148,11 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         seconds_to_sleep = (self._next_dispatch_time - now).seconds
         sleep(seconds_to_sleep)
 
-    async def _start_dispatch_timer(self):
+    def _start_dispatch_timer(self):
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
-            await asyncio.create_task(self._dispatch())
+            self._dispatch()
             self._sleep_until_next_dispatch_time()
 
-    async def _start_web_server(self):
-        # todo: alternatif web server'ı inline başlatma
-        # todo: config dosyasından (dispatcher ticket) gelecek yeni ayarlar:
-        # - web server başlat / başlatma
-        # - web server port no
-        # - başlatılmayacaksa aşağıdaki kod çalışmasın
-        # - başlatılacaksa port no parametrik olsun
-        await asyncio.create_task(app.run_web_server(self))
-
-    async def _startup(self):
-        await asyncio.gather(self._start_dispatch_timer(), self._start_web_server())
+    def _start_web_server(self):
+        app.run_web_server(self)

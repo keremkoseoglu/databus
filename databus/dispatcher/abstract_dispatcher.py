@@ -48,7 +48,9 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
                  p_database_module: str = None,
                  p_database_arguments: dict = None,
                  p_driver_module: str = None,
-                 p_dispatcher_observer: DispatcherObserver = None
+                 p_dispatcher_observer: DispatcherObserver = None,
+                 p_run_web_server: bool = True,
+                 p_web_server_port: int = 5000
                  ): # pylint: disable=R0912, R0913
 
         if p_database_factory is None:
@@ -102,6 +104,8 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
             self.driver_module = p_driver_module
 
         self.dispatcher_observer = p_dispatcher_observer
+        self.run_web_server = p_run_web_server
+        self.web_server_port = p_web_server_port
 
 
 class AbstractDispatcher(ABC): # pylint: disable=R0903
