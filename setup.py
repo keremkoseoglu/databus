@@ -1,9 +1,11 @@
+""" Databus setup module """
 import os
 import setuptools
 import databus
 
 
 def get_databus_requirements() -> []:
+    """ Returns a list of requirements """
     output = [] 
     lib_folder = os.path.dirname(os.path.realpath(__file__))
     requirement_path = lib_folder + '/requirements.txt'
@@ -31,5 +33,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=databus.PYTHON_VERSION,
-    install_requires=get_databus_requirements()
+    install_requires=get_databus_requirements(),
+    include_package_data=True
 )

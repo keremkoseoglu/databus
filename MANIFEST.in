@@ -1,0 +1,2 @@
+recursive-include databus/web/templates *
+recursive-include databus/web/static *
