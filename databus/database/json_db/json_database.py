@@ -49,6 +49,16 @@ class JsonDatabase(AbstractDatabase):
         """ Returns a single client """
         return self._json_client.get_all()
 
+    def get_log_content(self, p_log_id: str) -> str:
+        """ Returns the contents of the given log
+        p_log_id is whatever you have returned in get_log_list.
+        """
+        return self._json_log.get_log_file_content(self.client_id, p_log_id)
+
+    def get_log_list(self) -> List[str]:
+        """ Returns log entries """
+        return self._json_log.get_log_file_list(self.client_id)
+
     def get_passenger_queue_entries(self, # pylint: disable=R0913
                                     p_passenger_module: str = None,
                                     p_processor_status: QueueStatus = None,
@@ -64,6 +74,11 @@ class JsonDatabase(AbstractDatabase):
                                                p_pusher_status,
                                                p_puller_notified,
                                                p_pulled_before)
+
+    def get_passenger_queue_entry(self, # pylint: disable=R0913
+                                  p_internal_id: str
+                                 ) -> PassengerQueueStatus:
+        return self._json_queue.get_passengers(p_internal_id=p_internal_id)[0]
 
     def insert_log(self, p_log: Log):
         """ Creates a new log file on the disk """

@@ -1,82 +1,106 @@
-""" Module for web interface 
+""" Module for web interface
 This mini web interfaces is based on Flask.
-It uses the darkly theme available at https://bootswatch.com/darkly/
+Theme help: https://bootswatch.com/darkly/
 """
-from flask import Flask, render_template
+import io
+from flask import Flask, render_template, request, send_file
 import databus
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
+from databus.passenger.attachment import AttachmentFormat
+from databus.report.client_log import ClientLogReader
+from databus.report.client_queue import ClientPassengerQueueReader
 
 
 ##############################
 # Main stuff
 ##############################
 
-_app = Flask(__name__)
-_dispatcher: AbstractDispatcher
+_APP = Flask(__name__)
+_DISPATCHER: AbstractDispatcher
 
 
 async def run_web_server(dispatcher: AbstractDispatcher):
     """ Starts the Flask Web Server """
-    global _dispatcher
-    _dispatcher = dispatcher
-    print(_dispatcher.ticket.database_module)
-    _app.run()
+    global _DISPATCHER # pylint: disable=W0603
+    _DISPATCHER = dispatcher
+    print(_DISPATCHER.ticket.database_module)
+    _APP.run()
 
 ##############################
 # Home page
 ##############################
 
-@_app.route("/")
+@_APP.route("/")
 def _home():
-    global _dispatcher
-    print(_dispatcher.ticket.database_module)
+    global _DISPATCHER # pylint: disable=W0603
+    print(_DISPATCHER.ticket.database_module)
     return render_template("home.html")
 
 ##############################
 # Log pages
 ##############################
 
-@_app.route("/log_list")
+@_APP.route("/log_list")
 def _log_list():
-    # todo
-    return render_template("log_list.html")
+    global _DISPATCHER # pylint: disable=W0603
+    entries = ClientLogReader(_DISPATCHER).get_client_log_list()
+    return render_template("log_list.html", entries=entries)
 
 
-@_app.route("/log_display")
+@_APP.route("/log_display")
 def _log_display():
-    # todo
-    return render_template("log_display.html")
+    client_id = request.args.get("client", 0, type=str)
+    log_file = request.args.get("log", 0, type=str)
+    file_content = ClientLogReader(_DISPATCHER).get_client_log_content(client_id, log_file).replace("\n", "<br><br>") # pylint: disable=C0301
+    return file_content
 
 ##############################
 # Queue pages
 ##############################
 
-@_app.route("/queue_list")
+@_APP.route("/queue_list")
 def _queue_list():
-    # todo
-    # - log ile ortak olabilir mi?
-    # - tamamla
-    return render_template("queue_list.html")
+    global _DISPATCHER # pylint: disable=W0603
+    entries = ClientPassengerQueueReader(_DISPATCHER).get_client_passenger_queue_list()
+    return render_template("queue_list.html", entries=entries)
 
 
-@_app.route("/queue_display")
+@_APP.route("/queue_display")
 def _queue_display():
-    # todo
-    # - log ile ortak olabilir mi?
-    # - tamamla
-    return render_template("queue_display.html")
+    global _DISPATCHER # pylint: disable=W0603
+    client = request.args.get("client", 0, type=str)
+    passenger = request.args.get("passenger", 0, type=str)
+    entry = ClientPassengerQueueReader(_DISPATCHER).get_client_passenger_queue_entry(client, passenger) # pylint: disable=C0301
+    return render_template("queue_display.html", client=client, entry=entry)
+
+@_APP.route("/queue_attachment")
+def _queue_attachment():
+    global _DISPATCHER # pylint: disable=W0603
+    client = request.args.get("client", 0, type=str)
+    passenger = request.args.get("passenger", 0, type=str)
+    file = request.args.get("file", 0, type=str)
+    entry = ClientPassengerQueueReader(_DISPATCHER).get_client_passenger_queue_entry(client, passenger) # pylint: disable=C0301
+
+    for att in entry.passenger.attachments:
+        if att.name == file:
+            if att.format == AttachmentFormat.binary:
+                return send_file(io.BytesIO(att.binary_content),
+                                 attachment_filename=att.name,
+                                 as_attachment=True)
+            if att.format == AttachmentFormat.text:
+                return att.text_content
+            return "Unexpected attachment format"
+
+    return "File not found"
 
 ##############################
 # Misc. pages
 ##############################
 
-@_app.route("/about")
+@_APP.route("/about")
 def _about():
-    # todo
-    # - kim yazmış
-    # - setup.py içerisinden versiyonu yaz
-    return render_template("about.html", 
-                           version=databus.__version__, 
+    return render_template("about.html",
+                           version=databus.__version__,
                            author=databus.AUTHOR,
                            email=databus.EMAIL,
                            description=databus.DESCRIPTION,

@@ -2,4 +2,66 @@
 
 {% block body %}
 <h1>Queue Display</h1>
+
+<div class="jumbotron">
+    <p class="lead">{{ entry.passenger.id_text }}</p>
+    <p><b>Pulled from: </b>{{ entry.passenger.source_system }}</p>
+    <p><b>Pulled by: </b>{{ entry.passenger.puller_module }}</p>
+    <p><b>Pulled on: </b>{{ entry.passenger.pull_datetime }}</p>
+    <p>
+        <b>Puller notified:</b> 
+        {% if entry.puller_notified %}
+        <span class="badge badge-success">Yes</span>
+        {% else %}
+        <span class="badge badge-warning">No</span>
+        {% endif %}
+    </p>
+
+    <hr class="my-4">
+
+    <h2>Processors</h2>
+
+    {% for status in entry.processor_statuses %}
+        <p>
+            <b>{{ status.processor_module }}: </b>
+            {% if status.status.name == "complete" %}
+            <span class="badge badge-success">Complete</span>
+            {% elif status.status.value == 2 %}
+            <span class="badge badge-warning">Incomplete</span>
+            {% else %}
+            <span class="badge badge-light">Unknown</span>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+    <h2>Pushers</h2>
+
+    {% for status in entry.pusher_statuses %}
+        <p>
+            <b>{{ status.pusher_module }}: </b>
+            {% if status.status.name == "complete" %}
+            <span class="badge badge-success">Complete</span>
+            {% elif status.status.value == 2 %}
+            <span class="badge badge-warning">Incomplete</span>
+            {% else %}
+            <span class="badge badge-light">Unknown</span>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+    <hr class="my-4">
+
+    <h2>Attachments</h2>
+
+    {% for attachment in entry.passenger.attachments %}
+
+        <p>
+            <a href="{{ url_for('_queue_attachment') }}?client={{ client }}&passenger={{entry.passenger.internal_id}}&file={{attachment.name}}">
+                {{ attachment.name }}
+            </a>
+        </p>
+
+    {% endfor %}
+
+  </div>
 {% endblock %}

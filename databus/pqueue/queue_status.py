@@ -12,20 +12,17 @@ class QueueStatus(Enum):
     incomplete = 1
     complete = 2
 
-
 class ProcessorQueueStatus: # pylint: disable=R0903
     """ Processor queue status class """
     def __init__(self, p_processor_module: str, p_status: QueueStatus = QueueStatus.undefined):
         self.processor_module = p_processor_module
         self.status = p_status
 
-
 class PusherQueueStatus: # pylint: disable=R0903
     """ Pusher queue status class """
     def __init__(self, p_pusher_module: str, p_status: QueueStatus = QueueStatus.undefined):
         self.pusher_module = p_pusher_module
         self.status = p_status
-
 
 class PassengerQueueStatus:
     """ Passenger queue status class """

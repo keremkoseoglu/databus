@@ -42,6 +42,15 @@ class JsonLog:
                 p_log.append_text("Deleting " + full_log_file_path)
                 remove(full_log_file_path)
 
+    def get_log_file_content(self, p_client_id: str, p_log_file: str) -> str:
+        """ Returns the content of the given log file """
+        output = ""
+        log_root_path = self.build_log_root_path(p_client_id)
+        log_path = path.join(log_root_path, p_log_file)
+        with open(log_path, mode="r") as log_file:
+            output = log_file.read()
+        return output
+
     def get_log_file_list(self, p_client_id: str) -> List[str]:
         """ Log file list """
         log_root_path = self.build_log_root_path(p_client_id)

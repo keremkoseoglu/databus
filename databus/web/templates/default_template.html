@@ -8,13 +8,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/darkly/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables/jquery.dataTables.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery/jquery-3.5.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatables/dataTables.bootstrap4.min.js') }}"></script>
     
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
 
   
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark"><div class="container">
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary"><div class="container">
     <a class="navbar-brand" href="{{ url_for('_home') }}">Databus</a>
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
@@ -46,12 +54,6 @@
     {% block body %}
     {% endblock %}
   </div>
-
-
-
-<script src="{{ url_for('static', filename='js/jquery-3.5.0.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
 </html>

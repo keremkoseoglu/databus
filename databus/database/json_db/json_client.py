@@ -2,6 +2,7 @@
 import json
 from os import path, scandir
 from typing import List
+from databus import get_root_path
 from databus.client.client import Client, ClientError, ClientPassenger
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 
@@ -19,7 +20,8 @@ class JsonClient:
 
     def build_client_root_path(self) -> str:
         """ Builds the concrete root path of client directories """
-        return path.join(self._args.database_dir, self._args.client_dir)
+        databus_root = get_root_path()
+        return path.join(databus_root, self._args.database_dir, self._args.client_dir)
 
     def get_all(self) -> List[Client]:
         """ Returns all clients """
