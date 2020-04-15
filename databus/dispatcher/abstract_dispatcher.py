@@ -1,5 +1,9 @@
 """ Abstract dispatcher module """
 from abc import ABC, abstractmethod
+from typing import List
+from databus.client.client import Client
+from databus.client.log import Log
+from databus.database.abstract_database import AbstractDatabase
 from databus.database.abstract_factory import AbstractDatabaseFactory
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.primal_factory import PrimalDatabaseFactory
@@ -44,7 +48,9 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
                  p_database_module: str = None,
                  p_database_arguments: dict = None,
                  p_driver_module: str = None,
-                 p_dispatcher_observer: DispatcherObserver = None
+                 p_dispatcher_observer: DispatcherObserver = None,
+                 p_run_web_server: bool = True,
+                 p_web_server_port: int = 5000
                  ): # pylint: disable=R0912, R0913
 
         if p_database_factory is None:
@@ -98,12 +104,40 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
             self.driver_module = p_driver_module
 
         self.dispatcher_observer = p_dispatcher_observer
+        self.run_web_server = p_run_web_server
+        self.web_server_port = p_web_server_port
 
 
 class AbstractDispatcher(ABC): # pylint: disable=R0903
     """ Abstract dispatcher class """
     def __init__(self, p_ticket: DispatcherTicket = None):
         self.ticket = p_ticket
+
+    @property
+    def all_clients(self) -> List[Client]:
+        """ Returns a list of clients from the database within the ticket """
+        dummy_db = self.ticket.database_factory.create_database(
+            p_log=Log(),
+            p_module=self.ticket.database_module,
+            p_client_id=None,
+            p_passenger_factory=self.ticket.passenger_factory,
+            p_arguments=self.ticket.database_arguments)
+
+        return dummy_db.get_clients()
+
+    def get_client_database(self, p_client_id: str, p_log: Log = None) -> AbstractDatabase:
+        """ Returns a database instance for the given client """
+        if p_log is None:
+            log = Log()
+        else:
+            log = p_log
+
+        return self.ticket.database_factory.create_database( # pylint: disable=C0103
+            p_passenger_factory=self.ticket.passenger_factory,
+            p_client_id=p_client_id,
+            p_module=self.ticket.database_module,
+            p_log=log,
+            p_arguments=self.ticket.database_arguments)
 
     @abstractmethod
     def start(self):

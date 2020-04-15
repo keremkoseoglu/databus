@@ -1,7 +1,7 @@
 """ Abstract database module """
 from abc import ABC, abstractmethod
-from typing import List
 from datetime import datetime
+from typing import List
 from databus.client.client import Client
 from databus.client.log import Log
 from databus.passenger.abstract_factory import AbstractPassengerFactory
@@ -35,7 +35,17 @@ class AbstractDatabase(ABC):
 
     @abstractmethod
     def get_clients(self) -> List[Client]:
-        """ Returns a cliene """
+        """ Returns clients """
+
+    @abstractmethod
+    def get_log_content(self, p_log_id: str) -> str:
+        """ Returns the contents of the given log
+        p_log_id is whatever you have returned in get_log_list.
+        """
+
+    @abstractmethod
+    def get_log_list(self) -> List[str]:
+        """ Returns a list of log files """
 
     @abstractmethod
     def get_passenger_queue_entries(self, # pylint: disable=R0913
@@ -46,6 +56,12 @@ class AbstractDatabase(ABC):
                                     p_pulled_before: datetime = None
                                     ) -> List[PassengerQueueStatus]:
         """ Returns requested passenger queue entries """
+
+    @abstractmethod
+    def get_passenger_queue_entry(self, # pylint: disable=R0913
+                                  p_internal_id: str
+                                 ) -> PassengerQueueStatus:
+        """ Returns requested passenger queue entry """
 
     @abstractmethod
     def insert_log(self, p_log: Log):

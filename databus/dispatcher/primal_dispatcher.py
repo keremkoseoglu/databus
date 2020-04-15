@@ -1,6 +1,6 @@
 """ Default dispatcher module """
-import asyncio
 from datetime import datetime, timedelta
+from threading import Thread
 from time import sleep
 from typing import List
 from databus.client.client import Client
@@ -66,18 +66,10 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._tick_count = ClientPassengerTickCount()
 
     def start(self):
-        """ Starts the dispatcher timer """
-        # todo: config dosyasından (dispatcher ticket) gelecek yeni ayarlar:
-        # - web server başlat / başlatma
-        # - web server port no
-        # - başlatılmayacaksa aşağıdaki kod çalışmasın
-        # - başlatılacaksa port no parametrik olsun
-        # self._start_web_server()
-
-        while True:
-            self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
-            self._dispatch()
-            self._sleep_until_next_dispatch_time()
+        """ Starts the dispatcher timer and web server """
+        if self.ticket.run_web_server:
+            Thread(target=self._start_web_server, daemon=True).start()
+        self._start_dispatch_timer()
 
     def _dispatch(self):
         self._dispatch_state = DispatchState()
@@ -106,16 +98,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
                             " passenger " +
                             p_client_passenger.name)
 
-            log.append_text("Creating database " +
-                            self.ticket.database_module)
-
-            db = self.ticket.database_factory.create_database( # pylint: disable=C0103
-                p_passenger_factory=self.ticket.passenger_factory,
-                p_client_id=p_client.id,
-                p_module=self.ticket.database_module,
-                p_log=log,
-                p_arguments=self.ticket.database_arguments)
-
+            log.append_text("Creating database " + self.ticket.database_module)
+            db = self.get_client_database(p_client.id, log) # pylint: disable=C0103
             log.append_text("Creating driver " + self.ticket.driver_module)
 
             driver = self.ticket.driver_factory.create_driver(
@@ -153,14 +137,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
                     p_client_passenger.queue_expiry_date)
 
     def _read_clients(self):
-        dummy_db = self.ticket.database_factory.create_database(
-            p_log=Log(),
-            p_module=self.ticket.database_module,
-            p_client_id=None,
-            p_passenger_factory=self.ticket.passenger_factory,
-            p_arguments=self.ticket.database_arguments)
-
-        self._dispatch_state.clients = dummy_db.get_clients()
+        self._dispatch_state.clients = self.all_clients
         self._tick_count.collect_clients(self._dispatch_state.clients)
         self._tick_count.tick()
 
@@ -171,7 +148,11 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         seconds_to_sleep = (self._next_dispatch_time - now).seconds
         sleep(seconds_to_sleep)
 
+    def _start_dispatch_timer(self):
+        while True:
+            self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
+            self._dispatch()
+            self._sleep_until_next_dispatch_time()
+
     def _start_web_server(self):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(app.run_web_server(self)) # pylint: disable=W0612
+        app.run_web_server(self)

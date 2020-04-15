@@ -40,5 +40,6 @@ class ClientPassenger:  # pylint: disable=R0903
 
     @property
     def queue_expiry_date(self) -> datetime:
-        """ Returns queue expirt date """
-        return datetime.now() - timedelta(days=5)
+        """ Returns queue expiry date """
+        output = datetime.now() - timedelta(days=self.queue_life_span)
+        return output

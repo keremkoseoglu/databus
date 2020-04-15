@@ -86,12 +86,16 @@ class JsonQueue:
                        p_processor_status: QueueStatus = None,
                        p_pusher_status: QueueStatus = None,
                        p_puller_notified: bool = None,
-                       p_pulled_before: datetime = None
+                       p_pulled_before: datetime = None,
+                       p_internal_id: str = None
                        ) -> List[PassengerQueueStatus]:
         """ Returns passengers """
         output = []
 
         for passenger_directory in self._get_passenger_directories():
+            if p_internal_id is not None and passenger_directory != p_internal_id:
+                continue
+
             passenger_json = self._get_passenger_file_as_json(passenger_directory)
             pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"]) # pylint: disable=C0301
 
