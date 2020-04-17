@@ -1,2 +1,4 @@
+cython
 flask
+pymssql
 waitress
