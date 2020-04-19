@@ -60,6 +60,14 @@ class Log:
         self._guid = uuid1()
         self._entries = []
 
+    @staticmethod
+    def build_entry_field_string(p_date: str, p_source: str, p_type: str, p_message: str) -> str:
+        """ Builds a string from entry fields """
+        new_line = "[" + p_date + "]"
+        new_line += "[" + p_source + "]"
+        new_line += "[" + p_type + "]"
+        new_line += " " + p_message
+
     @property
     def creation_datetime(self) -> datetime:
         """ Log creation time """
@@ -75,10 +83,11 @@ class Log:
         """ Converts all log entries into string format """
         output = ""
         for entry in self.entries:
-            new_line = "[" + entry.timestamp.isoformat() + "]"
-            new_line += "[" + entry.source + "]"
-            new_line += "[" + str(entry.type.name) + "]"
-            new_line += " " + entry.message
+            new_line = Log.build_entry_field_string(
+                entry.timestamp.isoformat(),
+                entry.source,
+                str(entry.type.name),
+                entry.message)
             if output != "":
                 output += "\r\n"
             output += new_line
