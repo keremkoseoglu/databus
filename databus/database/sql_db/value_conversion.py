@@ -110,9 +110,11 @@ class SqlToDatabus(AbstractConverter):
 
     @staticmethod
     def date_time(input_val):
-        """ Date conversion """
-        # todo
-        pass
+        """ Date conversion
+        Current SQL driver returns native date time objects, so
+        no conversion is needed.
+        """
+        return input_val
 
     @staticmethod
     def message_type(input_val):

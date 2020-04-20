@@ -2,6 +2,8 @@
 import binascii
 from datetime import datetime
 from typing import List
+from databus.database.sql_db.path_builder import PathBuilder
+from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 from databus.database.sql_db.value_conversion import DatabusToSql
 
 
@@ -15,10 +17,12 @@ class KeyValue:
 
 class Modifiable:
     """ Class for modifiable key - value pairs """
-    def __init__(self, p_client_id: str):
+    def __init__(self, p_args: SqlDatabaseArguments, p_client_id: str):
         self._client_id = p_client_id
         self._key_values = []
         self._table = ""
+        self._args = p_args
+        self._path_builder = PathBuilder(p_args)
         self.clear()
 
     @property
@@ -29,7 +33,7 @@ class Modifiable:
     @property
     def table(self) -> str:
         """ Table to be inserted """
-        return self._table
+        return self._path_builder.get_table_path(self._table)
 
     @table.setter
     def table(self, p_table: str):
@@ -65,3 +69,7 @@ class Modifiable:
         """ Reset """
         self._key_values = []
         self._table = ""
+
+    @staticmethod
+    def _get_safe_string(p_input: str) -> str:
+        return "{}".format(p_input)

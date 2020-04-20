@@ -3,10 +3,13 @@ from typing import List
 import pymssql
 from pymssql import Connection
 from databus.database.sql_db.insert_builder import InsertBuilder
+from databus.database.sql_db.path_builder import PathBuilder
 from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 from databus.database.sql_db.update_builder import UpdateBuilder
 from databus.database.sql_db.where_builder import WhereBuilder
 
+# todo
+# performans yavaş, pymssql yerine _mssql denenebilir. 
 
 class QueryHelper:
     """ Helper class to access SQL server easier """
@@ -16,17 +19,19 @@ class QueryHelper:
         return pymssql.connect(server=p_args.server,
                                user=p_args.username,
                                password=p_args.password,
-                               database=p_args.database)
+                               database=p_args.database,
+                               autocommit=False)
 
     def __init__(self, p_arguments: dict, p_client_id: str):
-        self._args = SqlDatabaseArguments(p_arguments)
-        self._connection = QueryHelper.open_new_connection(self._args)
+        self.args = SqlDatabaseArguments(p_arguments)
+        self._connection = QueryHelper.open_new_connection(self.args)
         self._client_id = p_client_id
         self._where = WhereBuilder(p_client_id=self._client_id)
+        self._path_builder = PathBuilder(self.args)
 
     def delete(self, p_table: str, p_where: str = ""):
         """ Deletes entries from SQL server """
-        command = "DELETE FROM " + p_table + self._where.build(p_where)
+        command = "DELETE FROM " + self._path_builder.get_table_path(p_table) + self._where.build(p_where)
         self.execute_sql(command)
 
     def execute_insert(self, p_insert: InsertBuilder):
@@ -37,22 +42,11 @@ class QueryHelper:
         """ Executes an SQL command; typically for updating / deleting """
         cursor = self._connection.cursor()
         cursor.execute(p_query)
+        self._connection.commit()
 
     def execute_update(self, p_update: UpdateBuilder):
         """ Executes an Insert statement """
         self.execute_sql(p_update.update_command)
-
-    def get_field_path(self, p_table: str, p_field: str) -> str:
-        """ Returns the full path of the table field
-        DATABASE.SCHEMA.TABLE.FIELD
-        """
-        return self.get_table_path(p_table) + "." + p_field
-
-    def get_table_path(self, p_table: str) -> str:
-        """ Returns the full path of the table
-        DATABASE.SCHEMA.TABLE
-        """
-        return self._args.database + "." + self._args.schema + "." + p_table
 
     def select_all(self, p_table: str, p_where: str = "", p_order_fields: List[str] = None) -> dict:
         """ Selects & returns all entries from table
@@ -66,14 +60,14 @@ class QueryHelper:
         The where condition is used as a literal value, so it's not polluted by
         client ID or anything.
         """
-        query = "SELECT * FROM " + self.get_table_path(p_table) + p_literal_where
+        query = "SELECT * FROM " + self._path_builder.get_table_path(p_table) + p_literal_where
         cursor = self._connection.cursor(as_dict=True)
         cursor.execute(query)
         return cursor.fetchall()
 
     def select_all_no_where(self, p_table: str, p_order_by: str = "") -> dict:
         """ Selects & returns all entries from table, without WHERE conditions """
-        query = "SELECT * FROM " + self.get_table_path(p_table)
+        query = "SELECT * FROM " + self._path_builder.get_table_path(p_table)
         if p_order_by != "":
             query += " ORDER BY " + p_order_by
         cursor = self._connection.cursor(as_dict=True)

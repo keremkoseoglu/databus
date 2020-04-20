@@ -21,6 +21,8 @@ if __name__ == "__main__":
         SqlDatabaseArguments.KEY_USERNAME: "databus"
     }
 
+    # todo geçici kod
+    
     ticket = DispatcherTicket(
         p_database_module="databus.database.sql_db.sql_database",
         p_database_arguments=sql_args
@@ -28,8 +30,8 @@ if __name__ == "__main__":
 
     PrimalDispatcherFactory().create_dispatcher(p_ticket=ticket).start()
 
+    
     """
-
     log = Log()
     passenger_factory = PrimalPassengerFactory()
 
@@ -40,9 +42,12 @@ if __name__ == "__main__":
         p_client_id="demo"
     )
 
+    x = sql.get_log_list()
+
     clients = sql.get_clients()
     for client in clients:
         print(client.id)
         for passenger in client.passengers:
             print(passenger.name)
     """
+    

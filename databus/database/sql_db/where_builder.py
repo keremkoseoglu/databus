@@ -34,6 +34,9 @@ class WhereBuilder:
         if self._flags.has_order_by:
             raise Exception("Can't add conditions after ORDER BY")
 
+        if p_condition is None or p_condition == "":
+            return
+
         self._put_and()
         self._put_condition(p_condition)
 

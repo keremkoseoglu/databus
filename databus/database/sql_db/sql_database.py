@@ -2,6 +2,24 @@
 Credentials for development server:
 databus-server.database.windows.net databus_db databus Honk+honk+2
 """
+
+# todo
+# query helper bitecek
+# ana işler
+# - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
+# - çoklu insert / update yapılan yerlerde commit / rollback
+# - flask'teki her sayfa tam çalışsın
+# - schema oluşturmak için yeni yordam? gittiğimiz yerlerde elle mi açacağız?
+# -- abstract'e ekle
+# -- json'da olsun (ama boş olsun)
+# -- burada olsun
+# - main'i eski haline getir
+# - buradaki test connection silinecek
+# - buradaki credential bilgileri silinecek
+# - pylint
+# - apply branch
+# - versiyon yükselt
+
 import binascii
 from datetime import datetime
 from typing import List
@@ -30,6 +48,10 @@ class SqlDatabase(AbstractDatabase):
                  p_arguments: dict):
         super().__init__(p_client_id, p_log, p_passenger_factory, p_arguments)
         self._query_helper = QueryHelper(p_arguments, p_client_id)
+        if p_client_id is None:
+            self.client = None
+        else:
+            self.client = self._get_client(p_client_id)
 
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the database """
@@ -70,7 +92,7 @@ class SqlDatabase(AbstractDatabase):
 
             line = Log.build_entry_field_string(p_date=str(log_entry["message_on"]),
                                                 p_source=log_entry["module"],
-                                                p_type=SqlToDatabus.message_type(log_entry["message_type"]).value,
+                                                p_type=SqlToDatabus.message_type(log_entry["message_type"]).name,
                                                 p_message=log_entry["message"])
             output += line
 
@@ -114,7 +136,7 @@ class SqlDatabase(AbstractDatabase):
         """ Creates a new log file on the disk """
         self.log.append_text("Writing log to the database")
 
-        insert = InsertBuilder(self.client_id)
+        insert = InsertBuilder(self._query_helper.args, self.client_id)
         insert.table = "log_head"
         insert.add_string("log_id", p_log.guid)
         insert.add_datetime("created_on", p_log.creation_datetime)
@@ -135,7 +157,7 @@ class SqlDatabase(AbstractDatabase):
         """ Writes new files to the database """
         self.log.append_text("Appending passenger " + p_passenger_status.passenger.id_text)
 
-        insert = InsertBuilder(self.client_id)
+        insert = InsertBuilder(self._query_helper.args, self.client_id)
         insert.table = "queue"
         insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
         insert.add_string("external_id", p_passenger_status.passenger.external_id)
@@ -143,7 +165,7 @@ class SqlDatabase(AbstractDatabase):
         insert.add_string("passenger_module", p_passenger_status.passenger.__module__)
         insert.add_string("puller_module", p_passenger_status.passenger.puller_module)
         insert.add_string("puller_notified", DatabusToSql.boolean(False))
-        insert.add_string("puller_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime))
+        insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime))
         self._query_helper.execute_insert(insert)
 
         processor_exe_order = 0
@@ -161,7 +183,7 @@ class SqlDatabase(AbstractDatabase):
             pusher_exe_order += 1
             insert.table = "queue_pusher"
             insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-            insert.add_string("pusher_module", pusher.processor_module)
+            insert.add_string("pusher_module", pusher.pusher_module)
             insert.add_string("status", DatabusToSql.queue_status(pusher.status))
             insert.add_int("exe_order", pusher_exe_order)
             self._query_helper.execute_insert(insert)
@@ -170,8 +192,10 @@ class SqlDatabase(AbstractDatabase):
             insert.table = "queue_attachment"
             insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
             insert.add_string("attachment_id", attachment.name)
-            insert.add_string("txt_content", attachment.text_content)
-            insert.add_binary("bin_content", attachment.bin_content)
+            if attachment.text_content is not None:
+                insert.add_string("txt_content", attachment.text_content)
+            if attachment.binary_content is not None:
+                insert.add_binary("bin_content", attachment.binary_content)
             insert.add_string("file_format", DatabusToSql.attachment_format(attachment.format))
             self._query_helper.execute_insert(insert)
 
@@ -182,7 +206,7 @@ class SqlDatabase(AbstractDatabase):
         where = WhereBuilder(p_client_id = self.client_id)
         where.add_and("queue_id = '" + p_status.passenger.internal_id + "'")
 
-        update = UpdateBuilder()
+        update = UpdateBuilder(self._query_helper.args)
         update.table = "queue"
         update.add_int("puller_notified", DatabusToSql.boolean(p_status.puller_notified))
         update.where = where
@@ -219,6 +243,11 @@ class SqlDatabase(AbstractDatabase):
 
     def _select_from_client(self, p_id: str = None) -> List[Client]:
         output = []
+        client_list = []
+        passenger_list = []
+        puller_list = []
+        processor_list = []
+        pusher_list = []
 
         if p_id is None:
             client_list = self._query_helper.select_all_no_where("client")
@@ -275,7 +304,7 @@ class SqlDatabase(AbstractDatabase):
         if p_passenger_module is not None:
             where.add_and("passenger_module = '" + p_passenger_module + "'")
         if p_puller_notified is not None:
-            where.add_and("puller_notified = " + DatabusToSql.boolean(p_puller_notified))
+            where.add_and("puller_notified = " + str(DatabusToSql.boolean(p_puller_notified)))
         if p_pulled_before is not None:
             where.add_and_date_lt("pulled_on", p_pulled_before)
 
@@ -309,18 +338,26 @@ class SqlDatabase(AbstractDatabase):
                 p_internal_id=queue_row["queue_id"],
                 p_source_system=queue_row["source_system"],
                 p_puller_module=queue_row["puller_module"],
-                p_pull_datetime=SqlToDatabus(queue_row["pulled_on"])
+                p_pull_datetime=SqlToDatabus.date_time(queue_row["pulled_on"])
             )
 
             attachment_list = self._query_helper.select_all("queue_attachment", queue_where)
             for attachment_row in attachment_list:
-                filecontent_unhex = binascii.unhexlify(attachment_row["bin_content"])
-                bin_content = filecontent_unhex[2:]
+                if attachment_row["bin_content"] is None:
+                    bin_content = None
+                else:
+                    filecontent_unhex = binascii.unhexlify(attachment_row["bin_content"])
+                    bin_content = filecontent_unhex[2:]
+
+                if attachment_row["txt_content"] is None:
+                    txt_content = None
+                else:
+                    txt_content = attachment_row["txt_content"]
 
                 attachment = Attachment(
                     p_name=attachment_row["attachment_id"],
                     p_format=SqlToDatabus.attachment_format(attachment_row["file_format"]),
-                    p_text_content=attachment_row["txt_content"],
+                    p_text_content=txt_content,
                     p_binary_content=bin_content)
                 passenger.attachments.append(attachment)
 
@@ -344,19 +381,3 @@ class SqlDatabase(AbstractDatabase):
             output.append(output_row)
 
         return output
-
-
-# todo
-# - main içerisinde test et - bug'ları temizle
-# - web sitesinin about kısmına veritabanını filan koy + diğer components bilgileri
-# - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
-# - çoklu insert / update yapılan yerlerde commit / rollback
-# - schema oluşturmak için yeni yordam? gittiğimiz yerlerde elle mi açacağız?
-# -- abstract'e ekle
-# -- json'da olsun (ama boş olsun)
-# -- burada olsun
-# - main'i eski haline getir
-# - buradaki test connection silinecek
-# - pylint
-# - apply branch
-# - versiyon yükselt

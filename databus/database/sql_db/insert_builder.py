@@ -4,8 +4,6 @@ from databus.database.sql_db.modifiable import Modifiable
 
 class InsertBuilder(Modifiable):
     """ Helper class to build insert commands """
-    def __init__(self, p_client_id: str = ""):
-        super().__init__(p_client_id)
 
     @property
     def insert_command(self) -> str:
@@ -21,7 +19,7 @@ class InsertBuilder(Modifiable):
             query += " , "
             if keyval.is_string:
                 query += "'"
-            query += keyval.val # todo özel karakterlere dikkat UPDATE ile ortak
+            query += Modifiable._get_safe_string(keyval.val)
             if keyval.is_string:
                 query += "'"
 

@@ -67,6 +67,7 @@ class Log:
         new_line += "[" + p_source + "]"
         new_line += "[" + p_type + "]"
         new_line += " " + p_message
+        return new_line
 
     @property
     def creation_datetime(self) -> datetime:

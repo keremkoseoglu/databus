@@ -20,6 +20,7 @@ class AbstractDatabase(ABC):
         self.log = p_log
         self.passenger_factory = p_passenger_factory
         self.arguments = p_arguments
+        self.client = Client()
 
     @abstractmethod
     def delete_old_logs(self, p_before: datetime):
