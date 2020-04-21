@@ -1,4 +1,4 @@
 cython
 flask
-pymssql
+pyodbc
 waitress

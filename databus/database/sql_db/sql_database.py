@@ -38,7 +38,7 @@ from databus.database.sql_db.where_builder import WhereBuilder
 
 
 class SqlDatabase(AbstractDatabase):
-    """ Implementation class for JSON database
+    """ Implementation class for SQL Server database
     Keys of p_arguments can be found in databus.database.sql_db.sql_database_arguments
     """
     def __init__(self,
