@@ -4,10 +4,8 @@ docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallySt
 """
 
 # todo
-# aşağıda manuel commit yaptığın yerlerin cleanup'una rollback koymak gerekir
 # ana işler
 # - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
-# - çoklu insert / update yapılan yerlerde commit / rollback
 # - flask'teki her sayfa tam çalışsın
 # - schema oluşturmak için yeni yordam? gittiğimiz yerlerde elle mi açacağız?
 # -- abstract'e ekle
@@ -61,23 +59,38 @@ class SqlDatabase(AbstractDatabase):
         self.log.append_text("Deleting logs before " + p_before.isoformat())
         where_cond = WhereBuilder.date_lt("created_on", p_before)
         log_heads = self._query_helper.select_all("log_head", p_where=where_cond)
-        for log_head in log_heads:
-            self._query_helper.delete("log_item", p_where="log_id = '" + log_head["log_id"] + "'")
-            self._query_helper.delete("log_head", p_where="log_id = '" + log_head["log_id"] + "'")
-        self._query_helper.commit()
+
+        try:
+            for log_head in log_heads:
+                self._query_helper.delete("log_item", p_where="log_id = '" + log_head["log_id"] + "'")
+                self._query_helper.delete("log_head", p_where="log_id = '" + log_head["log_id"] + "'")
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def delete_passenger_queue(self, p_passengers: List[AbstractPassenger]):
         """ Deletes passenger from the database """
         self.log.append_text("Deleting passengers from queue")
-        for passenger in p_passengers:
-            cond = "queue_id = '" + str(passenger.internal_id) + "'"
-            self._delete_from_queue(p_where=cond)
-        self._query_helper.commit()
+
+        try:
+            for passenger in p_passengers:
+                cond = "queue_id = '" + str(passenger.internal_id) + "'"
+                self._delete_from_queue(p_where=cond)
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def erase_passenger_queue(self):
         """ Deletes all passengers from the database """
         self.log.append_text("Erasing passenger queue from the database")
-        self._delete_from_queue()
+        try:
+            self._delete_from_queue()
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def get_clients(self) -> List[Client]:
         return self._select_from_client()
@@ -147,92 +160,105 @@ class SqlDatabase(AbstractDatabase):
         self._query_helper.execute_insert(insert)
         item_no = 0
 
-        for log_entry in p_log.entries:
-            item_no += 1
-            insert.table = "log_item"
-            insert.add_string("log_id", p_log.guid)
-            insert.add_int("item_no", item_no)
-            insert.add_string("module", log_entry.source)
-            insert.add_string("message_type", DatabusToSql.message_type(log_entry.type))
-            insert.add_string("message", log_entry.message)
-            self._query_helper.execute_insert(insert)
+        try:
+            for log_entry in p_log.entries:
+                item_no += 1
+                insert.table = "log_item"
+                insert.add_string("log_id", p_log.guid)
+                insert.add_int("item_no", item_no)
+                insert.add_string("module", log_entry.source)
+                insert.add_string("message_type", DatabusToSql.message_type(log_entry.type))
+                insert.add_string("message", log_entry.message)
+                self._query_helper.execute_insert(insert)
 
-        self._query_helper.commit()
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
         """ Writes new files to the database """
         self.log.append_text("Appending passenger " + p_passenger_status.passenger.id_text)
-
-        insert = InsertBuilder(self._query_helper.args, self.client_id)
-        insert.table = "queue"
-        insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-        insert.add_string("external_id", p_passenger_status.passenger.external_id)
-        insert.add_string("source_system", p_passenger_status.passenger.source_system)
-        insert.add_string("passenger_module", p_passenger_status.passenger.__module__)
-        insert.add_string("puller_module", p_passenger_status.passenger.puller_module)
-        insert.add_string("puller_notified", DatabusToSql.boolean(False))
-        insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime))
-        self._query_helper.execute_insert(insert)
-
-        processor_exe_order = 0
-        for processor in p_passenger_status.processor_statuses:
-            processor_exe_order += 1
-            insert.table = "queue_processor"
+        
+        try:
+            insert = InsertBuilder(self._query_helper.args, self.client_id)
+            insert.table = "queue"
             insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-            insert.add_string("processor_module", processor.processor_module)
-            insert.add_string("status", DatabusToSql.queue_status(processor.status))
-            insert.add_int("exe_order", processor_exe_order)
+            insert.add_string("external_id", p_passenger_status.passenger.external_id)
+            insert.add_string("source_system", p_passenger_status.passenger.source_system)
+            insert.add_string("passenger_module", p_passenger_status.passenger.__module__)
+            insert.add_string("puller_module", p_passenger_status.passenger.puller_module)
+            insert.add_string("puller_notified", DatabusToSql.boolean(False))
+            insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime))
             self._query_helper.execute_insert(insert)
 
-        pusher_exe_order = 0
-        for pusher in p_passenger_status.pusher_statuses:
-            pusher_exe_order += 1
-            insert.table = "queue_pusher"
-            insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-            insert.add_string("pusher_module", pusher.pusher_module)
-            insert.add_string("status", DatabusToSql.queue_status(pusher.status))
-            insert.add_int("exe_order", pusher_exe_order)
-            self._query_helper.execute_insert(insert)
+            processor_exe_order = 0
+            for processor in p_passenger_status.processor_statuses:
+                processor_exe_order += 1
+                insert.table = "queue_processor"
+                insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
+                insert.add_string("processor_module", processor.processor_module)
+                insert.add_string("status", DatabusToSql.queue_status(processor.status))
+                insert.add_int("exe_order", processor_exe_order)
+                self._query_helper.execute_insert(insert)
 
-        for attachment in p_passenger_status.passenger.attachments:
-            insert.table = "queue_attachment"
-            insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-            insert.add_string("attachment_id", attachment.name)
-            if attachment.text_content is not None:
-                insert.add_string("txt_content", attachment.text_content)
-            if attachment.binary_content is not None:
-                insert.add_binary("bin_content", attachment.binary_content)
-            insert.add_string("file_format", DatabusToSql.attachment_format(attachment.format))
-            self._query_helper.execute_insert(insert)
+            pusher_exe_order = 0
+            for pusher in p_passenger_status.pusher_statuses:
+                pusher_exe_order += 1
+                insert.table = "queue_pusher"
+                insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
+                insert.add_string("pusher_module", pusher.pusher_module)
+                insert.add_string("status", DatabusToSql.queue_status(pusher.status))
+                insert.add_int("exe_order", pusher_exe_order)
+                self._query_helper.execute_insert(insert)
 
-        self._query_helper.commit()
+            for attachment in p_passenger_status.passenger.attachments:
+                insert.table = "queue_attachment"
+                insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
+                insert.add_string("attachment_id", attachment.name)
+                if attachment.text_content is not None:
+                    insert.add_string("txt_content", attachment.text_content)
+                if attachment.binary_content is not None:
+                    insert.add_binary("bin_content", attachment.binary_content)
+                insert.add_string("file_format", DatabusToSql.attachment_format(attachment.format))
+                self._query_helper.execute_insert(insert)
+
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def update_queue_status(self, p_status: PassengerQueueStatus):
         """ Updates queue files on the database """
         self.log.append_text("Updating passenger " + p_status.passenger.id_text)
 
-        where = WhereBuilder(p_client_id=self.client_id)
-        where.add_and("queue_id = '" + p_status.passenger.internal_id + "'")
+        try:
+            where = WhereBuilder(p_client_id=self.client_id)
+            where.add_and("queue_id = '" + p_status.passenger.internal_id + "'")
 
-        update = UpdateBuilder(self._query_helper.args)
-        update.table = "queue"
-        update.add_int("puller_notified", DatabusToSql.boolean(p_status.puller_notified))
-        update.where = where
-        self._query_helper.execute_update(update)
-
-        for processor_status in p_status.processor_statuses:
-            update.table = "queue_processor"
-            update.add_string("status", DatabusToSql.queue_status(processor_status.status))
+            update = UpdateBuilder(self._query_helper.args)
+            update.table = "queue"
+            update.add_int("puller_notified", DatabusToSql.boolean(p_status.puller_notified))
             update.where = where
             self._query_helper.execute_update(update)
 
-        for pusher_status in p_status.pusher_statuses:
-            update.table = "queue_pusher"
-            update.add_string("status", DatabusToSql.queue_status(pusher_status.status))
-            update.where = where
-            self._query_helper.execute_update(update)
+            for processor_status in p_status.processor_statuses:
+                update.table = "queue_processor"
+                update.add_string("status", DatabusToSql.queue_status(processor_status.status))
+                update.where = where
+                self._query_helper.execute_update(update)
 
-        self._query_helper.commit()
+            for pusher_status in p_status.pusher_statuses:
+                update.table = "queue_pusher"
+                update.add_string("status", DatabusToSql.queue_status(pusher_status.status))
+                update.where = where
+                self._query_helper.execute_update(update)
+
+            self._query_helper.commit()
+
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     @staticmethod
     def _module_belongs_to_passenger(p_module_row: dict, p_passenger_row: dict) -> bool:
@@ -247,7 +273,6 @@ class SqlDatabase(AbstractDatabase):
         self._query_helper.delete("queue_processor", p_where)
         self._query_helper.delete("queue_pusher", p_where)
         self._query_helper.delete("queue", p_where)
-        self._query_helper.commit()
 
     def _get_client(self, p_id: str) -> Client:
         return self._select_from_client(p_id=p_id)[0]
