@@ -14,11 +14,11 @@ if __name__ == "__main__":
     #test_connection()
 
     sql_args = {
-        SqlDatabaseArguments.KEY_DATABASE: "databus_db",
-        SqlDatabaseArguments.KEY_PASSWORD: "Honk+honk+2",
+        SqlDatabaseArguments.KEY_DATABASE: "Master",
+        SqlDatabaseArguments.KEY_PASSWORD: "reallyStrongPwd123",
         SqlDatabaseArguments.KEY_SCHEMA: "databus",
-        SqlDatabaseArguments.KEY_SERVER: "databus-server.database.windows.net",
-        SqlDatabaseArguments.KEY_USERNAME: "databus"
+        SqlDatabaseArguments.KEY_SERVER: "127.0.0.1,1433",
+        SqlDatabaseArguments.KEY_USERNAME: "SA"
     }
 
     # todo geçici kod

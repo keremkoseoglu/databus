@@ -1,10 +1,10 @@
 """ Module for SQL databases
-Credentials for development server:
-databus-server.database.windows.net databus_db databus Honk+honk+2
+Command to start docker module:
+docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallyStrongPwd123' -p 1433:1433 microsoft/mssql-server-linux
 """
 
 # todo
-# query helper bitecek
+# aşağıda manuel commit yaptığın yerlerin cleanup'una rollback koymak gerekir
 # ana işler
 # - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
 # - çoklu insert / update yapılan yerlerde commit / rollback
@@ -41,6 +41,9 @@ class SqlDatabase(AbstractDatabase):
     """ Implementation class for SQL Server database
     Keys of p_arguments can be found in databus.database.sql_db.sql_database_arguments
     """
+
+    _LOG_ID_SEPARATOR = " | "
+
     def __init__(self,
                  p_client_id: str,
                  p_log: Log,
@@ -58,10 +61,10 @@ class SqlDatabase(AbstractDatabase):
         self.log.append_text("Deleting logs before " + p_before.isoformat())
         where_cond = WhereBuilder.date_lt("created_on", p_before)
         log_heads = self._query_helper.select_all("log_head", p_where=where_cond)
-
         for log_head in log_heads:
             self._query_helper.delete("log_item", p_where="log_id = '" + log_head["log_id"] + "'")
             self._query_helper.delete("log_head", p_where="log_id = '" + log_head["log_id"] + "'")
+        self._query_helper.commit()
 
     def delete_passenger_queue(self, p_passengers: List[AbstractPassenger]):
         """ Deletes passenger from the database """
@@ -69,6 +72,7 @@ class SqlDatabase(AbstractDatabase):
         for passenger in p_passengers:
             cond = "queue_id = '" + str(passenger.internal_id) + "'"
             self._delete_from_queue(p_where=cond)
+        self._query_helper.commit()
 
     def erase_passenger_queue(self):
         """ Deletes all passengers from the database """
@@ -83,7 +87,8 @@ class SqlDatabase(AbstractDatabase):
         p_log_id is whatever you have returned in get_log_list.
         """
         output = ""
-        cond = "log_id = '" + p_log_id + "'"
+        log_id = p_log_id.split(SqlDatabase._LOG_ID_SEPARATOR)[1]
+        cond = "log_id = '" + log_id + "'"
         log_entries = self._query_helper.select_all("log_item", cond)
 
         for log_entry in log_entries:
@@ -103,7 +108,7 @@ class SqlDatabase(AbstractDatabase):
         output = []
         log_list = self._query_helper.select_all("log_head")
         for log_entry in log_list:
-            output.append(log_entry["log_id"])
+            output.append(str(log_entry["created_on"]) + SqlDatabase._LOG_ID_SEPARATOR + log_entry["log_id"])
         return output
 
     def get_passenger_queue_entries(self, # pylint: disable=R0913
@@ -135,14 +140,13 @@ class SqlDatabase(AbstractDatabase):
     def insert_log(self, p_log: Log):
         """ Creates a new log file on the disk """
         self.log.append_text("Writing log to the database")
-
         insert = InsertBuilder(self._query_helper.args, self.client_id)
         insert.table = "log_head"
         insert.add_string("log_id", p_log.guid)
         insert.add_datetime("created_on", p_log.creation_datetime)
         self._query_helper.execute_insert(insert)
-
         item_no = 0
+
         for log_entry in p_log.entries:
             item_no += 1
             insert.table = "log_item"
@@ -152,6 +156,8 @@ class SqlDatabase(AbstractDatabase):
             insert.add_string("message_type", DatabusToSql.message_type(log_entry.type))
             insert.add_string("message", log_entry.message)
             self._query_helper.execute_insert(insert)
+
+        self._query_helper.commit()
 
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
         """ Writes new files to the database """
@@ -199,11 +205,13 @@ class SqlDatabase(AbstractDatabase):
             insert.add_string("file_format", DatabusToSql.attachment_format(attachment.format))
             self._query_helper.execute_insert(insert)
 
+        self._query_helper.commit()
+
     def update_queue_status(self, p_status: PassengerQueueStatus):
         """ Updates queue files on the database """
         self.log.append_text("Updating passenger " + p_status.passenger.id_text)
-        
-        where = WhereBuilder(p_client_id = self.client_id)
+
+        where = WhereBuilder(p_client_id=self.client_id)
         where.add_and("queue_id = '" + p_status.passenger.internal_id + "'")
 
         update = UpdateBuilder(self._query_helper.args)
@@ -224,6 +232,8 @@ class SqlDatabase(AbstractDatabase):
             update.where = where
             self._query_helper.execute_update(update)
 
+        self._query_helper.commit()
+
     @staticmethod
     def _module_belongs_to_passenger(p_module_row: dict, p_passenger_row: dict) -> bool:
         if p_module_row["client_id"] != p_passenger_row["client_id"]:
@@ -237,6 +247,7 @@ class SqlDatabase(AbstractDatabase):
         self._query_helper.delete("queue_processor", p_where)
         self._query_helper.delete("queue_pusher", p_where)
         self._query_helper.delete("queue", p_where)
+        self._query_helper.commit()
 
     def _get_client(self, p_id: str) -> Client:
         return self._select_from_client(p_id=p_id)[0]
