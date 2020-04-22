@@ -9,6 +9,8 @@ from databus.passenger.attachment import Attachment
 
 class Email(AbstractPassenger):
     """ E-Mail passenger class """
+    _EXCEL_EXTENSIONS = [".xls", ".xlsx"]
+
     def __init__(self, # pylint: disable=R0913
                  p_external_id: str = None,
                  p_internal_id: UUID = None,

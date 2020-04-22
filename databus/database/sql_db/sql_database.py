@@ -311,7 +311,7 @@ class SqlDatabase(AbstractDatabase):
             output.append(client)
         return output
 
-    def _select_from_queue(self, # pylint: disable=R0912, R0913, R0914
+    def _select_from_queue(self, # pylint: disable=R0912, R0913, R0914, R0915
                            p_passenger_module: str = None,
                            p_processor_status: QueueStatus = None,
                            p_pusher_status: QueueStatus = None,
@@ -356,13 +356,12 @@ class SqlDatabase(AbstractDatabase):
             if not queue_row_is_eligible:
                 continue
 
-            passenger = AbstractPassenger(
-                p_external_id=queue_row["external_id"],
-                p_internal_id=queue_row["queue_id"],
-                p_source_system=queue_row["source_system"],
-                p_puller_module=queue_row["puller_module"],
-                p_pull_datetime=SqlToDatabus.date_time(queue_row["pulled_on"])
-            )
+            passenger = self.passenger_factory.create_passenger(queue_row["passenger_module"]) # pylint: disable=C0301
+            passenger.external_id = queue_row["external_id"]
+            passenger.internal_id = queue_row["queue_id"]
+            passenger.source_system = queue_row["source_system"]
+            passenger.puller_module = queue_row["puller_module"]
+            passenger.pull_datetime = SqlToDatabus.date_time(queue_row["pulled_on"])
 
             attachment_list = self._query_helper.select_all("queue_attachment", queue_where)
             for attachment_row in attachment_list:
