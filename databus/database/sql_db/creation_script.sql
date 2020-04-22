@@ -216,7 +216,7 @@ GO
 CREATE TABLE [databus].[queue_attachment](
     [client_id] [varchar](10) NOT NULL,
     [queue_id] [varchar](50) NOT NULL,
-    [attachment_id] [nvarchar](50) NOT NULL,
+    [attachment_id] [nvarchar](100) NOT NULL,
     [txt_content] [nvarchar](max) NULL,
     [bin_content] [varbinary](max) NULL,
     [file_format] [varchar](1) NOT NULL
