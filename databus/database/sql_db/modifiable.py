@@ -72,4 +72,4 @@ class Modifiable:
 
     @staticmethod
     def _get_safe_string(p_input: str) -> str:
-        return "{}".format(p_input)
+        return "{}".format(p_input).replace("'", "''")
