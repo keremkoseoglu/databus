@@ -7,7 +7,7 @@ from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 from databus.database.sql_db.value_conversion import DatabusToSql
 
 
-class KeyValue:
+class KeyValue: # pylint: disable=R0903
     """ Key - Value to be used in modification """
     def __init__(self, p_key: str, p_val: str, p_is_string: bool):
         self.key = p_key
@@ -62,7 +62,7 @@ class Modifiable:
         self._key_values.append(keyval)
 
     def add_value(self, p_key_value: KeyValue):
-        """ Adds a new key - value pair """ 
+        """ Adds a new key - value pair """
         self._key_values.append(p_key_value)
 
     def clear(self):

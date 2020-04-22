@@ -19,6 +19,10 @@ class SqlServerDriver(ABC):
         """ Opens a new connection to the database """
 
     @abstractmethod
+    def execute_stored_procedure(self, p_sql: str, p_values):
+        """ Executes a stored procedure """
+
+    @abstractmethod
     def execute_sql(self, p_query: str):
         """ Executes the given SQL
         Also commits if self.autocommit is true

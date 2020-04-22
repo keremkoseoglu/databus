@@ -4,7 +4,7 @@ from typing import List
 from databus.database.sql_db.value_conversion import DatabusToSql
 
 
-class WhereFlags:
+class WhereFlags: # pylint: disable=R0903
     """ Flags for where building """
     def __init__(self):
         self.has_where = False

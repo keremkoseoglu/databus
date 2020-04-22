@@ -35,5 +35,5 @@ class UpdateBuilder(Modifiable):
         super().clear()
         try:
             self.where.clear()
-        except Exception:
+        except Exception: # pylint: disable=W0703
             pass

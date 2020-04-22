@@ -1,20 +1,9 @@
 """ Module for SQL databases
+
 Command to start docker module:
 docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallyStrongPwd123' -p 1433:1433 microsoft/mssql-server-linux
+Check creation_script.sql to create a new database
 """
-
-# todo
-# - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
-# - main'i eski haline getir
-# - buradaki test connection silinecek
-# - buradaki credential bilgileri silinecek
-# - pylint
-# - apply branch
-# - versiyon yükselt
-# - bunlar bitince publish et ve mgs'ye import et
-
-
-import binascii
 from datetime import datetime
 from typing import List
 from databus.client.client import Client, ClientPassenger
@@ -58,8 +47,8 @@ class SqlDatabase(AbstractDatabase):
 
         try:
             for log_head in log_heads:
-                self._query_helper.delete("log_item", p_where="log_id = '" + log_head["log_id"] + "'")
-                self._query_helper.delete("log_head", p_where="log_id = '" + log_head["log_id"] + "'")
+                self._query_helper.delete("log_item", p_where="log_id = '" + log_head["log_id"] + "'") # pylint: disable= C0301
+                self._query_helper.delete("log_head", p_where="log_id = '" + log_head["log_id"] + "'") # pylint: disable= C0301
             self._query_helper.commit()
         except Exception as error:
             self._query_helper.rollback()
@@ -104,10 +93,11 @@ class SqlDatabase(AbstractDatabase):
             if output != "":
                 output += "\r\n"
 
-            line = Log.build_entry_field_string(p_date=str(log_entry["message_on"]),
-                                                p_source=log_entry["module"],
-                                                p_type=SqlToDatabus.message_type(log_entry["message_type"]).name,
-                                                p_message=log_entry["message"])
+            line = Log.build_entry_field_string(
+                p_date=str(log_entry["message_on"]),
+                p_source=log_entry["module"],
+                p_type=SqlToDatabus.message_type(log_entry["message_type"]).name,
+                p_message=log_entry["message"])
             output += line
 
         return output
@@ -117,7 +107,7 @@ class SqlDatabase(AbstractDatabase):
         output = []
         log_list = self._query_helper.select_all("log_head")
         for log_entry in log_list:
-            output.append(str(log_entry["created_on"]) + SqlDatabase._LOG_ID_SEPARATOR + log_entry["log_id"])
+            output.append(str(log_entry["created_on"]) + SqlDatabase._LOG_ID_SEPARATOR + log_entry["log_id"]) # pylint: disable= C0301
         return output
 
     def get_passenger_queue_entries(self, # pylint: disable=R0913
@@ -175,7 +165,7 @@ class SqlDatabase(AbstractDatabase):
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
         """ Writes new files to the database """
         self.log.append_text("Appending passenger " + p_passenger_status.passenger.id_text)
-        
+
         try:
             insert = InsertBuilder(self._query_helper.args, self.client_id)
             insert.table = "queue"
@@ -185,7 +175,7 @@ class SqlDatabase(AbstractDatabase):
             insert.add_string("passenger_module", p_passenger_status.passenger.__module__)
             insert.add_string("puller_module", p_passenger_status.passenger.puller_module)
             insert.add_string("puller_notified", DatabusToSql.boolean(False))
-            insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime))
+            insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime)) # pylint: disable= C0301
             self._query_helper.execute_insert(insert)
 
             processor_exe_order = 0
@@ -209,15 +199,14 @@ class SqlDatabase(AbstractDatabase):
                 self._query_helper.execute_insert(insert)
 
             for attachment in p_passenger_status.passenger.attachments:
-                insert.table = "queue_attachment"
-                insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
-                insert.add_string("attachment_id", attachment.name)
-                if attachment.text_content is not None:
-                    insert.add_string("txt_content", attachment.text_content)
-                if attachment.binary_content is not None:
-                    insert.add_binary("bin_content", attachment.binary_content)
-                insert.add_string("file_format", DatabusToSql.attachment_format(attachment.format))
-                self._query_helper.execute_insert(insert)
+                sql = "{call databus.insert_queue_attachment(?, ?, ?, ?, ?, ?)}"
+                values = (self.client_id,
+                          p_passenger_status.passenger.internal_id,
+                          attachment.name,
+                          attachment.text_content,
+                          attachment.binary_content,
+                          DatabusToSql.attachment_format(attachment.format))
+                self._query_helper.execute_stored_procedure(sql, values)
 
             self._query_helper.commit()
         except Exception as error:
@@ -283,15 +272,15 @@ class SqlDatabase(AbstractDatabase):
 
         if p_id is None:
             client_list = self._query_helper.select_all_no_where("client")
-            passenger_list = self._query_helper.select_all_no_where("passenger", p_order_by="exe_order")
+            passenger_list = self._query_helper.select_all_no_where("passenger", p_order_by="exe_order") # pylint: disable= C0301
             puller_list = self._query_helper.select_all_no_where("puller", p_order_by="exe_order")
-            processor_list = self._query_helper.select_all_no_where("processor", p_order_by="exe_order")
+            processor_list = self._query_helper.select_all_no_where("processor", p_order_by="exe_order") # pylint: disable= C0301
             pusher_list = self._query_helper.select_all_no_where("pusher", p_order_by="exe_order")
         else:
             client_list = self._query_helper.select_all("client")
-            passenger_list = self._query_helper.select_all("passenger", p_order_fields=["exe_order"])
+            passenger_list = self._query_helper.select_all("passenger", p_order_fields=["exe_order"]) # pylint: disable= C0301
             puller_list = self._query_helper.select_all("puller", p_order_fields=["exe_order"])
-            processor_list = self._query_helper.select_all("processor", p_order_fields=["exe_order"])
+            processor_list = self._query_helper.select_all("processor", p_order_fields=["exe_order"]) # pylint: disable= C0301
             pusher_list = self._query_helper.select_all("pusher", p_order_fields=["exe_order"])
 
         for client_row in client_list:
@@ -320,7 +309,7 @@ class SqlDatabase(AbstractDatabase):
             output.append(client)
         return output
 
-    def _select_from_queue(self, # pylint: disable=R0913
+    def _select_from_queue(self, # pylint: disable=R0912, R0913, R0914
                            p_passenger_module: str = None,
                            p_processor_status: QueueStatus = None,
                            p_pusher_status: QueueStatus = None,
@@ -347,7 +336,7 @@ class SqlDatabase(AbstractDatabase):
             queue_row_is_eligible = True
             queue_where = "queue_id = '" + queue_row["queue_id"] + "'"
 
-            processor_list = self._query_helper.select_all("queue_processor", queue_where, p_order_fields=["exe_order"])
+            processor_list = self._query_helper.select_all("queue_processor", queue_where, p_order_fields=["exe_order"]) # pylint: disable= C0301
             if p_processor_status is not None:
                 for processor_row in processor_list:
                     if SqlToDatabus.queue_status(processor_row["status"]) != p_processor_status:
@@ -356,7 +345,7 @@ class SqlDatabase(AbstractDatabase):
             if not queue_row_is_eligible:
                 continue
 
-            pusher_list = self._query_helper.select_all("queue_pusher", queue_where, p_order_fields=["exe_order"])
+            pusher_list = self._query_helper.select_all("queue_pusher", queue_where, p_order_fields=["exe_order"]) # pylint: disable= C0301
             if p_pusher_status is not None:
                 for pusher_row in pusher_list:
                     if SqlToDatabus.queue_status(pusher_row["status"]) != p_pusher_status:
@@ -378,8 +367,7 @@ class SqlDatabase(AbstractDatabase):
                 if attachment_row["bin_content"] is None:
                     bin_content = None
                 else:
-                    filecontent_unhex = binascii.unhexlify(attachment_row["bin_content"])
-                    bin_content = filecontent_unhex[2:]
+                    bin_content = attachment_row["bin_content"]
 
                 if attachment_row["txt_content"] is None:
                     txt_content = None

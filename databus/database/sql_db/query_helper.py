@@ -34,12 +34,18 @@ class QueryHelper:
 
     def delete(self, p_table: str, p_where: str = ""):
         """ Deletes entries from SQL server """
-        command = "DELETE FROM " + self._path_builder.get_table_path(p_table) + self._where.build(p_where)
+        command = "DELETE FROM "
+        command += self._path_builder.get_table_path(p_table)
+        command += self._where.build(p_where)
         self._driver.execute_sql(command)
 
     def execute_insert(self, p_insert: InsertBuilder):
         """ Executes an Insert statement """
         self._driver.execute_sql(p_insert.insert_command)
+
+    def execute_stored_procedure(self, p_sql: str, p_values):
+        """ Executes a stored procedure """
+        self._driver.execute_stored_procedure(p_sql, p_values)
 
     def execute_update(self, p_update: UpdateBuilder):
         """ Executes an Insert statement """
