@@ -18,6 +18,15 @@
       "queue": "databus.pqueue.primal_queue",
       "sync_frequency": 1,
       "queue_life_span": 1
+    },
+    {
+      "name": "databus.passenger.demo.demo_binary_passenger",
+      "pullers": [ "databus.puller.demo.demo_binary_puller" ],
+      "processors": [],
+      "pushers": ["databus.pusher.demo.demo_binary_pusher"],
+      "queue": "databus.pqueue.primal_queue",
+      "sync_frequency": 1,
+      "queue_life_span": 1
     }
   ]
 }

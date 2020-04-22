@@ -99,9 +99,12 @@ def _queue_attachment():
 
 @_APP.route("/about")
 def _about():
+    global _DISPATCHER # pylint: disable=W0603
+
     return render_template("about.html",
                            version=databus.__version__,
                            author=databus.AUTHOR,
                            email=databus.EMAIL,
                            description=databus.DESCRIPTION,
-                           python_version=databus.PYTHON_VERSION)
+                           python_version=databus.PYTHON_VERSION,
+                           dispatcher=_DISPATCHER)
