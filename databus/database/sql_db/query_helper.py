@@ -1,3 +1,4 @@
+""" Module to help with SQL queries """
 from typing import List
 from databus.database.sql_db.driver.pyodbc_driver import PyodbcDriver
 from databus.database.sql_db.insert_builder import InsertBuilder

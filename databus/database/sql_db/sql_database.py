@@ -4,19 +4,15 @@ docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallySt
 """
 
 # todo
-# ana işler
 # - binary dosya ile test et, düzgün okuyup yazabiliyor musun? buna ayrı demo puller gerekebilir dummy bin dosya okuyan + pusher bi yere indirsin
-# - flask'teki her sayfa tam çalışsın
-# - schema oluşturmak için yeni yordam? gittiğimiz yerlerde elle mi açacağız?
-# -- abstract'e ekle
-# -- json'da olsun (ama boş olsun)
-# -- burada olsun
 # - main'i eski haline getir
 # - buradaki test connection silinecek
 # - buradaki credential bilgileri silinecek
 # - pylint
 # - apply branch
 # - versiyon yükselt
+# - bunlar bitince publish et ve mgs'ye import et
+
 
 import binascii
 from datetime import datetime
