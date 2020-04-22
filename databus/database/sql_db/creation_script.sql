@@ -185,7 +185,7 @@ GO
 CREATE TABLE [databus].[queue](
     [client_id] [varchar](10) NOT NULL,
     [queue_id] [varchar](50) NOT NULL,
-    [external_id] [nvarchar](50) NULL,
+    [external_id] [nvarchar](100) NULL,
     [source_system] [nvarchar](50) NULL,
     [passenger_module] [varchar](50) NULL,
     [puller_module] [varchar](50) NULL,

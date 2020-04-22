@@ -16,7 +16,7 @@ class QueryHelper:
         self._driver.autocommit = p_auto_commit
         self._driver.connect(SqlDatabaseArguments(p_arguments))
         self._where = WhereBuilder(p_client_id=self._client_id)
-        self._path_builder = PathBuilder(self.args)
+        self.path_builder = PathBuilder(self.args)
 
     @property
     def autocommit(self) -> bool:
@@ -35,7 +35,7 @@ class QueryHelper:
     def delete(self, p_table: str, p_where: str = ""):
         """ Deletes entries from SQL server """
         command = "DELETE FROM "
-        command += self._path_builder.get_table_path(p_table)
+        command += self.path_builder.get_table_path(p_table)
         command += self._where.build(p_where)
         self._driver.execute_sql(command)
 
@@ -67,12 +67,12 @@ class QueryHelper:
         The where condition is used as a literal value, so it's not polluted by
         client ID or anything.
         """
-        query = "SELECT * FROM " + self._path_builder.get_table_path(p_table) + p_literal_where
+        query = "SELECT * FROM " + self.path_builder.get_table_path(p_table) + p_literal_where
         return self._driver.select(query)
 
     def select_all_no_where(self, p_table: str, p_order_by: str = "") -> dict:
         """ Selects & returns all entries from table, without WHERE conditions """
-        query = "SELECT * FROM " + self._path_builder.get_table_path(p_table)
+        query = "SELECT * FROM " + self.path_builder.get_table_path(p_table)
         if p_order_by != "":
             query += " ORDER BY " + p_order_by
         return self._driver.select(query)

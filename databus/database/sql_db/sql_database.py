@@ -199,7 +199,9 @@ class SqlDatabase(AbstractDatabase):
                 self._query_helper.execute_insert(insert)
 
             for attachment in p_passenger_status.passenger.attachments:
-                sql = "{call databus.insert_queue_attachment(?, ?, ?, ?, ?, ?)}"
+                table_path = self._query_helper.path_builder.get_table_path("insert_queue_attachment") # pylint: disable=C0301
+
+                sql = "{call " + table_path + "(?, ?, ?, ?, ?, ?)}"
                 values = (self.client_id,
                           p_passenger_status.passenger.internal_id,
                           attachment.name,
