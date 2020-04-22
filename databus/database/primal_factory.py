@@ -26,7 +26,7 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory): # pylint: disable=R0903
                     obj_instance = obj(p_client_id, p_log, p_passenger_factory, p_arguments)
                     if isinstance(obj_instance, AbstractDatabase):
                         return obj_instance
-                except Exception: # pylint: disable=W0703
+                except Exception as error: # pylint: disable=W0703
                     continue
 
         raise DatabaseCreationError(DatabaseCreationError.ErrorCode.cant_create_instance,
