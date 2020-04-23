@@ -1,8 +1,10 @@
 """ Abstract driver module """
 from abc import ABC, abstractmethod
+from typing import List
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
+from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.processor.abstract_factory import AbstractProcessorFactory
 from databus.pqueue.abstract_factory import AbstractQueueFactory
 from databus.pqueue.abstract_queue import AbstractQueue
@@ -49,11 +51,22 @@ class AbstractDriver(ABC):
         self.puller_factory = p_puller_factory
         self.pusher_factory = p_pusher_factory
 
-    @abstractmethod
-    def drive(self, p_bus_ticket: BusTicket):
-        """ Carries passengers from source system to target system """
-
     @property
     @abstractmethod
     def queue(self) -> AbstractQueue:
         """ Queue object """
+
+    @abstractmethod
+    def drive(self, p_bus_ticket: BusTicket):
+        """ Carries passengers from source system to target system """
+
+    def pull_passengers_from_module(self,
+                                    p_puller_module: str,
+                                    p_log: Log = None) -> List[AbstractPassenger]:
+        """ Pulls new passengers from the given puller module """
+        if p_log is None:
+            log = Log()
+        else:
+            log = p_log
+        puller_obj = self.puller_factory.create_puller(p_puller_module, log)
+        return puller_obj.pull()

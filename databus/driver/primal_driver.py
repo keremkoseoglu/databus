@@ -132,11 +132,13 @@ class PrimalDriver(AbstractDriver):
     def _pull_new_passengers(self):
         try:
             self._bus.ticket.log.append_text("Pulling new passengers")
-
             for puller_module in self._bus.ticket.client_passenger.puller_modules:
                 self._bus.ticket.log.append_text("Pulling via " + puller_module)
-                puller_obj = self.puller_factory.create_puller(puller_module, self._bus.ticket.log)
-                new_passengers = puller_obj.pull()
+
+                new_passengers = self.pull_passengers_from_module(
+                    puller_module,
+                    p_log=self._bus.ticket.log)
+
                 for new_passenger in new_passengers:
                     self._bus.new_passengers.append(new_passenger)
                     self._bus.ticket.log.append_text("Got new passenger: " + new_passenger.id_text)

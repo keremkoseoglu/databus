@@ -10,6 +10,7 @@ from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.passenger.attachment import AttachmentFormat
 from databus.report.client_log import ClientLogReader
 from databus.report.client_queue import ClientPassengerQueueReader
+from databus.report.puller_peek import PullerPeek
 
 
 ##############################
@@ -96,6 +97,12 @@ def _queue_attachment():
 ##############################
 # Misc. pages
 ##############################
+
+@_APP.route("/peek")
+def _peek():
+    global _DISPATCHER # pylint: disable=W0603
+    peek = PullerPeek(_DISPATCHER).peek()
+    return render_template("peek.html", peek=peek)
 
 @_APP.route("/about")
 def _about():
