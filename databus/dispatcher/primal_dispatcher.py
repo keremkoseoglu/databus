@@ -101,14 +101,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             log.append_text("Creating database " + self.ticket.database_module)
             db = self.get_client_database(p_client.id, log) # pylint: disable=C0103
             log.append_text("Creating driver " + self.ticket.driver_module)
-
-            driver = self.ticket.driver_factory.create_driver(
-                self.ticket.driver_module,
-                self.ticket.queue_factory,
-                self.ticket.processor_factory,
-                self.ticket.puller_factory,
-                self.ticket.pusher_factory)
-
+            driver = self.get_driver()
             log.append_text("Creating ticket")
 
             ticket = BusTicket(

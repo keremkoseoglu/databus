@@ -9,6 +9,7 @@ from databus.database.json_db.json_database_arguments import JsonDatabaseArgumen
 from databus.database.primal_factory import PrimalDatabaseFactory
 from databus.dispatcher.observer import DispatcherObserver
 from databus.driver.abstract_factory import AbstractDriverFactory
+from databus.driver.abstract_driver import AbstractDriver
 from databus.driver.primal_factory import PrimalDriverFactory
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.primal_factory import PrimalPassengerFactory
@@ -138,6 +139,16 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
             p_module=self.ticket.database_module,
             p_log=log,
             p_arguments=self.ticket.database_arguments)
+
+    def get_driver(self) -> AbstractDriver:
+        """ Returns a new driver instance """
+        driver = self.ticket.driver_factory.create_driver(
+            self.ticket.driver_module,
+            self.ticket.queue_factory,
+            self.ticket.processor_factory,
+            self.ticket.puller_factory,
+            self.ticket.pusher_factory)
+        return driver
 
     @abstractmethod
     def start(self):
