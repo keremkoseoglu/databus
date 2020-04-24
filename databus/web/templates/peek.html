@@ -37,7 +37,9 @@
                     <td>{{ passenger.external_id }}</td>
                     <td>
                         {% for attachment in passenger.attachments %}
-                        {{ attachment.name }}<br>
+                        <a href="{{ url_for('_peek_attachment') }}?client={{ client_peek_result.client.id }}&puller={{ puller_peek_result.puller_module }}&passenger={{passenger.external_id}}&file={{attachment.name}}">
+                            {{ attachment.name }}
+                        </a><br>
                         {% endfor %}
                     </td>
                 </tr>

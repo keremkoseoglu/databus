@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, send_file
 from waitress import serve
 import databus
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
-from databus.passenger.attachment import AttachmentFormat
+from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.report.client_log import ClientLogReader
 from databus.report.client_queue import ClientPassengerQueueReader
 from databus.report.puller_peek import PullerPeek
@@ -84,13 +84,7 @@ def _queue_attachment():
 
     for att in entry.passenger.attachments:
         if att.name == file:
-            if att.format == AttachmentFormat.binary:
-                return send_file(io.BytesIO(att.binary_content),
-                                 attachment_filename=att.name,
-                                 as_attachment=True)
-            if att.format == AttachmentFormat.text:
-                return att.text_content
-            return "Unexpected attachment format"
+            return _download_attachment(att)
 
     return "File not found"
 
@@ -100,9 +94,30 @@ def _queue_attachment():
 
 @_APP.route("/peek")
 def _peek():
+    # todo peek download
+    # aşağıdaki sayfadan peek download'a linkle çık (queue list gibi)
     global _DISPATCHER # pylint: disable=W0603
     peek = PullerPeek(_DISPATCHER).peek()
     return render_template("peek.html", peek=peek)
+
+@_APP.route("/peek_attachment")
+def _peek_attachment():
+    global _DISPATCHER # pylint: disable=W0603
+    client = request.args.get("client", 0, type=str)
+    puller = request.args.get("puller", 0, type=str)
+    passenger = request.args.get("passenger", 0, type=str)
+    file_name = request.args.get("file", 0, type=str)
+
+    attachment = PullerPeek(_DISPATCHER).get_attachment(
+        p_client_id=client,
+        p_puller_module=puller,
+        p_external_id=passenger,
+        p_attachment_name=file_name)
+
+    if attachment is None:
+        return "File not found"
+
+    return _download_attachment(attachment)
 
 @_APP.route("/about")
 def _about():
@@ -115,3 +130,18 @@ def _about():
                            description=databus.DESCRIPTION,
                            python_version=databus.PYTHON_VERSION,
                            dispatcher=_DISPATCHER)
+
+##############################
+# Utility
+##############################
+
+def _download_attachment(att: Attachment):
+    if att is None:
+        return "File not found"
+    if att.format == AttachmentFormat.binary:
+        return send_file(io.BytesIO(att.binary_content),
+                         attachment_filename=att.name,
+                         as_attachment=True)
+    if att.format == AttachmentFormat.text:
+        return att.text_content
+    return "Unexpected attachment format"
