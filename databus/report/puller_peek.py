@@ -2,7 +2,7 @@
 from typing import List
 from databus.client.client import Client
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
-from databus.passenger.abstract_passenger import AbstractPassenger
+from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
 
 
 class PullerPeekResult: # pylint: disable=R0903
@@ -33,6 +33,44 @@ class PullerPeek: # pylint: disable=R0903
     """ Class to peek into puller inboxes """
     def __init__(self, p_dispatcher: AbstractDispatcher):
         self._dispatcher = p_dispatcher
+
+    def get_attachment(self,
+                       p_client_id: str,
+                       p_puller_module: str,
+                       p_external_id: str,
+                       p_attachment_name: str) -> Attachment:
+        """ Returns an attachment """
+        
+        passenger = self.get_passenger(
+            p_client_id=p_client_id,
+            p_puller_module=p_puller_module,
+            p_external_id=p_external_id)
+
+        if passenger is None:
+            return None
+
+        for attachment in passenger.attachments:
+            if attachment.name == p_attachment_name:
+                return attachment
+
+        return None
+
+    def get_passenger(self,
+                      p_client_id: str,
+                      p_puller_module: str,
+                      p_external_id: str) -> AbstractPassenger:
+        """ Returns the requested passenger """
+        peeks = self.peek()
+        
+        for peek in peeks:
+            if peek.client.id != p_client_id:
+                continue
+            for client_result in peek.results:
+                for passenger in client_result.passengers:
+                    if passenger.puller_module == p_puller_module:
+                        if passenger.external_id == p_external_id:
+                            return passenger
+        return None
 
     def peek(self) -> List[ClientPeekResult]:
         """ Peeks into puller inboxes """
