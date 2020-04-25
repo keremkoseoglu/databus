@@ -55,7 +55,10 @@ class QueryHelper:
         """ Runs a rollback operation via the driver """
         self._driver.rollback()
 
-    def select_all(self, p_table: str, p_where: str = "", p_order_fields: List[str] = None) -> dict:
+    def select_all(self,
+                   p_table: str,
+                   p_where: str = "",
+                   p_order_fields: List[str] = None) -> List[dict]:
         """ Selects & returns all entries from table
         The where condition will be touched - client id will be added automatically
         """

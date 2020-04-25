@@ -321,3 +321,31 @@ AS
          @bin_content,
          @file_format)
 GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE view [databus].[log_worst_message_type] as
+
+select client_id, log_id,
+    case 
+        when message_order = 1 then 'E'
+        when message_order = 2 then 'W'
+        when message_order = 3 then 'I'
+    end as worst_message_type
+from (
+    select client_id, log_id, min(message_order) as message_order
+    from ( 
+        select distinct client_id, log_id, message_type, 
+            case 
+                when message_type = 'E' then 1
+                when message_type = 'W' then 2
+                when message_type = 'I' then 3
+            end as message_order
+        from databus.log_item 
+        ) as x
+    group by client_id, log_id
+) as y
+
+GO

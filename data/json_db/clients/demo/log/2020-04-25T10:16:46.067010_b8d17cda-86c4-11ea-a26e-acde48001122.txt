@@ -1,0 +1,487 @@
+[2020-04-25T10:16:35.498875][databus.dispatcher.primal_dispatcher][info] Dispatching client demo passenger databus.passenger.demo.demo_passenger_1
+[2020-04-25T10:16:35.498875][databus.dispatcher.primal_dispatcher][info] Creating database databus.database.json_db.json_database
+[2020-04-25T10:16:35.498875][databus.dispatcher.primal_dispatcher][info] Creating driver databus.driver.primal_driver
+[2020-04-25T10:16:35.498875][databus.dispatcher.primal_dispatcher][info] Creating ticket
+[2020-04-25T10:16:35.498875][databus.dispatcher.primal_dispatcher][info] Driving
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Driving...
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Deleting old log files
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Deleting logs before 2020-04-24T10:16:46.088915
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Pulling new passengers
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Pulling via databus.puller.demo.demo_puller_1
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Pulling via databus.puller.demo.demo_puller_3
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_3][info] Got passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Writing new passengers to queue
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Appending passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Notifying pullers about seated passengers
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Reading puller notifiable passengers
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/52715b86-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfaee66-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e125a-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eb98c2-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/39658ae2-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7de39e06-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a00458-866e-11ea-8098-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6cd828-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62d47786-866e-11ea-8059-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/540378ee-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7554a354-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075ee606-86ba-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4ec3bc6-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527390d8-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/64a63dda-852f-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/24c41d74-86ba-11ea-8080-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d816e34-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1d4b4c-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/07cbe2cc-86ba-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5715d86-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b570e8ba-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfc655c-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/34f19570-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9237e78-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/913f1de4-84ad-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9dd15c12-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a3f138-86ba-11ea-8060-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a3123dd8-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b3610-866e-11ea-80ad-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6e36d4-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527216ac-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e9176-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a281ae-86ba-11ea-805d-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a0e3ac-86ba-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346c6814-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a223f8-86ba-11ea-805c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ed5ae-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ebe78-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244bc174-86ba-11ea-8073-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/20e9f76e-84b5-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6146e6f4-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a4a761e-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a25b9c-86ba-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/5363e8c6-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e9e346e-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfa4c68-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5c5d064-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bbea5c-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6228aaf8-866e-11ea-8038-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/17b38b94-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bd5858-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171b5b46-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/8140bb4c-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075f783a-86ba-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3967081e-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bb3974-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6c31a4-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3964d29e-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d89fa33a-866e-11ea-8097-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a2355f9e-84a3-11ea-802c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62282a42-866e-11ea-8037-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3afe5882-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166d5628-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b92c2-866e-11ea-80ae-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244b7124-86ba-11ea-8072-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ce49a-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d80e19c-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a49c96c-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9a3281a-866e-11ea-80bb-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1dc130-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6144a918-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a039fa-86ba-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2d8a76-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171ab8c6-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346cd948-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/61456006-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/53645d2c-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eda40a-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ca1da-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/e6428bba-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a14e42-866e-11ea-809b-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/565cd750-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Notifying databus.puller.demo.demo_puller_3 about DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_3][info] Demo puller 3 notified about seated passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d88a48-86c4-11ea-8007-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Notifying databus.puller.demo.demo_puller_1 about DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_1][info] Demo puller 1 notified about seated passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d65d40-86c4-11ea-8003-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Notifying databus.puller.demo.demo_puller_1 about DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.puller.demo.demo_puller_1][info] Demo puller 1 notified about seated passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d6ffca-86c4-11ea-8004-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Reading processable passengers from queue
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Reading processable passengers of type databus.passenger.demo.demo_passenger_1
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/52715b86-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfaee66-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e125a-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eb98c2-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/39658ae2-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7de39e06-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a00458-866e-11ea-8098-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6cd828-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62d47786-866e-11ea-8059-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/540378ee-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7554a354-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075ee606-86ba-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4ec3bc6-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527390d8-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/64a63dda-852f-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/24c41d74-86ba-11ea-8080-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d816e34-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1d4b4c-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/07cbe2cc-86ba-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5715d86-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b570e8ba-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfc655c-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/34f19570-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9237e78-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/913f1de4-84ad-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9dd15c12-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a3f138-86ba-11ea-8060-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a3123dd8-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b3610-866e-11ea-80ad-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6e36d4-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527216ac-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e9176-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a281ae-86ba-11ea-805d-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a0e3ac-86ba-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346c6814-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a223f8-86ba-11ea-805c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ed5ae-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ebe78-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244bc174-86ba-11ea-8073-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/20e9f76e-84b5-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6146e6f4-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a4a761e-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a25b9c-86ba-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/5363e8c6-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e9e346e-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfa4c68-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5c5d064-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bbea5c-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6228aaf8-866e-11ea-8038-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/17b38b94-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bd5858-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171b5b46-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/8140bb4c-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075f783a-86ba-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3967081e-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bb3974-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6c31a4-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3964d29e-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d89fa33a-866e-11ea-8097-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a2355f9e-84a3-11ea-802c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62282a42-866e-11ea-8037-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3afe5882-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166d5628-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b92c2-866e-11ea-80ae-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244b7124-86ba-11ea-8072-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ce49a-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d80e19c-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a49c96c-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9a3281a-866e-11ea-80bb-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1dc130-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6144a918-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a039fa-86ba-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2d8a76-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171ab8c6-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346cd948-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/61456006-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/53645d2c-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eda40a-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ca1da-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/e6428bba-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a14e42-866e-11ea-809b-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/565cd750-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing unprocessed passengers
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) via databus.processor.demo.demo_processor_1
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d88a48-86c4-11ea-8007-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) via databus.processor.demo.demo_processor_2
+[2020-04-25T10:16:35.498875][databus.processor.demo.demo_processor_2][warning] Doing nothing
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d88a48-86c4-11ea-8007-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) via databus.processor.demo.demo_processor_1
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d65d40-86c4-11ea-8003-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) via databus.processor.demo.demo_processor_2
+[2020-04-25T10:16:35.498875][databus.processor.demo.demo_processor_2][warning] Doing nothing
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d65d40-86c4-11ea-8003-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) via databus.processor.demo.demo_processor_1
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d6ffca-86c4-11ea-8004-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) via databus.processor.demo.demo_processor_2
+[2020-04-25T10:16:35.498875][databus.processor.demo.demo_processor_2][warning] Doing nothing
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d6ffca-86c4-11ea-8004-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Reading deliverable passengers from queue
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Reading deliverable passengers of type databus.passenger.demo.demo_passenger_1
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/52715b86-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfaee66-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e125a-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eb98c2-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/39658ae2-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7de39e06-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a00458-866e-11ea-8098-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6cd828-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62d47786-866e-11ea-8059-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/540378ee-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7554a354-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075ee606-86ba-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4ec3bc6-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527390d8-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/64a63dda-852f-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/24c41d74-86ba-11ea-8080-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d816e34-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1d4b4c-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/07cbe2cc-86ba-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5715d86-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b570e8ba-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfc655c-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/34f19570-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9237e78-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/913f1de4-84ad-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9dd15c12-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a3f138-86ba-11ea-8060-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a3123dd8-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b3610-866e-11ea-80ad-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6e36d4-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/527216ac-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d9e9176-866e-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a281ae-86ba-11ea-805d-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a0e3ac-86ba-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346c6814-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/23a223f8-86ba-11ea-805c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ed5ae-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ebe78-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244bc174-86ba-11ea-8073-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/20e9f76e-84b5-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6146e6f4-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a4a761e-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a25b9c-86ba-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/5363e8c6-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e9e346e-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9cfa4c68-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b5c5d064-866e-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bbea5c-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6228aaf8-866e-11ea-8038-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/17b38b94-86bb-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bd5858-86bb-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171b5b46-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/8140bb4c-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/075f783a-86ba-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3967081e-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/33bb3974-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0d6c31a4-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3964d29e-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d89fa33a-866e-11ea-8097-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/a2355f9e-84a3-11ea-802c-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/62282a42-866e-11ea-8037-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3afe5882-86c4-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166d5628-86bb-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading attachment from disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d93b92c2-866e-11ea-80ae-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/244b7124-86ba-11ea-8072-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2ce49a-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/9d80e19c-866e-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/3a49c96c-86c4-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d9a3281a-866e-11ea-80bb-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/0e1dc130-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/6144a918-866e-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/06a039fa-86ba-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/7d2d8a76-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/171ab8c6-86bb-11ea-8019-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/346cd948-86bb-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/61456006-866e-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/53645d2c-86c4-11ea-801a-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b4eda40a-866e-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/166ca1da-86bb-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/e6428bba-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/d8a14e42-866e-11ea-809b-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/565cd750-8531-11ea-8027-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Reading passenger file data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Undelivered passenger: DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Undelivered passenger: DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Undelivered passenger: DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Pushing deliverable passengers
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) via databus.pusher.demo.demo_pusher_1
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_1][info] Pushed passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d88a48-86c4-11ea-8007-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) via databus.pusher.demo.demo_pusher_2
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_2][info] Pushed passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d88a48-86c4-11ea-8007-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_3_1 (b8d88a48-86c4-11ea-8007-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/attachments/puller3_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d88a48-86c4-11ea-8007-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) via databus.pusher.demo.demo_pusher_1
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_1][info] Pushed passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d65d40-86c4-11ea-8003-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) via databus.pusher.demo.demo_pusher_2
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_2][info] Pushed passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d65d40-86c4-11ea-8003-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_1 (b8d65d40-86c4-11ea-8003-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing text attachment to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/attachments/puller1_file1.txt
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d65d40-86c4-11ea-8003-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) via databus.pusher.demo.demo_pusher_1
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_1][info] Pushed passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d6ffca-86c4-11ea-8004-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Delivering DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) via databus.pusher.demo.demo_pusher_2
+[2020-04-25T10:16:35.498875][databus.pusher.demo.demo_pusher_2][info] Pushed passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.pqueue.primal_queue][info] Updating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Updating passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Deleting passenger directory b8d6ffca-86c4-11ea-8004-acde48001122
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Adding passenger DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122) to queue
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Validating passenger status for DEMO_SYSTEM - ID_1_2 (b8d6ffca-86c4-11ea-8004-acde48001122)
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_queue][info] Writing passenger file to disk: data/json_db/clients/demo/pqueue/b8d6ffca-86c4-11ea-8004-acde48001122/passenger.json
+[2020-04-25T10:16:35.498875][databus.driver.primal_driver][info] Drive complete
+[2020-04-25T10:16:35.498875][databus.database.json_db.json_database][info] Writing log to disk

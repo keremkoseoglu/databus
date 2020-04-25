@@ -2,8 +2,8 @@
 from datetime import datetime
 from typing import List
 from databus.client.client import Client
-from databus.client.log import Log
-from databus.database.abstract_database import AbstractDatabase
+from databus.client.log import Log, MessageType
+from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.database.json_db.json_client import JsonClient
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.json_db.json_log import JsonLog
@@ -55,9 +55,24 @@ class JsonDatabase(AbstractDatabase):
         """
         return self._json_log.get_log_file_content(self.client_id, p_log_id)
 
-    def get_log_list(self) -> List[str]:
+    def get_log_list(self) -> List[LogListItem]:
         """ Returns log entries """
-        return self._json_log.get_log_file_list(self.client_id)
+        output = []
+        b_warning = "[" + MessageType.warning.name + "]"
+        b_error = "[" + MessageType.error.name + "]"
+
+        log_ids = self._json_log.get_log_file_list(self.client_id)
+        for log_id in log_ids:
+            output_item = LogListItem(p_log_id=log_id)
+            log_content = self.get_log_content(log_id)
+            if b_error in log_content:
+                output_item.worst_message_type = MessageType.error
+            elif b_warning in log_content:
+                output_item.worst_message_type = MessageType.warning
+            else:
+                output_item.worst_message_type = MessageType.info
+            output.append(output_item)
+        return output
 
     def get_passenger_queue_entries(self, # pylint: disable=R0913
                                     p_passenger_module: str = None,

@@ -8,7 +8,7 @@ from datetime import datetime
 from typing import List
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
-from databus.database.abstract_database import AbstractDatabase
+from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
 from databus.pqueue.queue_status import \
@@ -102,12 +102,23 @@ class SqlDatabase(AbstractDatabase):
 
         return output
 
-    def get_log_list(self) -> List[str]:
+    def get_log_list(self) -> List[LogListItem]:
         """ Returns log entries """
         output = []
         log_list = self._query_helper.select_all("log_head")
+
+        worst_msg_types = self._query_helper.select_all("log_worst_message_type")
+
         for log_entry in log_list:
-            output.append(str(log_entry["created_on"]) + SqlDatabase._LOG_ID_SEPARATOR + log_entry["log_id"]) # pylint: disable= C0301
+            output_item = LogListItem()
+            output_item.log_id = str(log_entry["created_on"]) + SqlDatabase._LOG_ID_SEPARATOR + log_entry["log_id"] # pylint: disable= C0301
+
+            for worst_msg_type in worst_msg_types:
+                if worst_msg_type["log_id"] == output_item.log_id:
+                    output_item.worst_message_type = worst_msg_type["worst_message_type"]
+                    break
+
+            output.append(output_item)
         return output
 
     def get_passenger_queue_entries(self, # pylint: disable=R0913
