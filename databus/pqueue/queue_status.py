@@ -62,6 +62,13 @@ class PassengerQueueStatus:
                 return False
         return True
 
+    @property
+    def status(self) -> QueueStatus:
+        """ Returns the overall status of the item """
+        if self.puller_notified and self.all_processors_complete and self.all_pushers_complete:
+            return QueueStatus.complete
+        return QueueStatus.incomplete
+
     def set_all_processor_statuses(self, p_status: QueueStatus):
         """ Updates statuses of all processors """
         for processor_status in self.processor_statuses:
