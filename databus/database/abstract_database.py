@@ -3,10 +3,19 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 from databus.client.client import Client
-from databus.client.log import Log
+from databus.client.log import Log, MessageType
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.queue_status import PassengerQueueStatus, QueueStatus
+
+
+class LogListItem: # pylint: disable=R0903
+    """ A structure for a log list item """
+    def __init__(self,
+                 p_log_id: str = "",
+                 p_worst_message_type: MessageType = MessageType.info):
+        self.log_id = p_log_id
+        self.worst_message_type = p_worst_message_type
 
 
 class AbstractDatabase(ABC):
@@ -45,7 +54,7 @@ class AbstractDatabase(ABC):
         """
 
     @abstractmethod
-    def get_log_list(self) -> List[str]:
+    def get_log_list(self) -> List[LogListItem]:
         """ Returns a list of log files """
 
     @abstractmethod

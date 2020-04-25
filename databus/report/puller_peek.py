@@ -40,7 +40,6 @@ class PullerPeek: # pylint: disable=R0903
                        p_external_id: str,
                        p_attachment_name: str) -> Attachment:
         """ Returns an attachment """
-        
         passenger = self.get_passenger(
             p_client_id=p_client_id,
             p_puller_module=p_puller_module,
@@ -61,7 +60,7 @@ class PullerPeek: # pylint: disable=R0903
                       p_external_id: str) -> AbstractPassenger:
         """ Returns the requested passenger """
         peeks = self.peek()
-        
+
         for peek in peeks:
             if peek.client.id != p_client_id:
                 continue

@@ -1,12 +1,13 @@
 """ Client Log reporting """
 from typing import List
 from databus.client.client import Client
+from databus.database.abstract_database import LogListItem
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 
 
 class ClientLog: # pylint: disable=R0903
     """ Defines a client and all log files present """
-    def __init__(self, p_client: Client = None, p_logs: List[str] = None):
+    def __init__(self, p_client: Client = None, p_logs: List[LogListItem] = None):
         if p_client is None:
             self.client = Client()
         else:
@@ -36,6 +37,6 @@ class ClientLogReader:
         for client in self._dispatcher.all_clients:
             client_database = self._dispatcher.get_client_database(client.id)
             logs = client_database.get_log_list()
-            logs.sort(reverse=True)
+            logs.sort(key=lambda r: r.log_id, reverse=True)
             output.append(ClientLog(client, logs))
         return output

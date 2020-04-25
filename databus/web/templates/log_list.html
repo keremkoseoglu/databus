@@ -20,13 +20,23 @@
     <table id="logs" class="table table-hover">
         <thead>
         <tr>
+            <td>Message</td>
             <td>File</td>
         </tr>
         </thead>
         <tbody>
             {% for log_file in entry.logs %}
             <tr>
-                <td><a href="{{ url_for('_log_display') }}?client={{ entry.client.id }}&log={{log_file}}">{{log_file}}</a></td>
+                <td>
+                    {% if log_file.worst_message_type.name == "error" %}
+                    <span class="badge badge-danger">Error</span>
+                    {% elif log_file.worst_message_type.name == "warning" %}
+                    <span class="badge badge-warning">Warning</span>
+                    {% else %}
+                    <span class="badge badge-success">Info</span>
+                    {% endif %}
+                </td>
+                <td><a href="{{ url_for('_log_display') }}?client={{ entry.client.id }}&log={{log_file.log_id}}">{{log_file.log_id}}</a></td>
             </tr>
             {% endfor %}
         </tbody>

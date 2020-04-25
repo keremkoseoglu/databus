@@ -94,8 +94,6 @@ def _queue_attachment():
 
 @_APP.route("/peek")
 def _peek():
-    # todo peek download
-    # aşağıdaki sayfadan peek download'a linkle çık (queue list gibi)
     global _DISPATCHER # pylint: disable=W0603
     peek = PullerPeek(_DISPATCHER).peek()
     return render_template("peek.html", peek=peek)
