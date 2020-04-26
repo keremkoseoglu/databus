@@ -36,7 +36,7 @@ class ClientPassengerQueueReader:
     def get_client_passenger_queue_entry(self,
                                          p_client_id: str,
                                          p_internal_id: str
-                                        ) -> List[ClientPassengerQueue]:
+                                        ) -> PassengerQueueStatus:
         """ Returns a list of client - passenger - queue files """
         client_database = self._dispatcher.get_client_database(p_client_id)
         return client_database.get_passenger_queue_entry(p_internal_id)

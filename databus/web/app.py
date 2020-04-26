@@ -3,11 +3,13 @@ This mini web interfaces is based on Flask.
 Theme help: https://bootswatch.com/darkly/
 """
 import io
+import uuid
 from flask import Flask, redirect, render_template, request, send_file, url_for
 from waitress import serve
 import databus
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.passenger.attachment import Attachment, AttachmentFormat
+from databus.pqueue.queue_status import QueueStatus
 from databus.report.client_log import ClientLogReader
 from databus.report.client_queue import ClientPassengerQueueReader
 from databus.report.puller_peek import PullerPeek
@@ -88,6 +90,46 @@ def _queue_attachment():
 
     return "File not found"
 
+@_APP.route("/queue_status_update")
+def _queue_status_update():
+    global _DISPATCHER # pylint: disable=W0603
+    client = request.args.get("client", "", type=str)
+    passenger = request.args.get("passenger", "", type=str)
+    entry = ClientPassengerQueueReader(_DISPATCHER).get_client_passenger_queue_entry(client, passenger) # pylint: disable=C0301
+
+    puller_notified = request.args.get("puller_notified", "", type=str)
+    if puller_notified == "true":
+        entry.puller_notified = True
+    elif puller_notified == "false":
+        entry.puller_notified = False
+
+    processor_module = request.args.get("processor", "", type=str)
+    if processor_module != "":
+        processed = request.args.get("processed", "", type=str) == "true"
+        for processor_status in entry.processor_statuses:
+            if processor_status.processor_module == processor_module:
+                if processed:
+                    processor_status.status = QueueStatus.complete
+                else:
+                    processor_status.status = QueueStatus.incomplete
+
+    pusher_module = request.args.get("pusher", "", type=str)
+    if pusher_module != "":
+        processed = request.args.get("pushed", "", type=str) == "true"
+        for pusher_status in entry.pusher_statuses:
+            if pusher_status.pusher_module == pusher_module:
+                if processed:
+                    pusher_status.status = QueueStatus.complete
+                else:
+                    pusher_status.status = QueueStatus.incomplete
+
+    _DISPATCHER.get_client_database(client).update_queue_status(entry)
+
+    redirect_url = url_for("_queue_display")
+    redirect_url += "?client=" + client + "&passenger=" + passenger
+    redirect_url += _get_cache_buster
+    return redirect(redirect_url, code=302)
+
 ##############################
 # Passengers
 ##############################
@@ -108,7 +150,7 @@ def _passenger_expedite():
     client = request.args.get("client", 0, type=str)
     passenger = request.args.get("passenger", 0, type=str)
     _DISPATCHER.expedite_client_passenger(client, passenger)
-    return redirect(url_for("_passenger_list") + "?expedited=true", code=302)
+    return redirect(url_for("_passenger_list") + "?expedited=true" + _get_cache_buster(), code=302)
 
 ##############################
 # Misc. pages
@@ -165,3 +207,6 @@ def _download_attachment(att: Attachment):
     if att.format == AttachmentFormat.text:
         return att.text_content
     return "Unexpected attachment format"
+
+def _get_cache_buster() -> str:
+    return "&cache_buster=" + str(uuid.uuid1())
