@@ -297,11 +297,15 @@ class JsonQueue:
         return output
 
     def _get_passenger_file_as_json(self, p_internal_id: str) -> dict:
-        passenger_file_path = self._get_passenger_file_path(p_internal_id)
-        self._log.append_text("Reading passenger file " + passenger_file_path)
-        with open(passenger_file_path) as json_file:
-            passengers_json = json.load(json_file)
-        return passengers_json
+        try:
+            passenger_file_path = self._get_passenger_file_path(p_internal_id)
+            self._log.append_text("Reading passenger file " + passenger_file_path)
+            with open(passenger_file_path) as json_file:
+                passengers_json = json.load(json_file)
+            return passengers_json
+        except Exception as error: # pylint: disable=W0703
+            print(str(error))
+            return {}
 
     def _get_passenger_file_path(self, p_internal_id: str) -> str:
         return path.join(self._get_queue_root_path(), p_internal_id, self._args.queue_passenger)

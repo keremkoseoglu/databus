@@ -126,6 +126,10 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
 
         return dummy_db.get_clients()
 
+    @abstractmethod
+    def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
+        """ Prioritizes the passenger in the next cycle """
+
     def get_client_database(self, p_client_id: str, p_log: Log = None) -> AbstractDatabase:
         """ Returns a database instance for the given client """
         if p_log is None:

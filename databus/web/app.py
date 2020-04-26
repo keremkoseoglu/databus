@@ -3,7 +3,7 @@ This mini web interfaces is based on Flask.
 Theme help: https://bootswatch.com/darkly/
 """
 import io
-from flask import Flask, render_template, request, send_file
+from flask import Flask, redirect, render_template, request, send_file, url_for
 from waitress import serve
 import databus
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
@@ -87,6 +87,28 @@ def _queue_attachment():
             return _download_attachment(att)
 
     return "File not found"
+
+##############################
+# Passengers
+##############################
+
+@_APP.route("/passenger_list")
+def _passenger_list():
+    global _DISPATCHER # pylint: disable=W0603
+    clients = _DISPATCHER.all_clients
+    try:
+        expedited = request.args.get("expedited", 0, type=str) == "true"
+    except Exception: # pylint: disable=W0703
+        expedited = False
+    return render_template("passenger_list.html", clients=clients, expedited=expedited)
+
+@_APP.route("/passenger_expedite")
+def _passenger_expedite():
+    global _DISPATCHER # pylint: disable=W0603
+    client = request.args.get("client", 0, type=str)
+    passenger = request.args.get("passenger", 0, type=str)
+    _DISPATCHER.expedite_client_passenger(client, passenger)
+    return redirect(url_for("_passenger_list") + "?expedited=true", code=302)
 
 ##############################
 # Misc. pages
