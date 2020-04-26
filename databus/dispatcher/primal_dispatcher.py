@@ -13,6 +13,8 @@ from databus.web import app
 
 class ClientPassengerTickCount:
     """ Keeps track of passenger ticks """
+    _INFINITE_TICK = 999999999
+
     def __init__(self):
         self._ticks = {}
 
@@ -27,6 +29,13 @@ class ClientPassengerTickCount:
         for client in p_clients:
             for passenger in client.passengers:
                 self.collect(client.id, passenger.name)
+
+    def expedite_client_passenger(self, p_client_id: str, p_passenger_id: str):
+        """ Prioritizes the passenger in the next cycle """
+        key = ClientPassengerTickCount._build_key(p_client_id, p_passenger_id)
+        if key not in self._ticks:
+            return
+        self._ticks[key] = ClientPassengerTickCount._INFINITE_TICK
 
     def get_tick(self, p_client_id: str, p_passenger_id: str):
         """ Returns the current tick count """
@@ -64,6 +73,10 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._dispatch_state = DispatchState()
         self._next_dispatch_time = datetime.now()
         self._tick_count = ClientPassengerTickCount()
+
+    def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
+        """ Prioritizes the passenger in the next cycle """
+        self._tick_count.expedite_client_passenger(p_client_id, p_passenger_module)
 
     def start(self):
         """ Starts the dispatcher timer and web server """
