@@ -127,7 +127,7 @@ def _queue_status_update():
 
     redirect_url = url_for("_queue_display")
     redirect_url += "?client=" + client + "&passenger=" + passenger
-    redirect_url += _get_cache_buster
+    redirect_url += _get_cache_buster()
     return redirect(redirect_url, code=302)
 
 ##############################
