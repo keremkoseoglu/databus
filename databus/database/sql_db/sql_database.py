@@ -350,7 +350,7 @@ class SqlDatabase(AbstractDatabase):
             queue_where = "queue_id = '" + queue_row["queue_id"] + "'"
 
             processor_list = self._query_helper.select_all("queue_processor", queue_where, p_order_fields=["exe_order"]) # pylint: disable= C0301
-            if p_processor_status is not None:
+            if p_processor_status is not None and len(processor_list) > 0:
                 for processor_row in processor_list:
                     if SqlToDatabus.queue_status(processor_row["status"]) != p_processor_status:
                         queue_row_is_eligible = False
@@ -359,7 +359,7 @@ class SqlDatabase(AbstractDatabase):
                 continue
 
             pusher_list = self._query_helper.select_all("queue_pusher", queue_where, p_order_fields=["exe_order"]) # pylint: disable= C0301
-            if p_pusher_status is not None:
+            if p_pusher_status is not None and len(pusher_list) > 0:
                 for pusher_row in pusher_list:
                     if SqlToDatabus.queue_status(pusher_row["status"]) != p_pusher_status:
                         queue_row_is_eligible = False

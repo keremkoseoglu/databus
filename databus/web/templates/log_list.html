@@ -42,7 +42,14 @@
         </tbody>
     </table> 
 
+    <form action="{{ url_for('_log_purge') }}">
+        <input type="hidden" id="client" name="client" value="{{ entry.client.id }}">
+        <input type="submit" class="btn btn-danger" value="Purge" />
+    </form>
+
 {% endfor %}
+
+
 
 {% endblock %}
 
