@@ -99,7 +99,7 @@ class JsonQueue:
             passenger_json = self._get_passenger_file_as_json(passenger_directory)
             pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"]) # pylint: disable=C0301
 
-            if p_pusher_status is not None:
+            if p_pusher_status is not None and len(passenger_json["pusher_statuses"]) > 0:
                 a_pusher_found = False
                 for pusher_status in passenger_json["pusher_statuses"]:
                     if pusher_status["status"] == p_pusher_status.name:
@@ -108,7 +108,7 @@ class JsonQueue:
                 if not a_pusher_found:
                     continue
 
-            if p_processor_status is not None:
+            if p_processor_status is not None and len(passenger_json["processor_statuses"]) > 0:
                 a_processor_found = False
                 for processor_status in passenger_json["processor_statuses"]:
                     if processor_status["status"] == p_processor_status.name:

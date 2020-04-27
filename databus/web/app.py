@@ -2,6 +2,7 @@
 This mini web interfaces is based on Flask.
 Theme help: https://bootswatch.com/darkly/
 """
+from datetime import datetime
 import io
 import uuid
 from flask import Flask, redirect, render_template, request, send_file, url_for
@@ -57,6 +58,13 @@ def _log_display():
     file_content = ClientLogReader(_DISPATCHER).get_client_log_content(client_id, log_file).replace("\n", "<br><br>") # pylint: disable=C0301
     return file_content
 
+@_APP.route("/log_purge")
+def _log_purge():
+    global _DISPATCHER # pylint: disable=W0603
+    client_id = request.args.get("client", 0, type=str)
+    _DISPATCHER.get_client_database(client_id).delete_old_logs(datetime.now())
+    return redirect(url_for("_log_list"), code=302)
+
 ##############################
 # Queue pages
 ##############################
@@ -66,7 +74,6 @@ def _queue_list():
     global _DISPATCHER # pylint: disable=W0603
     entries = ClientPassengerQueueReader(_DISPATCHER).get_client_passenger_queue_list()
     return render_template("queue_list.html", entries=entries)
-
 
 @_APP.route("/queue_display")
 def _queue_display():
@@ -129,6 +136,22 @@ def _queue_status_update():
     redirect_url += "?client=" + client + "&passenger=" + passenger
     redirect_url += _get_cache_buster()
     return redirect(redirect_url, code=302)
+
+@_APP.route("/queue_purge")
+def _queue_purge():
+    global _DISPATCHER # pylint: disable=W0603
+    client_id = request.args.get("client", 0, type=str)
+    passenger_module = request.args.get("passenger", 0, type=str)
+    client_db = _DISPATCHER.get_client_database(client_id)
+    client_passenger = client_db.client.get_client_passenger(passenger_module)
+
+    queue = _DISPATCHER.ticket.queue_factory.create_queue(
+        client_passenger.queue_module,
+        client_db,
+        client_db.log)
+
+    queue.delete_completed_passengers(passenger_module, datetime.now())
+    return redirect(url_for("_queue_list"), code=302)
 
 ##############################
 # Passengers

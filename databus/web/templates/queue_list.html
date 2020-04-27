@@ -45,6 +45,13 @@
         </tbody>
     </table> 
 
+    <form action="{{ url_for('_queue_purge') }}">
+        <input type="hidden" id="client" name="client" value="{{ entry.client.id }}">
+        <input type="hidden" id="passenger" name="passenger" value="{{ entry.client_passenger.name }}">
+        <input type="submit" class="btn btn-danger" value="Purge" />
+    </form>
+    <br><br>
+
 {% endfor %}
 
 {% endblock %} 
