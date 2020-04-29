@@ -30,11 +30,13 @@ class ClientLogReader:
         log_content = client_db.get_log_content(p_log_id)
         return log_content
 
-    def get_client_log_list(self) -> List[ClientLog]:
+    def get_client_log_list(self, p_client_id: str = None) -> List[ClientLog]:
         """ Returns a list of client - log files """
         output = []
 
         for client in self._dispatcher.all_clients:
+            if p_client_id is not None and client.id != p_client_id:
+                continue
             client_database = self._dispatcher.get_client_database(client.id)
             logs = client_database.get_log_list()
             logs.sort(key=lambda r: r.log_id, reverse=True)

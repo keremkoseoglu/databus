@@ -1,0 +1,10 @@
+{
+  "log_life_span": 1,
+  "passengers": [],
+  "users": [
+    {
+      "username": "root",
+      "password": "root"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import List
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
+from databus.client.user import Credential, User
 from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
@@ -275,7 +276,7 @@ class SqlDatabase(AbstractDatabase):
     def _get_client(self, p_id: str) -> Client:
         return self._select_from_client(p_id=p_id)[0]
 
-    def _select_from_client(self, p_id: str = None) -> List[Client]:
+    def _select_from_client(self, p_id: str = None) -> List[Client]: # pylint: disable=R0914
         output = []
         client_list = []
         passenger_list = []
@@ -289,12 +290,14 @@ class SqlDatabase(AbstractDatabase):
             puller_list = self._query_helper.select_all_no_where("puller", p_order_by="exe_order")
             processor_list = self._query_helper.select_all_no_where("processor", p_order_by="exe_order") # pylint: disable= C0301
             pusher_list = self._query_helper.select_all_no_where("pusher", p_order_by="exe_order")
+            user_list = self._query_helper.select_all_no_where("webuser")
         else:
             client_list = self._query_helper.select_all("client")
             passenger_list = self._query_helper.select_all("passenger", p_order_fields=["exe_order"]) # pylint: disable= C0301
             puller_list = self._query_helper.select_all("puller", p_order_fields=["exe_order"])
             processor_list = self._query_helper.select_all("processor", p_order_fields=["exe_order"]) # pylint: disable= C0301
             pusher_list = self._query_helper.select_all("pusher", p_order_fields=["exe_order"])
+            user_list = self._query_helper.select_all("webuser")
 
         for client_row in client_list:
             client = Client(p_id=client_row["client_id"],
@@ -319,6 +322,14 @@ class SqlDatabase(AbstractDatabase):
                     if SqlDatabase._module_belongs_to_passenger(pusher_row, passenger_row):
                         client_passenger.pusher_modules.append(pusher_row["pusher_module"])
                 client.passengers.append(client_passenger)
+
+            for user_row in user_list:
+                credential = Credential(
+                    username=user_row["username"],
+                    password=user_row["password"])
+                user = User(credential)
+                client.users.append(user)
+
             output.append(client)
         return output
 

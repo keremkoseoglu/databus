@@ -41,10 +41,14 @@ class ClientPassengerQueueReader:
         client_database = self._dispatcher.get_client_database(p_client_id)
         return client_database.get_passenger_queue_entry(p_internal_id)
 
-    def get_client_passenger_queue_list(self) -> List[ClientPassengerQueue]:
+    def get_client_passenger_queue_list(self,
+                                        p_client_id: str = None
+                                       ) -> List[ClientPassengerQueue]:
         """ Returns a list of client - passenger - queue files """
         output = []
         for client in self._dispatcher.all_clients:
+            if p_client_id is not None and client.id != p_client_id:
+                continue
             client_database = self._dispatcher.get_client_database(client.id)
             for client_passenger in client.passengers:
                 queue_entries = client_database.get_passenger_queue_entries(p_passenger_module=client_passenger.name) # pylint: disable=C0301
