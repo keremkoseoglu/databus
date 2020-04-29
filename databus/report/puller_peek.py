@@ -71,12 +71,14 @@ class PullerPeek: # pylint: disable=R0903
                             return passenger
         return None
 
-    def peek(self) -> List[ClientPeekResult]:
+    def peek(self, p_client_id: str = None) -> List[ClientPeekResult]:
         """ Peeks into puller inboxes """
         output = []
         driver = self._dispatcher.get_driver()
 
         for client in self._dispatcher.all_clients:
+            if p_client_id is not None and p_client_id != client.id:
+                continue
             client_peek = ClientPeekResult(p_client=client)
             for client_passenger in client.passengers:
                 for puller_module in client_passenger.puller_modules:

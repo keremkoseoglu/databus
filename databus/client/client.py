@@ -3,6 +3,7 @@ import datetime
 from enum import Enum
 from typing import List
 from databus.client.client_passenger import ClientPassenger
+from databus.client.user import Credential, User
 
 
 class ClientError(Exception):
@@ -12,6 +13,7 @@ class ClientError(Exception):
         """ Client error code """
         client_not_found = 1
         parameter_missing = 2
+        authentication_error = 3
 
     def __init__(self, p_error_code: ErrorCode, p_client_id: str = None):
         super().__init__()
@@ -29,6 +31,8 @@ class ClientError(Exception):
             return "Client " + self.client_id + " not found"
         if self.error_code == ClientError.ErrorCode.parameter_missing:
             return "Parameter missing, can't find client"
+        if self.error_code == ClientError.ErrorCode.authentication_error:
+            return "Invalid username or password"
         return "Client error"
 
 
@@ -66,10 +70,14 @@ class ClientPassengerError(Exception):
 
 class Client:
     """ Client class """
+
+    ROOT = "root"
+
     def __init__(self,
                  p_id: str = "Undefined",
                  p_passengers: List[ClientPassenger] = None,
-                 p_log_life_span: int = 0):
+                 p_log_life_span: int = 0,
+                 p_users: List[User] = None):
         self.id = p_id  # pylint: disable=C0103
         self.log_life_span = p_log_life_span
 
@@ -78,10 +86,31 @@ class Client:
         else:
             self.passengers = p_passengers
 
+        if p_users is None:
+            self.users = []
+        else:
+            self.users = p_users
+
+    @property
+    def authorization_active(self) -> bool:
+        """ Is authorization active or not? """
+        return len(self.users) > 0
+
     @property
     def log_expiry_date(self) -> datetime.datetime:
         """ Log expiry date """
         return datetime.datetime.now() - datetime.timedelta(self.log_life_span)
+
+    def authenticate(self, credential: Credential) -> User:
+        """ Authenticates a user """
+        if not self.authorization_active:
+            return User()
+        for user in self.users:
+            if user.authenticate(credential):
+                return user
+        raise ClientPassengerError(
+            ClientError.ErrorCode.authentication_error,
+            self.id)
 
     def get_client_passenger(self, p_name: str) -> ClientPassenger:
         """ Returns the requested client passenger """

@@ -4,12 +4,11 @@ from os import path, scandir
 from typing import List
 from databus import get_root_path
 from databus.client.client import Client, ClientError, ClientPassenger
+from databus.client.user import User, Credential
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
-
 
 class JsonClient:
     """ JSON database implementation for client """
-
     def __init__(self, args: JsonDatabaseArguments):
         self._args = args
 
@@ -47,9 +46,20 @@ class JsonClient:
                         p_queue_life_span=passenger_json["queue_life_span"])
                     client_passengers.append(client_passenger)
 
-                client_obj = Client(p_id=client_directory,
-                                    p_passengers=client_passengers,
-                                    p_log_life_span=config_json["log_life_span"])
+                client_users = []
+                if "users" in config_json:
+                    for user_json in config_json["users"]:
+                        credential = Credential(
+                            username=user_json["username"],
+                            password=user_json["password"])
+                        user = User(credential=credential)
+                        client_users.append(user)
+
+                client_obj = Client(
+                    p_id=client_directory,
+                    p_passengers=client_passengers,
+                    p_log_life_span=config_json["log_life_span"],
+                    p_users=client_users)
 
                 output.append(client_obj)
         return output

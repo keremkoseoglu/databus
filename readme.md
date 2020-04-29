@@ -6,11 +6,12 @@ Running a databus instance is really easy!
 
 ```
 from databus.dispatcher.primal_factory import PrimalDispatcherFactory
-
 PrimalDispatcherFactory().create_dispatcher().start()
 ```
 
 This will start Databus with the default configuration, which uses json_db. Visit http://127.0.0.1:5000 to see what it's been doing.
+
+The default demo account is demo:demo. The default admin account is root:root. On a live system, you are advised to change this in your database.
 
 To start Databus with a custom configuration, you can provide a dispatcher ticket. Here is an example.
 
@@ -55,6 +56,8 @@ To add a new client (called abc);
   - Create the subfolders and config file just like you see in /data/json_db/clients_demo
 - sql_db:
   - Fill the SQL Server tables just like the 'demo' client
+
+If a client doesn't have any users defined, this means that the authentication is not active. The web interface will allow any login for that client.
 
 ### Dispatcher
 This is the main engine of Databus. When you start up the dispatcher, the program is running. It is responsible of scheduling & invoking drivers.

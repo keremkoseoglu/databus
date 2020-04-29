@@ -349,3 +349,25 @@ from (
 ) as y
 
 GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [databus].[webuser](
+	[client_id] [varchar](10) NOT NULL,
+	[username] [varchar](20) NOT NULL,
+	[password] [nvarchar](20) NULL
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+ALTER TABLE [databus].[webuser] ADD  CONSTRAINT [user_ok] PRIMARY KEY CLUSTERED 
+(
+	[client_id] ASC,
+	[username] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [databus].[webuser]  WITH CHECK ADD FOREIGN KEY([client_id])
+REFERENCES [databus].[client] ([client_id])
+GO

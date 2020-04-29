@@ -28,5 +28,11 @@
       "sync_frequency": 1,
       "queue_life_span": 1
     }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "password": "demo"
+    }
   ]
 }
