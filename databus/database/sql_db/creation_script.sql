@@ -357,7 +357,8 @@ GO
 CREATE TABLE [databus].[webuser](
 	[client_id] [varchar](10) NOT NULL,
 	[username] [varchar](20) NOT NULL,
-	[password] [nvarchar](20) NULL
+	[password] [nvarchar](20) NULL,
+	[token] [nvarchar](50) NULL
 ) ON [PRIMARY]
 GO
 SET ANSI_PADDING ON
@@ -371,3 +372,4 @@ GO
 ALTER TABLE [databus].[webuser]  WITH CHECK ADD FOREIGN KEY([client_id])
 REFERENCES [databus].[client] ([client_id])
 GO
+

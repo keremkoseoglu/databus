@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List
 from databus.client.client import Client
 from databus.client.log import Log, MessageType
+from databus.client.user import Credential
 from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.database.json_db.json_client import JsonClient
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
@@ -109,6 +110,10 @@ class JsonDatabase(AbstractDatabase):
         """ Updates queue files on the disk """
         self.log.append_text("Updating passenger " + p_status.passenger.id_text)
         self._json_queue.update_passenger(p_status)
+
+    def update_user_credential(self, p_credential: Credential):
+        """ Updates the credential of the given user """
+        self._json_client.update_user_credential(self.client_id, p_credential)
 
     def _get_client(self, p_id: str) -> Client:
         return self._json_client.get_single(p_id)

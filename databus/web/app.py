@@ -5,7 +5,7 @@ Theme help: https://bootswatch.com/darkly/
 from datetime import datetime
 import io
 import uuid
-from flask import Flask, redirect, render_template, request, send_file, session, url_for
+from flask import Flask, make_response, redirect, render_template, request, send_file, session, url_for # pylint: disable=C0301
 from waitress import serve
 import databus
 from databus.client.client import Client, Credential
@@ -14,6 +14,7 @@ from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.pqueue.queue_status import QueueStatus
 from databus.report.client_log import ClientLogReader
 from databus.report.client_queue import ClientPassengerQueueReader
+from databus.report.client_user import ClientUserFinder
 from databus.report.puller_peek import PullerPeek
 
 ##############################
@@ -319,14 +320,26 @@ def _login_attempt():
         client_id = request.form["client_id"]
         username = request.form["username"]
         password = request.form["password"]
+        remember = False
+        if "remember" in request.form:
+            if request.form["remember"] == "X":
+                remember = True
 
         client_db = _DISPATCHER.get_client_database(client_id)
+        credential = None
         if client_db.client.authorization_active:
             credential = Credential(username=username, password=password)
             if client_db.client.authenticate(credential) is None:
                 return redirect(url_for("_login"), code=302)
+            if remember:
+                credential.generate_token()
+                client_db.update_user_credential(credential)
+
         session["client_id"] = client_db.client_id
-        return redirect(url_for("_home"), code=302)
+        resp = make_response(redirect(url_for("_home"), code=302))
+        if credential is not None and credential.token != "":
+            resp.set_cookie("token", credential.token)
+        return resp
 
     except Exception: # pylint: disable=W0703
         return redirect(url_for("_login"), code=302)
@@ -334,7 +347,9 @@ def _login_attempt():
 @_APP.route("/logoff")
 def _logoff():
     session["client_id"] = ""
-    return redirect(url_for("_login"), code=302)
+    resp = make_response(redirect(url_for("_login"), code=302))
+    resp.set_cookie("token", "")
+    return resp
 
 ##############################
 # Misc
@@ -371,6 +386,16 @@ def _get_cache_buster() -> str:
     return "&cache_buster=" + str(uuid.uuid1())
 
 def _get_authenticated_client_id() -> str:
+    global _DISPATCHER # pylint: disable=W0603
+
     if "client_id" in session and session["client_id"] != "":
         return session["client_id"]
+
+    token = request.cookies.get("token")
+    if token != "":
+        client_user = ClientUserFinder(_DISPATCHER).find_by_token(token)
+        if client_user is not None:
+            session["client_id"] = client_user.client.id
+            return client_user.client.id
+
     return None
