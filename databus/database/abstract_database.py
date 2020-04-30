@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List
 from databus.client.client import Client
 from databus.client.log import Log, MessageType
+from databus.client.user import Credential
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.queue_status import PassengerQueueStatus, QueueStatus
@@ -84,6 +85,10 @@ class AbstractDatabase(ABC):
     @abstractmethod
     def update_queue_status(self, p_status: PassengerQueueStatus):
         """ Updates the status of the passenger in the queue """
+
+    @abstractmethod
+    def update_user_credential(self, p_credential: Credential):
+        """ Updates the credential of the given user """
 
     @abstractmethod
     def _get_client(self, p_id: str) -> Client:

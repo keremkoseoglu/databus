@@ -26,11 +26,7 @@ class JsonClient:
         """ Returns all clients """
         output = []
         for client_directory in self.get_client_directories():
-            config_file_path = path.join(self._args.database_dir,
-                                         self._args.client_dir,
-                                         client_directory,
-                                         self._args.client_config)
-
+            config_file_path = self._get_config_file_path(client_directory)
             with open(config_file_path) as config_json_file:
                 config_json = json.load(config_json_file)
 
@@ -51,7 +47,8 @@ class JsonClient:
                     for user_json in config_json["users"]:
                         credential = Credential(
                             username=user_json["username"],
-                            password=user_json["password"])
+                            password=user_json["password"],
+                            token=user_json["token"])
                         user = User(credential=credential)
                         client_users.append(user)
 
@@ -77,3 +74,37 @@ class JsonClient:
             if client.id == p_id:
                 return client
         raise ClientError(ClientError.ErrorCode.client_not_found, p_client_id=p_id)
+
+    def update_user_credential(self, p_client_id: str, p_credential: Credential):
+        """ Updates the credential of a client user """
+        for client_directory in self.get_client_directories():
+            if client_directory != p_client_id:
+                continue
+            config_file_path = self._get_config_file_path(client_directory)
+            with open(config_file_path) as config_json_file:
+                config_json = json.load(config_json_file)
+            if "users" not in config_json:
+                config_json["users"] = []
+            user_found = False
+            for user in config_json["users"]:
+                if user["username"] == p_credential.username:
+                    user_found = True
+                    user["password"] = p_credential.password
+                    user["token"] = p_credential.token
+            if not user_found:
+                user = {
+                    "username": p_credential.username,
+                    "password": p_credential.password,
+                    "token": p_credential.token
+                }
+                config_json["users"].append(user)
+            with open(config_file_path, "w") as config_json_file:
+                json.dump(config_json, config_json_file)
+            return
+
+    def _get_config_file_path(self, p_client_directory: str) -> str:
+        return path.join(
+            self._args.database_dir,
+            self._args.client_dir,
+            p_client_directory,
+            self._args.client_config)
