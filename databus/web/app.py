@@ -389,7 +389,8 @@ def _get_authenticated_client_id() -> str:
     global _DISPATCHER # pylint: disable=W0603
 
     if "client_id" in session and session["client_id"] != "":
-        return session["client_id"]
+        if _is_client_id_valid(session["client_id"]):
+            return session["client_id"]
 
     token = request.cookies.get("token")
     if token != "":
@@ -399,3 +400,10 @@ def _get_authenticated_client_id() -> str:
             return client_user.client.id
 
     return None
+
+def _is_client_id_valid(p_client_id: str):
+    global _DISPATCHER # pylint: disable=W0603
+    for client in _DISPATCHER.all_clients:
+        if client.id == p_client_id:
+            return True
+    return False
