@@ -23,7 +23,7 @@ class JsonDatabase(AbstractDatabase):
         super().__init__(p_client_id, p_log, p_passenger_factory, p_arguments)
         self._args = JsonDatabaseArguments(p_arguments)
         self._json_client = JsonClient(self._args)
-        if p_client_id is None:
+        if p_client_id is None or p_client_id == "":
             self.client = None
         else:
             self.client = self._get_client(p_client_id)

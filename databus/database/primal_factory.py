@@ -19,11 +19,16 @@ class PrimalDatabaseFactory(AbstractDatabaseFactory): # pylint: disable=R0903
         if p_module == "" or p_module is None:
             raise DatabaseCreationError(DatabaseCreationError.ErrorCode.parameter_missing)
 
+        if p_client_id is None:
+            client_id = ""
+        else:
+            client_id = p_client_id
+
         module = __import__(p_module, fromlist=[""])
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if name not in ("AbstractDatabase", "datetime"):
                 try:
-                    obj_instance = obj(p_client_id, p_log, p_passenger_factory, p_arguments)
+                    obj_instance = obj(client_id, p_log, p_passenger_factory, p_arguments)
                     if isinstance(obj_instance, AbstractDatabase):
                         return obj_instance
                 except Exception: # pylint: disable=W0703
