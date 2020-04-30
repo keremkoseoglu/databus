@@ -259,6 +259,18 @@ class SqlDatabase(AbstractDatabase):
             self._query_helper.rollback()
             raise error
 
+    def update_user_credential(self, p_credential: Credential):
+        """ Updates the credential of the given user """
+        where = WhereBuilder(p_client_id=self.client_id)
+        where.add_and("username = '" + p_credential.username + "'")
+
+        update = UpdateBuilder(self._query_helper.args)
+        update.table = "webuser"
+        update.add_string("password", p_credential.password)
+        update.add_string("token", p_credential.token)
+        update.where = where
+        self._query_helper.execute_update(update)
+
     @staticmethod
     def _module_belongs_to_passenger(p_module_row: dict, p_passenger_row: dict) -> bool:
         if p_module_row["client_id"] != p_passenger_row["client_id"]:
@@ -326,7 +338,8 @@ class SqlDatabase(AbstractDatabase):
             for user_row in user_list:
                 credential = Credential(
                     username=user_row["username"],
-                    password=user_row["password"])
+                    password=user_row["password"],
+                    token=user_row["token"])
                 user = User(credential)
                 client.users.append(user)
 
