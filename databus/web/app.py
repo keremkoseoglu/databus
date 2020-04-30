@@ -37,7 +37,7 @@ def run_web_server(dispatcher: AbstractDispatcher):
 # Home page
 ##############################
 
-@_APP.route("/home")
+@_APP.route("/")
 def _home():
     authenticated_client_id = _get_authenticated_client_id()
     if authenticated_client_id is None:
@@ -307,7 +307,7 @@ def _peek_attachment():
 # Login
 ##############################
 
-@_APP.route("/")
+@_APP.route("/login")
 def _login():
     return render_template("login.html")
 
