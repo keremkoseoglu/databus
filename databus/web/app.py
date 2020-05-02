@@ -12,6 +12,7 @@ from databus.web.controller.passenger import PassengerExpediteController, Passen
 from databus.web.controller.peek import PeekAttachmentController, PeekController
 from databus.web.controller.queue import QueueAttachmentController, QueueDisplayController,\
     QueueListController, QueuePurgeController, QueueStatusUpdateController
+from databus.web.controller.user import UserListController, UserTokenRevokeController
 
 ##############################
 # Main stuff
@@ -37,6 +38,10 @@ def run_web_server(dispatcher: AbstractDispatcher):
 @_APP.route("/")
 def _home():
     return HomeController(_DISPATCHER).execute()
+
+@_APP.route("/about")
+def _about():
+    return AboutController(_DISPATCHER).execute()
 
 ##############################
 # Log pages
@@ -119,9 +124,13 @@ def _logoff():
     return LogoffController(_DISPATCHER).execute()
 
 ##############################
-# Misc
+# Users
 ##############################
 
-@_APP.route("/about")
-def _about():
-    return AboutController(_DISPATCHER).execute()
+@_APP.route("/user_list")
+def _user_list():
+    return UserListController(_DISPATCHER).execute()
+
+@_APP.route("/user_token_revoke")
+def _user_token_revoke():
+    return UserTokenRevokeController(_DISPATCHER).execute()
