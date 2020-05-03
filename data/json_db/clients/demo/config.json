@@ -1,1 +1,58 @@
-{"log_life_span": 1, "passengers": [{"name": "databus.passenger.demo.demo_passenger_1", "pullers": ["databus.puller.demo.demo_puller_1", "databus.puller.demo.demo_puller_3"], "queue": "databus.pqueue.primal_queue", "processors": ["databus.processor.demo.demo_processor_1", "databus.processor.demo.demo_processor_2"], "pushers": ["databus.pusher.demo.demo_pusher_1", "databus.pusher.demo.demo_pusher_2"], "sync_frequency": 1, "queue_life_span": 1}, {"name": "databus.passenger.demo.demo_passenger_2", "pullers": ["databus.puller.demo.demo_puller_2"], "processors": ["databus.processor.demo.demo_processor_2"], "pushers": ["databus.pusher.demo.demo_pusher_2"], "queue": "databus.pqueue.primal_queue", "sync_frequency": 1, "queue_life_span": 1}, {"name": "databus.passenger.demo.demo_binary_passenger", "pullers": ["databus.puller.demo.demo_binary_puller"], "processors": [], "pushers": ["databus.pusher.demo.demo_binary_pusher"], "queue": "databus.pqueue.primal_queue", "sync_frequency": 1, "queue_life_span": 1}], "users": [{"username": "demo", "password": "demo", "token": ""}]}
+{
+    "log_life_span": 1,
+    "passengers": [
+        {
+            "name": "databus.passenger.demo.demo_passenger_1",
+            "pullers": [
+                "databus.puller.demo.demo_puller_1",
+                "databus.puller.demo.demo_puller_3"
+            ],
+            "queue": "databus.pqueue.primal_queue",
+            "processors": [
+                "databus.processor.demo.demo_processor_1",
+                "databus.processor.demo.demo_processor_2"
+            ],
+            "pushers": [
+                "databus.pusher.demo.demo_pusher_1",
+                "databus.pusher.demo.demo_pusher_2"
+            ],
+            "sync_frequency": 1,
+            "queue_life_span": 1
+        },
+        {
+            "name": "databus.passenger.demo.demo_passenger_2",
+            "pullers": [
+                "databus.puller.demo.demo_puller_2"
+            ],
+            "processors": [
+                "databus.processor.demo.demo_processor_2"
+            ],
+            "pushers": [
+                "databus.pusher.demo.demo_pusher_2"
+            ],
+            "queue": "databus.pqueue.primal_queue",
+            "sync_frequency": 1,
+            "queue_life_span": 1
+        },
+        {
+            "name": "databus.passenger.demo.demo_binary_passenger",
+            "pullers": [
+                "databus.puller.demo.demo_binary_puller"
+            ],
+            "processors": [],
+            "pushers": [
+                "databus.pusher.demo.demo_binary_pusher"
+            ],
+            "queue": "databus.pqueue.primal_queue",
+            "sync_frequency": 1,
+            "queue_life_span": 1
+        }
+    ],
+    "users": [
+        {
+            "username": "demo",
+            "password": "demo",
+            "token": ""
+        }
+    ]
+}
