@@ -17,7 +17,7 @@ class ClientLog: # pylint: disable=R0903
             self.client = p_client
 
         if p_logs is None:
-            self.logs = p_logs
+            self.logs = []
         else:
             self.logs = p_logs
 

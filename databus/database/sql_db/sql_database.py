@@ -40,6 +40,20 @@ class SqlDatabase(AbstractDatabase):
         else:
             self.client = self._get_client(p_client_id)
 
+    @property
+    def customizing(self) -> str:
+        """ Returns the client customizing as JSON """
+        output = ""
+        # todo
+        # tamamla
+        return output
+
+    @customizing.setter
+    def customizing(self, p_customizing: str):
+        """ Sets the customizing into the clients config JSON """
+        # todo
+        # tamamla
+
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the database """
         self.log.append_text("Deleting logs before " + p_before.isoformat())

@@ -31,6 +31,16 @@ class JsonDatabase(AbstractDatabase):
         self._json_log = JsonLog(self._args)
         self._json_queue = JsonQueue(p_client_id, p_log, self.passenger_factory, self._args)
 
+    @property
+    def customizing(self) -> str:
+        """ Returns the client customizing as JSON """
+        return self._json_client.get_config_as_string(self.client_id)
+
+    @customizing.setter
+    def customizing(self, p_customizing: str):
+        """ Sets the customizing into the clients config JSON """
+        self._json_client.save_config(self.client_id, p_customizing)
+
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the disk """
         self.log.append_text("Deleting logs before " + p_before.isoformat())

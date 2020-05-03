@@ -95,7 +95,13 @@ class AbstractController(ABC):
 
     def _authenticate_minding_requested_client(self):
         self._authenticate()
-        self.requested_client_id = request.args.get("client", 0, type=str)
+        self.requested_client_id = request.args.get("client", "", type=str)
+        if self.requested_client_id == "":
+            try:
+                self.requested_client_id = request.form["client"]
+            except Exception:
+                self.requested_client_id = ""
+
         if self.authenticated_client_id not in (Client.ROOT, self.requested_client_id):
             output = redirect(url_for("_home"), code=302)
             raise AuthenticationError(output)

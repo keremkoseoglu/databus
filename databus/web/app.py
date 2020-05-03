@@ -5,6 +5,7 @@ Theme help: https://bootswatch.com/darkly/
 from flask import Flask, render_template # pylint: disable=C0301
 from waitress import serve
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
+from databus.web.controller.customizing import CustomizingEditController, CustomizingListController, CustomizingSaveController
 from databus.web.controller.home import HomeController, AboutController
 from databus.web.controller.log import LogDisplayController, LogListController, LogPurgeController
 from databus.web.controller.login import LoginAttemptController, LogoffController
@@ -13,6 +14,19 @@ from databus.web.controller.peek import PeekAttachmentController, PeekController
 from databus.web.controller.queue import QueueAttachmentController, QueueDisplayController,\
     QueueListController, QueuePurgeController, QueueStatusUpdateController
 from databus.web.controller.user import UserListController, UserTokenRevokeController
+
+# todo: customization of db settings
+"""
+model class tamamla
+    sql
+test
+    sql
+yayınla
+    versiyon yükselt
+    pylint
+    yayınla
+    mgs
+"""
 
 ##############################
 # Main stuff
@@ -134,3 +148,19 @@ def _user_list():
 @_APP.route("/user_token_revoke")
 def _user_token_revoke():
     return UserTokenRevokeController(_DISPATCHER).execute()
+
+##############################
+# Customizing
+##############################
+
+@_APP.route("/customizing_list")
+def _customizing_list():
+    return CustomizingListController(_DISPATCHER).execute()
+
+@_APP.route("/customizing_edit")
+def _customizing_edit():
+    return CustomizingEditController(_DISPATCHER).execute()
+
+@_APP.route("/customizing_save", methods=["POST"])
+def _customizing_save():
+    return CustomizingSaveController(_DISPATCHER).execute()

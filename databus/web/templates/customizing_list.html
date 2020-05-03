@@ -1,0 +1,40 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('table.table-hover').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Customizing</h1>
+
+    {% for entry in entries %}
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">{{ entry.client.id }}</li>
+        </ol>
+
+        <table id="" class="table table-hover">
+            <thead>
+            <tr>
+                <td>Node</td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for node in entry.nodes %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('_customizing_edit') }}?client={{ entry.client.id }}&node={{ node.name }}">
+                            {{ node.name }}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+
+    {% endfor %}
+{% endblock %} 
