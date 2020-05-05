@@ -32,7 +32,7 @@ class ClientCustomizingReader: # pylint: disable=R0903
     def __init__(self, p_dispatcher: AbstractDispatcher):
         self._dispatcher = p_dispatcher
 
-    def get_client_customizing_entry(self, p_client_id: str, p_entry_name: str) -> ClientCustomizing:
+    def get_client_customizing_entry(self, p_client_id: str, p_entry_name: str) -> ClientCustomizing: # pylint: disable=C0301
         """ Returns a single node """
         all_entries = self.get_client_customizing_list(p_client_id=p_client_id)
         if all_entries is None or len(all_entries) < 0:
@@ -82,7 +82,7 @@ class CustomizingEditController(AbstractController):
         node = request.args.get("node", 0, type=str)
         cust_reader = ClientCustomizingReader(self.dispatcher)
         entry = cust_reader.get_client_customizing_entry(self.requested_client_id, node)
-        return render_template("customizing_edit.html", client=self.requested_client_id, entry=entry)
+        return render_template("customizing_edit.html", client=self.requested_client_id, entry=entry) # pylint: disable=C0301
 
 class CustomizingSaveController(AbstractController):
     """ Customizing save """

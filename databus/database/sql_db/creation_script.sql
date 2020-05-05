@@ -373,3 +373,21 @@ ALTER TABLE [databus].[webuser]  WITH CHECK ADD FOREIGN KEY([client_id])
 REFERENCES [databus].[client] ([client_id])
 GO
 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE view [databus].[primary_keys] as
+
+select _tab.table_name, _col.column_name
+    from 
+        INFORMATION_SCHEMA.TABLE_CONSTRAINTS as _tab
+        inner join INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE as _col ON
+            _col.TABLE_CATALOG = _tab.TABLE_CATALOG AND
+            _col.TABLE_SCHEMA = _tab.TABLE_SCHEMA AND
+            _col.TABLE_NAME = _tab.TABLE_NAME AND
+            _col.CONSTRAINT_NAME = _tab.CONSTRAINT_NAME
+    where _tab.CONSTRAINT_TYPE = 'PRIMARY KEY'
+
+GO

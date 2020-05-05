@@ -5,6 +5,7 @@ docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallySt
 Check creation_script.sql to create a new database
 """
 from datetime import datetime
+import json
 from typing import List
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
@@ -14,11 +15,106 @@ from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
 from databus.pqueue.queue_status import \
     QueueStatus, PassengerQueueStatus, ProcessorQueueStatus, PusherQueueStatus
+from databus.database.sql_db.action_decider import ActionDecider
 from databus.database.sql_db.insert_builder import InsertBuilder
 from databus.database.sql_db.query_helper import QueryHelper
 from databus.database.sql_db.update_builder import UpdateBuilder
 from databus.database.sql_db.value_conversion import DatabusToSql, SqlToDatabus
 from databus.database.sql_db.where_builder import WhereBuilder
+
+
+class ClientDataset:
+    """ Defines a client dataset """
+    def __init__(self, p_query_helper: QueryHelper):
+        self._query_helper = p_query_helper
+        self.client_list = []
+        self.passenger_list = []
+        self.puller_list = []
+        self.processor_list = []
+        self.pusher_list = []
+        self.user_list = []
+
+    def dump_as_client_list(self) -> List[Client]:
+        """ Returns output as a client list """
+        output = []
+
+        for client_row in self.client_list:
+            client = Client(p_id=client_row["client_id"],
+                            p_log_life_span=client_row["log_life_span"])
+            for passenger_row in self.passenger_list:
+                if passenger_row["client_id"] != client_row["client_id"]:
+                    continue
+
+                client_passenger = ClientPassenger(
+                    p_name=passenger_row["passenger_module"],
+                    p_queue_module=passenger_row["queue_module"],
+                    p_sync_frequency=passenger_row["sync_frequency"],
+                    p_queue_life_span=passenger_row["queue_life_span"])
+
+                for puller_row in self.puller_list:
+                    if ClientDataset._module_belongs_to_passenger(puller_row, passenger_row):
+                        client_passenger.puller_modules.append(puller_row["puller_module"])
+                for processor_row in self.processor_list:
+                    if ClientDataset._module_belongs_to_passenger(processor_row, passenger_row):
+                        client_passenger.processor_modules.append(processor_row["processor_module"])
+                for pusher_row in self.pusher_list:
+                    if ClientDataset._module_belongs_to_passenger(pusher_row, passenger_row):
+                        client_passenger.pusher_modules.append(pusher_row["pusher_module"])
+                client.passengers.append(client_passenger)
+
+            for user_row in self.user_list:
+                credential = Credential(
+                    username=user_row["username"],
+                    password=user_row["password"],
+                    token=user_row["token"])
+                user = User(credential)
+                client.users.append(user)
+
+            output.append(client)
+        return output
+
+    def dump_as_dict(self) -> dict:
+        """ Returns a dict """
+        output = {
+            "client": self.client_list,
+            "passenger": self.passenger_list,
+            "puller": self.puller_list,
+            "processor": self.processor_list,
+            "pusher": self.pusher_list,
+            "user": self.user_list
+        }
+        return output
+
+    def dump_as_json_string(self) -> str:
+        """ Returns a string """
+        dict_output = self.dump_as_dict()
+        return json.dumps(dict_output, indent=4, sort_keys=True)
+
+    def read_for_all_clients(self):
+        """ Fills the dataset for all clients """
+        self.client_list = self._query_helper.select_all_no_where("client")
+        self.passenger_list = self._query_helper.select_all_no_where("passenger", p_order_by="exe_order") # pylint: disable= C0301
+        self.puller_list = self._query_helper.select_all_no_where("puller", p_order_by="exe_order")
+        self.processor_list = self._query_helper.select_all_no_where("processor", p_order_by="exe_order") # pylint: disable= C0301
+        self.pusher_list = self._query_helper.select_all_no_where("pusher", p_order_by="exe_order")
+        self.user_list = self._query_helper.select_all_no_where("webuser")
+
+    def read_for_client(self):
+        """ Fills the dataset for a single client """
+        self.client_list = self._query_helper.select_all("client")
+        self.passenger_list = self._query_helper.select_all("passenger", p_order_fields=["exe_order"]) # pylint: disable= C0301
+        self.puller_list = self._query_helper.select_all("puller", p_order_fields=["exe_order"])
+        self.processor_list = self._query_helper.select_all("processor", p_order_fields=["exe_order"]) # pylint: disable= C0301
+        self.pusher_list = self._query_helper.select_all("pusher", p_order_fields=["exe_order"])
+        self.user_list = self._query_helper.select_all("webuser")
+
+    @staticmethod
+    def _module_belongs_to_passenger(p_module_row: dict, p_passenger_row: dict) -> bool:
+        if p_module_row["client_id"] != p_passenger_row["client_id"]:
+            return False
+        if p_module_row["passenger_id"] != p_passenger_row["passenger_id"]:
+            return False
+        return True
 
 
 class SqlDatabase(AbstractDatabase):
@@ -43,16 +139,46 @@ class SqlDatabase(AbstractDatabase):
     @property
     def customizing(self) -> str:
         """ Returns the client customizing as JSON """
-        output = ""
-        # todo
-        # tamamla
-        return output
+        dataset = ClientDataset(self._query_helper)
+        dataset.read_for_client()
+        return dataset.dump_as_json_string()
+
+    @property
+    def customizing_dict(self) -> dict:
+        """ Returns the client customizing as dict """
+        dataset = ClientDataset(self._query_helper)
+        dataset.read_for_client()
+        return dataset.dump_as_dict()
 
     @customizing.setter
     def customizing(self, p_customizing: str):
-        """ Sets the customizing into the clients config JSON """
-        # todo
-        # tamamla
+        """ Sets the customizing into the clients config JSON
+        See getter for sample JSON format
+        """
+        cust_dict = json.loads(p_customizing)
+        decision = ActionDecider(self._query_helper).decide(cust_dict, self.customizing_dict)
+
+        try:
+            action_taken = False
+
+            for insert in decision.inserts:
+                self._query_helper.execute_insert(insert)
+                action_taken = True
+
+            for update in decision.updates:
+                self._query_helper.execute_update(update)
+                action_taken = True
+
+            for delete in decision.deletes:
+                self._query_helper.execute_delete(delete)
+                action_taken = True
+
+            if action_taken:
+                self._query_helper.commit()
+
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the database """
@@ -285,14 +411,6 @@ class SqlDatabase(AbstractDatabase):
         update.where = where
         self._query_helper.execute_update(update)
 
-    @staticmethod
-    def _module_belongs_to_passenger(p_module_row: dict, p_passenger_row: dict) -> bool:
-        if p_module_row["client_id"] != p_passenger_row["client_id"]:
-            return False
-        if p_module_row["passenger_id"] != p_passenger_row["passenger_id"]:
-            return False
-        return True
-
     def _delete_from_queue(self, p_where: str = ""):
         self._query_helper.delete("queue_attachment", p_where)
         self._query_helper.delete("queue_processor", p_where)
@@ -303,62 +421,12 @@ class SqlDatabase(AbstractDatabase):
         return self._select_from_client(p_id=p_id)[0]
 
     def _select_from_client(self, p_id: str = None) -> List[Client]: # pylint: disable=R0914
-        output = []
-        client_list = []
-        passenger_list = []
-        puller_list = []
-        processor_list = []
-        pusher_list = []
-
+        client_dataset = ClientDataset(self._query_helper)
         if p_id is None:
-            client_list = self._query_helper.select_all_no_where("client")
-            passenger_list = self._query_helper.select_all_no_where("passenger", p_order_by="exe_order") # pylint: disable= C0301
-            puller_list = self._query_helper.select_all_no_where("puller", p_order_by="exe_order")
-            processor_list = self._query_helper.select_all_no_where("processor", p_order_by="exe_order") # pylint: disable= C0301
-            pusher_list = self._query_helper.select_all_no_where("pusher", p_order_by="exe_order")
-            user_list = self._query_helper.select_all_no_where("webuser")
+            client_dataset.read_for_all_clients()
         else:
-            client_list = self._query_helper.select_all("client")
-            passenger_list = self._query_helper.select_all("passenger", p_order_fields=["exe_order"]) # pylint: disable= C0301
-            puller_list = self._query_helper.select_all("puller", p_order_fields=["exe_order"])
-            processor_list = self._query_helper.select_all("processor", p_order_fields=["exe_order"]) # pylint: disable= C0301
-            pusher_list = self._query_helper.select_all("pusher", p_order_fields=["exe_order"])
-            user_list = self._query_helper.select_all("webuser")
-
-        for client_row in client_list:
-            client = Client(p_id=client_row["client_id"],
-                            p_log_life_span=client_row["log_life_span"])
-            for passenger_row in passenger_list:
-                if passenger_row["client_id"] != client_row["client_id"]:
-                    continue
-
-                client_passenger = ClientPassenger(
-                    p_name=passenger_row["passenger_module"],
-                    p_queue_module=passenger_row["queue_module"],
-                    p_sync_frequency=passenger_row["sync_frequency"],
-                    p_queue_life_span=passenger_row["queue_life_span"])
-
-                for puller_row in puller_list:
-                    if SqlDatabase._module_belongs_to_passenger(puller_row, passenger_row):
-                        client_passenger.puller_modules.append(puller_row["puller_module"])
-                for processor_row in processor_list:
-                    if SqlDatabase._module_belongs_to_passenger(processor_row, passenger_row):
-                        client_passenger.processor_modules.append(processor_row["processor_module"])
-                for pusher_row in pusher_list:
-                    if SqlDatabase._module_belongs_to_passenger(pusher_row, passenger_row):
-                        client_passenger.pusher_modules.append(pusher_row["pusher_module"])
-                client.passengers.append(client_passenger)
-
-            for user_row in user_list:
-                credential = Credential(
-                    username=user_row["username"],
-                    password=user_row["password"],
-                    token=user_row["token"])
-                user = User(credential)
-                client.users.append(user)
-
-            output.append(client)
-        return output
+            client_dataset.read_for_client()
+        return client_dataset.dump_as_client_list()
 
     def _select_from_queue(self, # pylint: disable=R0912, R0913, R0914, R0915
                            p_passenger_module: str = None,

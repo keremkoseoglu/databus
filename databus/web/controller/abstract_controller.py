@@ -99,7 +99,7 @@ class AbstractController(ABC):
         if self.requested_client_id == "":
             try:
                 self.requested_client_id = request.form["client"]
-            except Exception:
+            except Exception: # pylint: disable=W0703
                 self.requested_client_id = ""
 
         if self.authenticated_client_id not in (Client.ROOT, self.requested_client_id):
