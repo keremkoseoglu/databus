@@ -12,7 +12,7 @@ def start_with_json_db():
 def start_with_sql_db():
     """ Starts instance using SQL Server """
     sql_args = {
-        SqlDatabaseArguments.KEY_DATABASE: "Master",
+        SqlDatabaseArguments.KEY_DATABASE: "master",
         SqlDatabaseArguments.KEY_PASSWORD: "reallyStrongPwd123",
         SqlDatabaseArguments.KEY_SCHEMA: "databus",
         SqlDatabaseArguments.KEY_SERVER: "127.0.0.1,1433",

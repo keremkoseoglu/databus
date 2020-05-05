@@ -24,6 +24,16 @@ class WhereBuilder:
         """ p_field < p_date """
         return p_field + " < '" + DatabusToSql.date_time(p_date) + "'"
 
+    @staticmethod
+    def int_eq(p_field: str, p_int: int):
+        """ p_field = p_int """
+        return p_field + " = " + str(p_int)
+
+    @staticmethod
+    def str_eq(p_field: str, p_str: str):
+        """ p_field = 'p_str' """
+        return p_field + " = '" + p_str + "'"
+
     @property
     def where(self) -> str:
         """ Where string """
@@ -41,8 +51,18 @@ class WhereBuilder:
         self._put_condition(p_condition)
 
     def add_and_date_lt(self, p_field: str, p_date: datetime):
-        """ AND p_field > p_Date """
+        """ AND p_field > p_date """
         where_cond = WhereBuilder.date_lt(p_field, p_date)
+        self.add_and(where_cond)
+
+    def add_and_field_eq_int(self, p_field: str, p_int: int):
+        """ AND p_field = p_int """
+        where_cond = WhereBuilder.int_eq(p_field, p_int)
+        self.add_and(where_cond)
+
+    def add_and_field_eq_str(self, p_field: str, p_str: str):
+        """ AND p_field = p_str """
+        where_cond = WhereBuilder.str_eq(p_field, p_str)
         self.add_and(where_cond)
 
     def build(self, p_condition: str, p_order_fields: List[str] = None) -> str:

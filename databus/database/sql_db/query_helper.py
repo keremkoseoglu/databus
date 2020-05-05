@@ -1,5 +1,6 @@
 """ Module to help with SQL queries """
 from typing import List
+from databus.database.sql_db.delete_builder import DeleteBuilder
 from databus.database.sql_db.driver.pyodbc_driver import PyodbcDriver
 from databus.database.sql_db.insert_builder import InsertBuilder
 from databus.database.sql_db.path_builder import PathBuilder
@@ -23,6 +24,11 @@ class QueryHelper:
         """ Are commands committed automatically """
         return self._driver.autocommit
 
+    @property
+    def client_id(self) -> str:
+        """ Client ID """
+        return self._client_id
+
     @autocommit.setter
     def autocommit(self, p_active: bool):
         """ Are commands committed automatically """
@@ -38,6 +44,10 @@ class QueryHelper:
         command += self.path_builder.get_table_path(p_table)
         command += self._where.build(p_where)
         self._driver.execute_sql(command)
+
+    def execute_delete(self, p_delete: DeleteBuilder):
+        """ Executes a delete statement """
+        self._driver.execute_sql(p_delete.delete_command)
 
     def execute_insert(self, p_insert: InsertBuilder):
         """ Executes an Insert statement """

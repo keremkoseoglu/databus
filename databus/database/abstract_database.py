@@ -32,6 +32,21 @@ class AbstractDatabase(ABC):
         self.arguments = p_arguments
         self.client = Client()
 
+    @property
+    @abstractmethod
+    def customizing(self) -> str:
+        """ Returns the client customizing in text format
+        (preferably JSON)
+        """
+
+    @customizing.setter
+    @abstractmethod
+    def customizing(self, p_customizing: str):
+        """ Sets the customizing returned from the GUI
+        Subclasses are expected to write those settings
+        to the disk, database, etc
+        """
+
     @abstractmethod
     def delete_old_logs(self, p_before: datetime):
         """ Deletes overdue logs """
