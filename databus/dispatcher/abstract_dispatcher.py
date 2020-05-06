@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 from databus.client.client import Client
+from databus.client.external_config import ExternalConfigFile, ExternalConfigFileManager
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
 from databus.database.abstract_factory import AbstractDatabaseFactory
@@ -51,7 +52,8 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
                  p_driver_module: str = None,
                  p_dispatcher_observer: DispatcherObserver = None,
                  p_run_web_server: bool = True,
-                 p_web_server_port: int = 5000
+                 p_web_server_port: int = 5000,
+                 p_external_config_files: List[ExternalConfigFile] = None
                  ): # pylint: disable=R0912, R0913
 
         if p_database_factory is None:
@@ -104,6 +106,11 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
         else:
             self.driver_module = p_driver_module
 
+        if p_external_config_files is None:
+            self.external_config_files = []
+        else:
+            self.external_config_files = p_external_config_files
+
         self.dispatcher_observer = p_dispatcher_observer
         self.run_web_server = p_run_web_server
         self.web_server_port = p_web_server_port
@@ -113,6 +120,8 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
     """ Abstract dispatcher class """
     def __init__(self, p_ticket: DispatcherTicket = None):
         self.ticket = p_ticket
+        self.external_config_file_manager = ExternalConfigFileManager()
+        self.external_config_file_manager.add_files(self.ticket.external_config_files)
 
     @property
     def all_clients(self) -> List[Client]:
