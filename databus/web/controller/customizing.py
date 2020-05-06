@@ -6,6 +6,8 @@ from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.web.controller.abstract_controller import AbstractController, AuthenticationError
 
 
+_DATABUS_DB_NODE = "__databus__"
+
 class CustomizingNode:  # pylint: disable=R0903
     """ Defines a customizing node """
     def __init__(self, p_name: str = "", p_content: str = ""):
@@ -49,9 +51,19 @@ class ClientCustomizingReader: # pylint: disable=R0903
         for client in self._dispatcher.all_clients:
             if p_client_id is not None and client.id != p_client_id:
                 continue
+            client_nodes = []
+
             client_database = self._dispatcher.get_client_database(client.id)
-            db_node = CustomizingNode("databus", client_database.customizing)
-            output.append(ClientCustomizing(client, [db_node]))
+            db_node = CustomizingNode(_DATABUS_DB_NODE, client_database.customizing)
+            client_nodes.append(db_node)
+
+            external_files = self._dispatcher.external_config_file_manager.get_files_of_client(client.id) # pylint: disable=C0301
+            for external_file in external_files:
+                external_node = CustomizingNode(external_file.file_id, external_file.file_content)
+                client_nodes.append(external_node)
+
+            output.append(ClientCustomizing(client, client_nodes))
+
         return output
 
 
@@ -82,7 +94,7 @@ class CustomizingEditController(AbstractController):
         node = request.args.get("node", 0, type=str)
         cust_reader = ClientCustomizingReader(self.dispatcher)
         entry = cust_reader.get_client_customizing_entry(self.requested_client_id, node)
-        return render_template("customizing_edit.html", client=self.requested_client_id, entry=entry) # pylint: disable=C0301
+        return render_template("customizing_edit.html", client=self.requested_client_id, node=node, entry=entry) # pylint: disable=C0301
 
 class CustomizingSaveController(AbstractController):
     """ Customizing save """
@@ -95,8 +107,14 @@ class CustomizingSaveController(AbstractController):
             return authentication_error.output
 
         client_db = self.requested_client_database
+        node = request.form["node"]
         customizing = request.form["customizing"]
-        client_db.customizing = customizing
+
+        if node == _DATABUS_DB_NODE:
+            client_db.customizing = customizing
+        else:
+            external_file = self.dispatcher.external_config_file_manager.get_file(self.requested_client_id, node) # pylint: disable=C0301
+            external_file.file_content = customizing
 
         url = url_for("_customizing_list")
         url += "?" + AbstractController._get_cache_buster()

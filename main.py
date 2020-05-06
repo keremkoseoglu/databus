@@ -1,4 +1,7 @@
 """ Main entry point for Databus execution """
+from os import path
+import databus
+from databus.client.external_config import ExternalConfigFile
 from databus.dispatcher.abstract_dispatcher import DispatcherTicket
 from databus.dispatcher.primal_factory import PrimalDispatcherFactory
 from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
@@ -19,9 +22,13 @@ def start_with_sql_db():
         SqlDatabaseArguments.KEY_USERNAME: "SA"
     }
 
+    demo_config_path = path.join(databus.get_root_path(), "demo_external_config.json")
+    demo_config_file = ExternalConfigFile("demo", "demo_config", demo_config_path)
+
     ticket = DispatcherTicket(
         p_database_module="databus.database.sql_db.sql_database",
-        p_database_arguments=sql_args
+        p_database_arguments=sql_args,
+        p_external_config_files=[demo_config_file]
     )
 
     PrimalDispatcherFactory().create_dispatcher(p_ticket=ticket).start()
