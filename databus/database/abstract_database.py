@@ -34,6 +34,23 @@ class AbstractDatabase(ABC):
 
     @property
     @abstractmethod
+    def client_master_data(self) -> str:
+        """ Returns the definition of all clients as a string
+        This string (preferably JSON) will be shown to the
+        root user as a JSON file.
+        When edited, it will be set back
+        """
+
+    @client_master_data.setter
+    @abstractmethod
+    def client_master_data(self, p_definitions: str):
+        """ Sets the definitions returned from the GUI
+        Subclasses are expected to write those definitions
+        to the disk, database, etc
+        """
+
+    @property
+    @abstractmethod
     def customizing(self) -> str:
         """ Returns the client customizing in text format
         (preferably JSON)

@@ -1,17 +1,12 @@
 """ Module for deciding on SQL actions """
-from enum import Enum
+from typing import List
+from databus.client.client import Client
+from databus.database.difference_check import DifferenceChecker, TableKey, Action
 from databus.database.sql_db.delete_builder import DeleteBuilder
 from databus.database.sql_db.insert_builder import InsertBuilder
 from databus.database.sql_db.update_builder import UpdateBuilder
 from databus.database.sql_db.query_helper import QueryHelper
 from databus.database.sql_db.table import Table
-
-
-class Action(Enum):
-    """ Defines a database action """
-    INSERT = 1
-    UPDATE = 2
-    DELETE = 3
 
 
 class ActionDecision:
@@ -26,14 +21,16 @@ class ActionDecision:
 
     def add_delete(self, p_table: str, p_row: dict):
         """ Adds a new delete command """
-        delete = DeleteBuilder(self._query_helper.args, self._query_helper.client_id)
+        delete = DeleteBuilder(
+            self._query_helper.args,
+            self._get_modifiable_client_id(p_table, p_row))
         delete.table = p_table
         key_fields = Table(self._query_helper, p_table).key_fields
 
         for key_field in key_fields:
             cell_value = p_row[key_field]
             if key_field == "client_id":
-                assert cell_value == self._query_helper.client_id
+                self._validate_client_id(cell_value)
                 continue
             if isinstance(cell_value, int):
                 delete.where.add_and_field_eq_int(key_field, cell_value)
@@ -44,13 +41,15 @@ class ActionDecision:
 
     def add_insert(self, p_table: str, p_row: dict):
         """ Adds a new insert command """
-        insert = InsertBuilder(self._query_helper.args, self._query_helper.client_id)
+        insert = InsertBuilder(
+            self._query_helper.args,
+            self._get_modifiable_client_id(p_table, p_row))
         insert.table = p_table
 
         for table_col in p_row:
             cell_value = p_row[table_col]
             if table_col == "client_id":
-                assert cell_value == self._query_helper.client_id
+                self._validate_client_id(cell_value)
                 continue
             if isinstance(cell_value, int):
                 insert.add_int(table_col, cell_value)
@@ -61,14 +60,17 @@ class ActionDecision:
 
     def add_update(self, p_table: str, p_row: dict):
         """ Adds a new update command """
-        update = UpdateBuilder(self._query_helper.args, self._query_helper.client_id)
+        update = UpdateBuilder(
+            self._query_helper.args,
+            self._get_modifiable_client_id(p_table, p_row))
+
         update.table = p_table
         key_fields = Table(self._query_helper, p_table).key_fields
 
         for table_col in p_row:
             cell_value = p_row[table_col]
             if table_col == "client_id":
-                assert cell_value == self._query_helper.client_id
+                self._validate_client_id(cell_value)
                 continue
 
             if table_col in key_fields:
@@ -84,12 +86,15 @@ class ActionDecision:
 
         self.updates.append(update)
 
+    def _get_modifiable_client_id(self, p_table: str, p_row: dict):
+        if p_table == "client" and self._query_helper.client_id == Client.ROOT:
+            return p_row["client_id"]
+        return self._query_helper.client_id
 
-class AnalysisResult(Enum):
-    """ Analysis result """
-    NOT_FOUND = 1
-    MODIFIED = 2
-    SAME = 3
+    def _validate_client_id(self, p_client_id: str):
+        if self._query_helper.client_id == Client.ROOT:
+            return
+        assert p_client_id == self._query_helper.client_id
 
 
 class ActionDecider: # pylint: disable=R0903
@@ -111,58 +116,50 @@ class ActionDecider: # pylint: disable=R0903
         self._database = p_database
         self._decision = ActionDecision(self._query_helper)
 
-        self._compare_database_with_memory()
-        self._compare_memory_with_database()
+        table_keys = self._get_table_keys(p_database)
+        diff_checker = DifferenceChecker(table_keys, p_memory, p_database)
+
+        for difference in diff_checker.result:
+            if difference.action == Action.INSERT:
+                self._decision.add_insert(difference.table, difference.row)
+            elif difference.action == Action.UPDATE:
+                self._decision.add_update(difference.table, difference.row)
+            elif difference.action == Action.DELETE:
+                self._decision.add_delete(difference.table, difference.row)
+
         return self._decision
 
-    def _analyse(self, p_table_name: str, p_src_line: dict, p_tar: dict) -> AnalysisResult:
-        """ Runs an analysis """
+    def decide_and_execute(self, p_memory: dict, p_database: dict):
+        """ Decides what action(s) to take, and executes them """
+        decision = self.decide(p_memory, p_database)
 
-        if p_table_name not in p_tar:
-            return AnalysisResult.NOT_FOUND
-        tar_lines = p_tar[p_table_name]
+        try:
+            action_taken = False
 
-        key_fields = Table(self._query_helper, p_table_name).key_fields
+            for insert in decision.inserts:
+                self._query_helper.execute_insert(insert)
+                action_taken = True
 
-        target_found = False
-        for tar_line in tar_lines:
-            this_is_target_line = True
-            for key_field in key_fields:
-                if p_src_line[key_field] != tar_line[key_field]:
-                    this_is_target_line = False
-                    break
-            if not this_is_target_line:
-                continue
-            target_found = True
+            for update in decision.updates:
+                self._query_helper.execute_update(update)
+                action_taken = True
 
-            for column in tar_line:
-                if p_src_line[column] != tar_line[column]:
-                    return AnalysisResult.MODIFIED
+            for delete in decision.deletes:
+                self._query_helper.execute_delete(delete)
+                action_taken = True
 
-        if target_found:
-            return AnalysisResult.SAME
-        return AnalysisResult.NOT_FOUND
+            if action_taken:
+                self._query_helper.commit()
 
-    def _compare_database_with_memory(self):
-        for table_name in self._database:
-            for table_row in self._database[table_name]:
-                result = self._analyse(
-                    table_name,
-                    table_row,
-                    self._memory)
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
-                if result == AnalysisResult.NOT_FOUND:
-                    self._decision.add_delete(table_name, table_row)
-
-    def _compare_memory_with_database(self):
-        for table_name in self._memory:
-            for table_row in self._memory[table_name]:
-                result = self._analyse(
-                    table_name,
-                    table_row,
-                    self._database)
-
-                if result == AnalysisResult.MODIFIED:
-                    self._decision.add_update(table_name, table_row)
-                if result == AnalysisResult.NOT_FOUND:
-                    self._decision.add_insert(table_name, table_row)
+    def _get_table_keys(self, p_database: dict) -> List[TableKey]:
+        output = []
+        for table_name in p_database:
+            table_obj = Table(self._query_helper, table_name)
+            table_keys = table_obj.key_fields
+            table_key_obj = TableKey(table_name, table_keys)
+            output.append(table_key_obj)
+        return output
