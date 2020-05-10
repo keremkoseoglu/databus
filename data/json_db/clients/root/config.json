@@ -1,11 +1,11 @@
 {
-  "log_life_span": 1,
-  "passengers": [],
-  "users": [
-    {
-      "username": "root",
-      "password": "root",
-      "token": ""
-    }
-  ]
+    "log_life_span": 1,
+    "passengers": [],
+    "users": [
+        {
+            "password": "root",
+            "token": "741bc66e-928a-11ea-a413-acde48001122",
+            "username": "root"
+        }
+    ]
 }
