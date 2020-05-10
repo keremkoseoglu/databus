@@ -6,6 +6,7 @@ from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.web.controller.abstract_controller import AbstractController, AuthenticationError
 
 
+_CLIENTS_DB_NODE = "__clients__"
 _DATABUS_DB_NODE = "__databus__"
 
 class CustomizingNode:  # pylint: disable=R0903
@@ -57,13 +58,16 @@ class ClientCustomizingReader: # pylint: disable=R0903
             db_node = CustomizingNode(_DATABUS_DB_NODE, client_database.customizing)
             client_nodes.append(db_node)
 
+            if client.id == Client.ROOT:
+                clients_node = CustomizingNode(_CLIENTS_DB_NODE, client_database.client_master_data)
+                client_nodes.append(clients_node)
+
             external_files = self._dispatcher.external_config_file_manager.get_files_of_client(client.id) # pylint: disable=C0301
             for external_file in external_files:
                 external_node = CustomizingNode(external_file.file_id, external_file.file_content)
                 client_nodes.append(external_node)
 
             output.append(ClientCustomizing(client, client_nodes))
-
         return output
 
 
@@ -112,6 +116,8 @@ class CustomizingSaveController(AbstractController):
 
         if node == _DATABUS_DB_NODE:
             client_db.customizing = customizing
+        elif node == _CLIENTS_DB_NODE:
+            client_db.client_master_data = customizing
         else:
             external_file = self.dispatcher.external_config_file_manager.get_file(self.requested_client_id, node) # pylint: disable=C0301
             external_file.file_content = customizing

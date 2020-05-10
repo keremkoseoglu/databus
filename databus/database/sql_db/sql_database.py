@@ -137,6 +137,22 @@ class SqlDatabase(AbstractDatabase):
             self.client = self._get_client(p_client_id)
 
     @property
+    def client_master_data(self) -> str:
+        """ Returns the definition of all clients as a JSON string """
+        client_list = self._query_helper.select_all_no_where("client", "client_id")
+        output_dict = {"client": client_list}
+        return json.dumps(output_dict, indent=4, sort_keys=True)
+
+    @client_master_data.setter
+    def client_master_data(self, p_definitions: str):
+        """ Writes the customizing into the database
+        See getter for sample JSON format
+        """
+        ActionDecider(self._query_helper).decide_and_execute(
+            json.loads(p_definitions),
+            json.loads(self.client_master_data))
+
+    @property
     def customizing(self) -> str:
         """ Returns the client customizing as JSON """
         dataset = ClientDataset(self._query_helper)
@@ -152,33 +168,12 @@ class SqlDatabase(AbstractDatabase):
 
     @customizing.setter
     def customizing(self, p_customizing: str):
-        """ Sets the customizing into the clients config JSON
+        """ Writes the customizing into the database
         See getter for sample JSON format
         """
-        cust_dict = json.loads(p_customizing)
-        decision = ActionDecider(self._query_helper).decide(cust_dict, self.customizing_dict)
-
-        try:
-            action_taken = False
-
-            for insert in decision.inserts:
-                self._query_helper.execute_insert(insert)
-                action_taken = True
-
-            for update in decision.updates:
-                self._query_helper.execute_update(update)
-                action_taken = True
-
-            for delete in decision.deletes:
-                self._query_helper.execute_delete(delete)
-                action_taken = True
-
-            if action_taken:
-                self._query_helper.commit()
-
-        except Exception as error:
-            self._query_helper.rollback()
-            raise error
+        ActionDecider(self._query_helper).decide_and_execute(
+            json.loads(p_customizing),
+            self.customizing_dict)
 
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the database """

@@ -32,6 +32,16 @@ class JsonDatabase(AbstractDatabase):
         self._json_queue = JsonQueue(p_client_id, p_log, self.passenger_factory, self._args)
 
     @property
+    def client_master_data(self) -> str:
+        """ Returns the definition of all clients as a JSON string """
+        return self._json_client.client_master_as_json
+
+    @client_master_data.setter
+    def client_master_data(self, p_definitions: str):
+        """ Sets the definitions into the clients config JSON """
+        self._json_client.client_master_as_json = p_definitions
+
+    @property
     def customizing(self) -> str:
         """ Returns the client customizing as JSON """
         return self._json_client.get_config_as_string(self.client_id)
@@ -57,8 +67,8 @@ class JsonDatabase(AbstractDatabase):
         self._json_queue.erase_passenger_queue()
 
     def get_clients(self) -> List[Client]:
-        """ Returns a single client """
-        return self._json_client.get_all()
+        """ Returns a list of clients """
+        return self._json_client.all_clients
 
     def get_log_content(self, p_log_id: str) -> str:
         """ Returns the contents of the given log

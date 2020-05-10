@@ -1,10 +1,13 @@
 """ Json database implementation module for client """
+from copy import copy
 import json
-from os import path, scandir
+from os import mkdir, path, scandir
+from shutil import rmtree
 from typing import List
 from databus import get_root_path
 from databus.client.client import Client, ClientError, ClientPassenger
 from databus.client.user import User, Credential
+from databus.database.difference_check import Action, DifferenceChecker, TableKey
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 
 class JsonClient:
@@ -12,20 +15,11 @@ class JsonClient:
     def __init__(self, args: JsonDatabaseArguments):
         self._args = args
 
-    def build_client_dir_path(self, p_client_id: str) -> str:
-        """ Builds the concrete path for client directory """
-        client_root_path = self.build_client_root_path()
-        return path.join(client_root_path, p_client_id)
-
-    def build_client_root_path(self) -> str:
-        """ Builds the concrete root path of client directories """
-        databus_root = get_root_path()
-        return path.join(databus_root, self._args.database_dir, self._args.client_dir)
-
-    def get_all(self) -> List[Client]:
+    @property
+    def all_clients(self) -> List[Client]:
         """ Returns all clients """
         output = []
-        for client_directory in self.get_client_directories():
+        for client_directory in self.client_directories:
             config_json = self.get_config_as_json(client_directory)
             client_passengers = []
             for passenger_json in config_json["passengers"]:
@@ -58,9 +52,52 @@ class JsonClient:
             output.append(client_obj)
         return output
 
-    def get_client_directories(self) -> List[str]:
+    @property
+    def client_directories(self) -> List[str]:
         """ Returns all client directories """
-        return [f.name for f in scandir(self.build_client_root_path()) if f.is_dir()]
+        return [f.name for f in scandir(self.client_root_path) if f.is_dir()]
+
+    @property
+    def client_master_as_json(self) -> str:
+        """ Returns client master data as a JSON string """
+        output_dict = {"client": []}
+        for client in self.all_clients:
+            client_dict = {
+                "client_id": client.id,
+                "log_life_span": client.log_life_span
+            }
+            output_dict["client"].append(client_dict)
+        return json.dumps(output_dict, indent=4, sort_keys=True)
+
+    @client_master_as_json.setter
+    def client_master_as_json(self, p_master: str):
+        """ Saves client master data from JSON string
+        Check getter for JSON format
+        """
+        memory_dict = json.loads(p_master)
+        database_dict = json.loads(self.client_master_as_json)
+        table_keys = [TableKey("client", ["client_id"])]
+
+        diff_check = DifferenceChecker(table_keys, memory_dict, database_dict)
+
+        for diff_result in diff_check.result:
+            if diff_result.action == Action.INSERT:
+                self._create_client(diff_result.row["client_id"], diff_result.row)
+            elif diff_result.action == Action.UPDATE:
+                self._save_config_dict(diff_result.row["client_id"], diff_result.row)
+            elif diff_result.action == Action.DELETE:
+                self._delete_client(diff_result.row["client_id"])
+
+    @property
+    def client_root_path(self) -> str:
+        """ Builds the concrete root path of client directories """
+        databus_root = get_root_path()
+        return path.join(databus_root, self._args.database_dir, self._args.client_dir)
+
+    def build_client_dir_path(self, p_client_id: str) -> str:
+        """ Builds the concrete path for client directory """
+        client_root_path = self.client_root_path
+        return path.join(client_root_path, p_client_id)
 
     def get_config_as_json(self, p_client_id: str):
         """ Returns the contents of the config file as JSON """
@@ -82,8 +119,7 @@ class JsonClient:
         """ Returns a single client """
         if p_id == "" or p_id is None:
             raise ClientError(ClientError.ErrorCode.parameter_missing)
-        all_clients = self.get_all()
-        for client in all_clients:
+        for client in self.all_clients:
             if client.id == p_id:
                 return client
         raise ClientError(ClientError.ErrorCode.client_not_found, p_client_id=p_id)
@@ -96,7 +132,7 @@ class JsonClient:
 
     def update_user_credential(self, p_client_id: str, p_credential: Credential):
         """ Updates the credential of a client user """
-        for client_directory in self.get_client_directories():
+        for client_directory in self.client_directories:
             if client_directory != p_client_id:
                 continue
             config_file_path = self._get_config_file_path(client_directory)
@@ -121,9 +157,30 @@ class JsonClient:
                 json.dump(config_json, config_json_file, indent=4, sort_keys=True)
             return
 
+    def _create_client(self, p_client_id: str, p_base_dict: dict):
+        client_dir = self.build_client_dir_path(p_client_id)
+        mkdir(client_dir)
+        self._save_config_dict(p_client_id, p_base_dict)
+
+    def _delete_client(self, p_client_id: str):
+        rmtree(self.build_client_dir_path(p_client_id))
+
     def _get_config_file_path(self, p_client_directory: str) -> str:
         return path.join(
             self._args.database_dir,
             self._args.client_dir,
             p_client_directory,
             self._args.client_config)
+
+    def _save_config_dict(self, p_client_id: str, p_base_dict: dict):
+        config = copy(p_base_dict)
+        if "client_id" in config:
+            del config["client_id"]
+        if "log_life_span" not in config:
+            config["log_life_span"] = 1
+        if "passengers" not in config:
+            config["passengers"] = []
+        if "users" not in config:
+            config["users"] = []
+
+        self.save_config(p_client_id, json.dumps(config))
