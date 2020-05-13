@@ -61,6 +61,12 @@ class JsonDatabase(AbstractDatabase):
         self.log.append_text("Deleting passengers from queue")
         self._json_queue.delete_passengers(p_passengers)
 
+    def ensure_schema_existence(self):
+        """ Checks the schema for the client
+        Creates / completes the schema if anything is missing
+        """
+        self._json_client.ensure_schema_existence(self.client_id)
+
     def erase_passenger_queue(self):
         """ Deletes all passengers from disk """
         self.log.append_text("Erasing passenger queue")

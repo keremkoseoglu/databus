@@ -2,11 +2,12 @@
 from datetime import datetime
 from enum import Enum
 import json
-from os import mkdir, path, remove, scandir
+from os import mkdir, path, remove
 import shutil
 from typing import List
 from databus.client.log import Log, LogEntry, MessageType
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
+from databus.database.json_db.json_path_builder import JsonPathBuilder
 from databus.database.json_db.json_toolkit import JsonToolkit
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentError, AttachmentFormat
@@ -63,22 +64,23 @@ class JsonQueue:
         self._log = p_log
         self._passenger_factory = p_passenger_factory
         self._args = p_args
+        self._path = JsonPathBuilder(self.client_id, self._args)
 
     def delete_passengers(self, p_passengers: List[AbstractPassenger]):
         """ Deletes the given passengers from the disk """
-        all_passenger_directories = self._get_passenger_directories()
+        all_passenger_directories = self._path.passenger_directories
         for passenger in p_passengers:
             if passenger.internal_id in all_passenger_directories:
                 self._log.append_text("Deleting passenger directory " + passenger.internal_id)
-                passenger_dir_path = self._get_passenger_directory_path(passenger.internal_id)
+                passenger_dir_path = self._path.get_passenger_directory_path(passenger.internal_id)
                 shutil.rmtree(passenger_dir_path)
 
     def erase_passenger_queue(self):
         """ Deletes all passengers from the disk """
-        all_passenger_directories = self._get_passenger_directories()
+        all_passenger_directories = self._path.passenger_directories
         for passenger_directory in all_passenger_directories:
             self._log.append_text("Deleting passenger directory " + passenger_directory)
-            passenger_dir_path = self._get_passenger_directory_path(passenger_directory)
+            passenger_dir_path = self._path.get_passenger_directory_path(passenger_directory)
             shutil.rmtree(passenger_dir_path)
 
     def get_passengers(self, # pylint: disable=R0912, R0913, R0914
@@ -92,7 +94,7 @@ class JsonQueue:
         """ Returns passengers """
         output = []
 
-        for passenger_directory in self._get_passenger_directories():
+        for passenger_directory in self._path.passenger_directories:
             if p_internal_id is not None and passenger_directory != p_internal_id:
                 continue
 
@@ -176,8 +178,8 @@ class JsonQueue:
             "pusher_statuses": []
         }
 
-        mkdir(self._get_passenger_directory_path(passenger_dict["internal_id"]))
-        mkdir(self._get_attachment_directory_path(passenger_dict["internal_id"]))
+        mkdir(self._path.get_passenger_directory_path(passenger_dict["internal_id"]))
+        mkdir(self._path.get_attachment_directory_path(passenger_dict["internal_id"]))
 
         for attachment in p_passenger_status.passenger.attachments:
             attachment_dict = {
@@ -264,25 +266,17 @@ class JsonQueue:
     def _delete_attachment_file(self, p_file_name: str, p_internal_id: str):
         self._log.append_text("Deleting attachment " + p_file_name)
 
-        full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
+        full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
         if not path.exists(full_path):
             self._log.append_entry(LogEntry(p_message="File not found", p_type=MessageType.warning))
             return
         remove(full_path)
 
-    def _get_attachment_file_path(self, p_file_name: str, p_internal_id: str) -> str:
-        return path.join(self._get_attachment_directory_path(p_internal_id), p_file_name)
-
-    def _get_attachment_directory_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(),
-                         p_internal_id,
-                         self._args.queue_attachment_dir)
-
     def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: {}) -> Attachment:
         output = Attachment(p_name=p_attachment_json["name"],
                             p_format=AttachmentFormat[p_attachment_json["format"]])
 
-        full_path = self._get_attachment_file_path(output.name, p_internal_id)
+        full_path = self._path.get_attachment_file_path(p_internal_id, output.name)
         self._log.append_text("Reading attachment from disk: " + full_path)
 
         if output.format == AttachmentFormat.text:
@@ -298,7 +292,7 @@ class JsonQueue:
 
     def _get_passenger_file_as_json(self, p_internal_id: str) -> dict:
         try:
-            passenger_file_path = self._get_passenger_file_path(p_internal_id)
+            passenger_file_path = self._path.get_passenger_file_path(p_internal_id)
             self._log.append_text("Reading passenger file " + passenger_file_path)
             with open(passenger_file_path) as json_file:
                 passengers_json = json.load(json_file)
@@ -306,21 +300,6 @@ class JsonQueue:
         except Exception as error: # pylint: disable=W0703
             print(str(error))
             return {}
-
-    def _get_passenger_file_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(), p_internal_id, self._args.queue_passenger)
-
-    def _get_passenger_directories(self) -> List[str]:
-        return [f.name for f in scandir(self._get_queue_root_path()) if f.is_dir()]
-
-    def _get_passenger_directory_path(self, p_internal_id: str) -> str:
-        return path.join(self._get_queue_root_path(), p_internal_id)
-
-    def _get_queue_root_path(self) -> str:
-        return path.join(self._args.database_dir,
-                         self._args.client_dir,
-                         self.client_id,
-                         self._args.queue_dir)
 
     def _validate_passenger_status(self,
                                    p_passenger_status: PassengerQueueStatus,
@@ -351,7 +330,7 @@ class JsonQueue:
         AttachmentValidator.validate_attachments(p_passenger_status.passenger.attachments)
 
         if p_operation == JsonQueue.DataOperation.insert and \
-                p_passenger_status.passenger.internal_id in self._get_passenger_directories():
+                p_passenger_status.passenger.internal_id in self._path.passenger_directories:
             raise PassengerError(PassengerError.ErrorCode.already_exists,
                                  p_passenger_status.passenger.id_text)
 
@@ -359,7 +338,7 @@ class JsonQueue:
                                     p_file_name: str,
                                     p_file_content: str,
                                     p_internal_id: str):
-        full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
+        full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
         self._log.append_text("Writing text attachment to disk: " + full_path)
         with open(full_path, "w") as text_file:
             text_file.write(p_file_content)
@@ -368,13 +347,13 @@ class JsonQueue:
                                    p_file_name: str,
                                    p_file_content: bytearray,
                                    p_internal_id: str):
-        full_path = self._get_attachment_file_path(p_file_name, p_internal_id)
+        full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
         self._log.append_text("Writing binary attachment to disk: " + full_path)
         with open(full_path, "wb") as bin_file:
             bin_file.write(p_file_content)
 
     def _write_passenger_json_into_file(self, p_json: dict):
-        passenger_file_path = self._get_passenger_file_path(p_json["internal_id"])
+        passenger_file_path = self._path.get_passenger_file_path(p_json["internal_id"])
         self._log.append_text("Writing passenger file to disk: " + passenger_file_path)
         with open(passenger_file_path, "w") as json_file:
             json.dump(p_json, json_file)

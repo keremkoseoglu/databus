@@ -4,11 +4,11 @@ import json
 from os import mkdir, path, scandir
 from shutil import rmtree
 from typing import List
-from databus import get_root_path
 from databus.client.client import Client, ClientError, ClientPassenger
 from databus.client.user import User, Credential
 from databus.database.difference_check import Action, DifferenceChecker, TableKey
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
+from databus.database.json_db.json_path_builder import JsonPathBuilder
 
 class JsonClient:
     """ JSON database implementation for client """
@@ -55,7 +55,8 @@ class JsonClient:
     @property
     def client_directories(self) -> List[str]:
         """ Returns all client directories """
-        return [f.name for f in scandir(self.client_root_path) if f.is_dir()]
+        client_root_path = JsonPathBuilder.get_client_root_path(self._args)
+        return [f.name for f in scandir(client_root_path) if f.is_dir()]
 
     @property
     def client_master_as_json(self) -> str:
@@ -82,22 +83,17 @@ class JsonClient:
 
         for diff_result in diff_check.result:
             if diff_result.action == Action.INSERT:
-                self._create_client(diff_result.row["client_id"], diff_result.row)
+                self._create_client_if_missing(diff_result.row["client_id"], diff_result.row)
             elif diff_result.action == Action.UPDATE:
                 self._save_config_dict(diff_result.row["client_id"], diff_result.row)
             elif diff_result.action == Action.DELETE:
                 self._delete_client(diff_result.row["client_id"])
 
-    @property
-    def client_root_path(self) -> str:
-        """ Builds the concrete root path of client directories """
-        databus_root = get_root_path()
-        return path.join(databus_root, self._args.database_dir, self._args.client_dir)
-
-    def build_client_dir_path(self, p_client_id: str) -> str:
-        """ Builds the concrete path for client directory """
-        client_root_path = self.client_root_path
-        return path.join(client_root_path, p_client_id)
+    def ensure_schema_existence(self, p_client_id: str):
+        """ Checks the schema for the client
+        Creates / completes the schema if anything is missing
+        """
+        self._create_client_if_missing(p_client_id, {})
 
     def get_config_as_json(self, p_client_id: str):
         """ Returns the contents of the config file as JSON """
@@ -157,20 +153,24 @@ class JsonClient:
                 json.dump(config_json, config_json_file, indent=4, sort_keys=True)
             return
 
-    def _create_client(self, p_client_id: str, p_base_dict: dict):
-        client_dir = self.build_client_dir_path(p_client_id)
-        mkdir(client_dir)
-        self._save_config_dict(p_client_id, p_base_dict)
+    def _create_client_if_missing(self, p_client_id: str, p_base_dict: dict):
+        path_builder = JsonPathBuilder(p_client_id, self._args)
+        if not path.exists(path_builder.client_dir_path):
+            mkdir(path_builder.client_dir_path)
+        if not path.exists(path_builder.log_root_path):
+            mkdir(path_builder.log_root_path)
+        if not path.exists(path_builder.queue_root_path):
+            mkdir(path_builder.queue_root_path)
+        if not path.exists(path_builder.config_file_path):
+            self._save_config_dict(p_client_id, p_base_dict)
 
     def _delete_client(self, p_client_id: str):
-        rmtree(self.build_client_dir_path(p_client_id))
+        path_builder = JsonPathBuilder(p_client_id, self._args)
+        rmtree(path_builder.client_dir_path)
 
-    def _get_config_file_path(self, p_client_directory: str) -> str:
-        return path.join(
-            self._args.database_dir,
-            self._args.client_dir,
-            p_client_directory,
-            self._args.client_config)
+    def _get_config_file_path(self, p_client_id: str) -> str:
+        path_builder = JsonPathBuilder(p_client_id, self._args)
+        return path_builder.config_file_path
 
     def _save_config_dict(self, p_client_id: str, p_base_dict: dict):
         config = copy(p_base_dict)

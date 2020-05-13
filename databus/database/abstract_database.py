@@ -73,6 +73,12 @@ class AbstractDatabase(ABC):
         """ Deletes the given passengers from queue """
 
     @abstractmethod
+    def ensure_schema_existence(self):
+        """ Checks the schema for the client
+        Creates / completes the schema if anything is missing
+        """
+
+    @abstractmethod
     def erase_passenger_queue(self):
         """ Eradicates queue completely """
 

@@ -203,6 +203,18 @@ class SqlDatabase(AbstractDatabase):
             self._query_helper.rollback()
             raise error
 
+    def ensure_schema_existence(self):
+        """ Checks the schema for the client
+        Creates / completes the schema if anything is missing
+        """
+        existing_client = self._query_helper.select_single("client")
+        if len(existing_client) > 0:
+            return
+        insert = InsertBuilder(self._query_helper.args, self.client_id)
+        insert.table = "client"
+        insert.add_string("log_life_span", 1)
+        self._query_helper.execute_insert(insert)
+
     def erase_passenger_queue(self):
         """ Deletes all passengers from the database """
         self.log.append_text("Erasing passenger queue from the database")
