@@ -113,6 +113,10 @@ class AbstractDatabase(ABC):
         """ Returns requested passenger queue entry """
 
     @abstractmethod
+    def insert_client(self, p_client: Client):
+        """ Inserts a new client """
+
+    @abstractmethod
     def insert_log(self, p_log: Log):
         """ Inserts new log entries """
 

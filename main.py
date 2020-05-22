@@ -2,9 +2,9 @@
 from os import path
 import databus
 from databus.client.external_config import ExternalConfigFile
+from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 from databus.dispatcher.abstract_dispatcher import DispatcherTicket
 from databus.dispatcher.primal_factory import PrimalDispatcherFactory
-from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 
 
 def start_with_json_db():
@@ -35,5 +35,5 @@ def start_with_sql_db():
 
 
 if __name__ == "__main__":
-    start_with_json_db()
-    #start_with_sql_db()
+    #start_with_json_db()
+    start_with_sql_db()

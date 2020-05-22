@@ -1,6 +1,7 @@
 """ Abstract database factory """
 from abc import ABC, abstractmethod
 from enum import Enum
+from typing import List
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
 from databus.passenger.abstract_factory import AbstractPassengerFactory
@@ -52,3 +53,13 @@ class AbstractDatabaseFactory(ABC): # pylint: disable=R0903
                         p_arguments: dict
                         ) -> AbstractDatabase:
         """ Abstract method for database creation """
+
+    @property
+    @abstractmethod
+    def database_modules(self) -> List[str]:
+        """ Returns a list of database modules in the system """
+
+    @property
+    @abstractmethod
+    def database_classes(self) -> List[str]:
+        """ Returns a list of database classes in the system """

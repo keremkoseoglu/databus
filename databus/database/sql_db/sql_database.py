@@ -18,9 +18,13 @@ from databus.pqueue.queue_status import \
 from databus.database.sql_db.action_decider import ActionDecider
 from databus.database.sql_db.insert_builder import InsertBuilder
 from databus.database.sql_db.query_helper import QueryHelper
+from databus.database.sql_db.sql_database_arguments import SqlDatabaseArguments
 from databus.database.sql_db.update_builder import UpdateBuilder
 from databus.database.sql_db.value_conversion import DatabusToSql, SqlToDatabus
 from databus.database.sql_db.where_builder import WhereBuilder
+
+
+ARGS_TEMPLATE = SqlDatabaseArguments.TEMPLATE
 
 
 class ClientDataset:
@@ -210,10 +214,8 @@ class SqlDatabase(AbstractDatabase):
         existing_client = self._query_helper.select_single("client")
         if len(existing_client) > 0:
             return
-        insert = InsertBuilder(self._query_helper.args, self.client_id)
-        insert.table = "client"
-        insert.add_string("log_life_span", 1)
-        self._query_helper.execute_insert(insert)
+        self._insert_into_client(self.client_id, 1)
+        self._query_helper.commit()
 
     def erase_passenger_queue(self):
         """ Deletes all passengers from the database """
@@ -294,6 +296,37 @@ class SqlDatabase(AbstractDatabase):
         """ Reads a single entry """
         self.log.append_text("Reading passenger queue entry " + p_internal_id)
         return self._select_from_queue(p_queue_id=p_internal_id)[0]
+
+    def insert_client(self, p_client: Client):
+        """ Inserts a new client """
+        try:
+            self._insert_into_client(p_client.id, p_client.log_life_span)
+
+            exe_order = 0
+            for passenger in p_client.passengers:
+                insert = InsertBuilder(self._query_helper.args, p_client.id)
+                insert.table = "passenger"
+                insert.add_string("passenger_id", passenger.id)
+                insert.add_string("passenger_module", passenger.module)
+                insert.add_string("queue_module", passenger.queue_module)
+                insert.add_int("sync_frequency", passenger.sync_frequency)
+                insert.add_int("queue_life_span", passenger.queue_life_span)
+                exe_order += 1
+                insert.add_int("exe_order", exe_order)
+                self._query_helper.execute_insert(insert)
+
+            for user in p_client.users:
+                insert = InsertBuilder(self._query_helper.args, p_client.id)
+                insert.table = "webuser"
+                insert.add_string("username", user.credential.username)
+                insert.add_string("password", user.credential.password)
+                insert.add_string("token", user.credential.token)
+                self._query_helper.execute_insert(insert)
+
+            self._query_helper.commit()
+        except Exception as error:
+            self._query_helper.rollback()
+            raise error
 
     def insert_log(self, p_log: Log):
         """ Creates a new log file on the disk """
@@ -526,3 +559,9 @@ class SqlDatabase(AbstractDatabase):
             output.append(output_row)
 
         return output
+
+    def _insert_into_client(self, p_client_id: str, p_log_life_span: int):
+        insert = InsertBuilder(self._query_helper.args, p_client_id)
+        insert.table = "client"
+        insert.add_string("log_life_span", p_log_life_span)
+        self._query_helper.execute_insert(insert)

@@ -1,0 +1,62 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript">
+        function getArgs() {
+          dict_url = "{{ url_for('_export_get_dict') }}?db_module=" + $( "#db_module" ).val();
+
+          $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: dict_url,
+            success: function(response) {
+                $( "#args" ).val(JSON.stringify(response, undefined, 4))
+            }
+        });
+
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Export</h1>
+
+    <form action="{{ url_for('_export_exe') }}" method="post">
+        <div class="form-group">
+            <label for="client">Client</label>
+            <select class="form-control" id="client" name="client">
+            {% for client in exportable_clients %}
+              <option>{{ client.id }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label for="db_module">Target database</label>
+          <select class="form-control" id="db_module" name="db_module" onChange="getArgs();">
+            <option></option>
+            {% for db_module in db_modules %}
+            <option>{{ db_module }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="mode">Mode</label>
+          <select class="form-control" id="mode" name="mode">
+            <option>async</option>
+            <option>sync</option>
+          </select>
+      </div>
+
+        <div class="form-group">
+          <label for="args">Arguments</label>
+          <textarea class="form-control" id="args" name="args" rows="30" style="font-family:monospace;">(select database)</textarea>
+        </div>
+
+        <input type="submit" class="btn btn-danger" value="Start export" />
+    </form>
+
+
+{% endblock %}
+

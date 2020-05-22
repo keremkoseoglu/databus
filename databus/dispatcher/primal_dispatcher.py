@@ -73,10 +73,22 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._dispatch_state = DispatchState()
         self._next_dispatch_time = datetime.now()
         self._tick_count = ClientPassengerTickCount()
+        self._paused = False
+        self._dispatching = False
 
     def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
         """ Prioritizes the passenger in the next cycle """
         self._tick_count.expedite_client_passenger(p_client_id, p_passenger_module)
+
+    def export_data_begin(self):
+        """ Indicates that data export is starting """
+        if self._dispatching:
+            raise Exception("Can't export while dispatching")
+        self._paused = True
+
+    def export_data_end(self):
+        """ Indicates that data export is ending """
+        self._paused = False
 
     def start(self):
         """ Starts the dispatcher timer and web server """
@@ -85,9 +97,15 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._start_dispatch_timer()
 
     def _dispatch(self):
-        self._dispatch_state = DispatchState()
-        self._read_clients()
-        self._drive_high_time_passengers()
+        try:
+            if self._paused:
+                return
+            self._dispatching = True
+            self._dispatch_state = DispatchState()
+            self._read_clients()
+            self._drive_high_time_passengers()
+        finally:
+            self._dispatching = False
 
     def _drive_high_time_passengers(self):
         for client in self._dispatch_state.clients:

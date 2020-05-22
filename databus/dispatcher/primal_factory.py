@@ -1,5 +1,5 @@
 """ Default dispatcher factory module """
-import inspect
+from vibhaga.inspector import Inspector
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
 from databus.dispatcher.abstract_factory import \
     AbstractDispatcherFactory, DispatcherCreationError
@@ -24,15 +24,17 @@ class PrimalDispatcherFactory(AbstractDispatcherFactory): # pylint: disable=R090
         else:
             dispatcher_ticket = p_ticket
 
-        module = __import__(dispatcher_module, fromlist=[""])
-        for name, obj in inspect.getmembers(module, inspect.isclass):
-            if name != "AbstractDispatcher":
-                try:
-                    obj_instance = obj(dispatcher_ticket)
-                    if isinstance(obj_instance, AbstractDispatcher):
-                        return obj_instance
-                except Exception: # pylint: disable=W0703
-                    pass
+        candidates = Inspector.get_classes_in_module(
+            dispatcher_module,
+            exclude_classes=["AbstractDispatcher"])
+
+        for candidate in candidates:
+            try:
+                obj_instance = candidate(dispatcher_ticket)
+                if isinstance(obj_instance, AbstractDispatcher):
+                    return obj_instance
+            except Exception: # pylint: disable=W0703
+                pass
 
         raise DispatcherCreationError(
             DispatcherCreationError.ErrorCode.cant_create_instance,
