@@ -2,4 +2,4 @@ cython
 flask
 pyodbc
 waitress
-git+https://github.com/keremkoseoglu/vibhaga.git
+-e git://github.com/keremkoseoglu/vibhaga.git
