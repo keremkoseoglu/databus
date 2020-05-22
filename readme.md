@@ -1,6 +1,20 @@
 # Databus
 This project is an asynchronous data integration platform. It can pull, queue, process and push data within the defined rules. It is very flexible - you can write your own factory or concrete classes easily.
 
+## Installation
+
+First, install Vibhaga.
+
+```
+pip install git+http://github.com/keremkoseoglu/vibhaga.git
+```
+
+Then, install Databus.
+
+```
+pip install git+http://github.com/keremkoseoglu/databus.git
+```
+
 ## Running databus
 Running a databus instance is really easy! 
 
