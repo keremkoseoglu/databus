@@ -35,8 +35,15 @@ class SqlDatabaseArguments: # pylint: disable=R0902, R0903
     KEY_PASSWORD = "password"
     KEY_SCHEMA = "schema"
 
-    def __init__(self, p_arguments: dict):
+    TEMPLATE = {
+        KEY_SERVER: "(server address)",
+        KEY_DATABASE: "(database name)",
+        KEY_USERNAME: "(username)",
+        KEY_PASSWORD: "(password)",
+        KEY_SCHEMA: "(database schema)"
+    }
 
+    def __init__(self, p_arguments: dict):
         for key in p_arguments:
             if key == SqlDatabaseArguments.KEY_SERVER:
                 self.server = p_arguments[key]

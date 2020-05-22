@@ -1,7 +1,8 @@
 """ Json database implementation module for client """
 from copy import copy
 import json
-from os import mkdir, path, scandir
+from os import path, scandir
+import pathlib
 from shutil import rmtree
 from typing import List
 from databus.client.client import Client, ClientError, ClientPassenger
@@ -83,7 +84,7 @@ class JsonClient:
 
         for diff_result in diff_check.result:
             if diff_result.action == Action.INSERT:
-                self._create_client_if_missing(diff_result.row["client_id"], diff_result.row)
+                self.create_client_if_missing(diff_result.row["client_id"], diff_result.row)
             elif diff_result.action == Action.UPDATE:
                 self._save_config_dict(diff_result.row["client_id"], diff_result.row)
             elif diff_result.action == Action.DELETE:
@@ -93,7 +94,7 @@ class JsonClient:
         """ Checks the schema for the client
         Creates / completes the schema if anything is missing
         """
-        self._create_client_if_missing(p_client_id, {})
+        self.create_client_if_missing(p_client_id, {})
 
     def get_config_as_json(self, p_client_id: str):
         """ Returns the contents of the config file as JSON """
@@ -153,16 +154,45 @@ class JsonClient:
                 json.dump(config_json, config_json_file, indent=4, sort_keys=True)
             return
 
-    def _create_client_if_missing(self, p_client_id: str, p_base_dict: dict):
+    def create_client_if_missing(self, p_client_id: str, p_base_dict: dict):
+        """ Creates the client folder structure if not present """
         path_builder = JsonPathBuilder(p_client_id, self._args)
-        if not path.exists(path_builder.client_dir_path):
-            mkdir(path_builder.client_dir_path)
-        if not path.exists(path_builder.log_root_path):
-            mkdir(path_builder.log_root_path)
-        if not path.exists(path_builder.queue_root_path):
-            mkdir(path_builder.queue_root_path)
+        pathlib.Path(path_builder.client_dir_path).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(path_builder.log_root_path).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(path_builder.queue_root_path).mkdir(parents=True, exist_ok=True)
         if not path.exists(path_builder.config_file_path):
             self._save_config_dict(p_client_id, p_base_dict)
+
+    def create_client_if_missing__by_obj(self, p_client: Client):
+        """ Creates the client folder structure if not present """
+
+        client_dict = {
+            "log_life_span": p_client.log_life_span,
+            "passengers": [],
+            "users": []
+        }
+
+        for passenger in p_client.passengers:
+            passenger_dict = {
+                "name": passenger.name,
+                "processors": copy(passenger.processor_modules),
+                "pullers": copy(passenger.puller_modules),
+                "pushers": copy(passenger.pusher_modules),
+                "queue": passenger.queue_module,
+                "queue_life_span": passenger.queue_life_span,
+                "sync_frequency": passenger.sync_frequency
+            }
+            client_dict["passengers"].append(passenger_dict)
+
+        for user in p_client.users:
+            user_dict = {
+                "password": user.credential.password,
+                "token": user.credential.token,
+                "username": user.credential.username
+            }
+            client_dict["users"].append(user_dict)
+
+        self.create_client_if_missing(p_client.id, client_dict)
 
     def _delete_client(self, p_client_id: str):
         path_builder = JsonPathBuilder(p_client_id, self._args)

@@ -47,6 +47,8 @@ Databus needs a database to store client and queue data. Out of the box, it supp
 
 You can implement your own database engine too. All you need to do is to derive a new class from databus.database.abstract_database. Remember passing your own module name to the dispatcher as seen above.
 
+Databus has the ability to export data. Check the export menu on the Web interface.
+
 ### Client
 Defines a client company using Databus. Each client can has its own reader / processor / pusher classes. A singular Databus instance can support multiple clients. 
 

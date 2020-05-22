@@ -1,5 +1,5 @@
 """ Default driver factory module """
-import inspect
+from vibhaga.inspector import Inspector
 from databus.driver.abstract_driver import AbstractDriver
 from databus.driver.abstract_factory import AbstractDriverFactory, DriverCreationError
 from databus.pqueue.abstract_factory import AbstractQueueFactory
@@ -22,18 +22,18 @@ class PrimalDriverFactory(AbstractDriverFactory): # pylint: disable=R0903
         if p_module == "" or p_module is None:
             raise DriverCreationError(DriverCreationError.ErrorCode.parameter_missing)
 
-        module = __import__(p_module, fromlist=[""])
-        for name, obj in inspect.getmembers(module, inspect.isclass):
-            if name != "AbstractDriver":
-                try:
-                    obj_instance = obj(p_queue_factory,
-                                       p_processor_factory,
-                                       p_puller_factory,
-                                       p_pusher_factory)
-                    if isinstance(obj_instance, AbstractDriver):
-                        return obj_instance
-                except Exception: # pylint: disable=W0703
-                    pass
+        candidates = Inspector.get_classes_in_module(p_module, exclude_classes=["AbstractDriver"])
+        for candidate in candidates:
+            try:
+                obj_instance = candidate(
+                    p_queue_factory,
+                    p_processor_factory,
+                    p_puller_factory,
+                    p_pusher_factory)
+                if isinstance(obj_instance, AbstractDriver):
+                    return obj_instance
+            except Exception: # pylint: disable=W0703
+                pass
 
         raise DriverCreationError(
             DriverCreationError.ErrorCode.cant_create_instance,

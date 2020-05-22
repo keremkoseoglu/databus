@@ -7,6 +7,8 @@ from waitress import serve
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.web.controller.customizing import CustomizingEditController,\
     CustomizingListController, CustomizingSaveController
+from databus.web.controller.export import \
+    ExportController, ExportGetDictController, ExportExeController
 from databus.web.controller.home import HomeController, AboutController
 from databus.web.controller.log import LogDisplayController, LogListController, LogPurgeController
 from databus.web.controller.login import LoginAttemptController, LogoffController
@@ -23,6 +25,7 @@ from databus.web.controller.user import UserListController, UserTokenRevokeContr
 _APP = Flask(__name__)
 _APP.secret_key = "databus"
 _APP.config["CACHE_TYPE"] = "null"
+_APP.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 _DISPATCHER: AbstractDispatcher
 
 
@@ -152,3 +155,19 @@ def _customizing_edit():
 @_APP.route("/customizing_save", methods=["POST"])
 def _customizing_save():
     return CustomizingSaveController(_DISPATCHER).execute()
+
+##############################
+# Export
+##############################
+
+@_APP.route("/export")
+def _export():
+    return ExportController(_DISPATCHER).execute()
+
+@_APP.route("/export_get_dict")
+def _export_get_dict():
+    return ExportGetDictController(_DISPATCHER).execute()
+
+@_APP.route("/export_exe", methods=["POST"])
+def _export_exe():
+    return ExportExeController(_DISPATCHER).execute()

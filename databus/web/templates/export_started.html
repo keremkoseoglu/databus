@@ -1,0 +1,11 @@
+{% extends "default_template.html" %}
+
+{% block body %}
+<h1>Export</h1>
+{% if mode == "async" %}
+<p class="text-success">Export started, please check the target database.</p>
+{% else %}
+<p class="text-success">Export complete, please check the target database.</p>
+{% endif %}
+{% endblock %}
+

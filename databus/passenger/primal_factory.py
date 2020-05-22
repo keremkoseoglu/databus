@@ -1,5 +1,5 @@
 """ Default passenger factory module """
-import inspect
+from vibhaga.inspector import Inspector
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.abstract_factory import AbstractPassengerFactory, PassengerCreationError
 
@@ -12,15 +12,14 @@ class PrimalPassengerFactory(AbstractPassengerFactory): # pylint: disable=R0903
         if p_module == "" or p_module is None:
             raise PassengerCreationError(PassengerCreationError.ErrorCode.parameter_missing)
 
-        module = __import__(p_module, fromlist=[""])
-        for name, obj in inspect.getmembers(module, inspect.isclass):
-            if name != "AbstractPassenger":
-                try:
-                    obj_instance = obj()
-                    if isinstance(obj_instance, AbstractPassenger):
-                        return obj_instance
-                except Exception: # pylint: disable=W0703
-                    pass
+        candidates = Inspector.get_classes_in_module(p_module, exclude_classes=["AbstractPassenger"]) # pylint: disable=C0301
+        for candidate in candidates:
+            try:
+                obj_instance = candidate()
+                if isinstance(obj_instance, AbstractPassenger):
+                    return obj_instance
+            except Exception: # pylint: disable=W0703
+                pass
 
         raise PassengerCreationError(
             PassengerCreationError.ErrorCode.cant_create_instance,

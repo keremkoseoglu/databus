@@ -14,6 +14,9 @@ from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.queue_status import QueueStatus, PassengerQueueStatus
 
 
+ARGS_TEMPLATE = JsonDatabaseArguments.TEMPLATE
+
+
 class JsonDatabase(AbstractDatabase):
     """ Implementation class for JSON database """
     def __init__(self,
@@ -24,10 +27,13 @@ class JsonDatabase(AbstractDatabase):
         super().__init__(p_client_id, p_log, p_passenger_factory, p_arguments)
         self._args = JsonDatabaseArguments(p_arguments)
         self._json_client = JsonClient(self._args)
-        if p_client_id is None or p_client_id == "":
+        if p_client_id is None or p_client_id == "" or p_client_id == Client.ROOT:
             self.client = None
         else:
-            self.client = self._get_client(p_client_id)
+            try:
+                self.client = self._get_client(p_client_id)
+            except Exception: # pylint: disable=W0703
+                self.client = None # We might be creating a new database
         self._json_log = JsonLog(self._args)
         self._json_queue = JsonQueue(p_client_id, p_log, self.passenger_factory, self._args)
 
@@ -122,9 +128,15 @@ class JsonDatabase(AbstractDatabase):
                                  ) -> PassengerQueueStatus:
         return self._json_queue.get_passengers(p_internal_id=p_internal_id)[0]
 
+    def insert_client(self, p_client: Client):
+        """ Inserts a new client """
+        self._json_client.create_client_if_missing__by_obj(p_client)
+
     def insert_log(self, p_log: Log):
         """ Creates a new log file on the disk """
         self.log.append_text("Writing log to disk")
+        if self.client is None:
+            return
         self._json_log.insert(self.client.id, p_log)
 
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
