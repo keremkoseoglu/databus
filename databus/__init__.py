@@ -2,7 +2,7 @@
 from os import path
 from sys import modules
 
-__version__ = "4.5.5"
+__version__ = "4.5.6"
 AUTHOR = "Kerem Koseoglu"
 EMAIL = "kerem@keremkoseoglu.com"
 DESCRIPTION = "Databus is a framework to transfer data between systems."
