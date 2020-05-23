@@ -174,3 +174,7 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
     @abstractmethod
     def start(self):
         """ Activates dispatcher timer """
+
+    @abstractmethod
+    def request_shutdown(self):
+        """ Dispatcher shutdown """

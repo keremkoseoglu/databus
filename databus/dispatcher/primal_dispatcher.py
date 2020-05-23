@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from threading import Thread
 from time import sleep
 from typing import List
+import os
 from databus.client.client import Client
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log, LogEntry, MessageType
@@ -75,6 +76,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._tick_count = ClientPassengerTickCount()
         self._paused = False
         self._dispatching = False
+        self._shutting_down = False
 
     def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
         """ Prioritizes the passenger in the next cycle """
@@ -84,6 +86,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         """ Indicates that data export is starting """
         if self._dispatching:
             raise Exception("Can't export while dispatching")
+        if self._shutting_down:
+            raise Exception("Can't export while shutting down")
         self._paused = True
 
     def export_data_end(self):
@@ -96,9 +100,14 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             Thread(target=self._start_web_server, daemon=True).start()
         self._start_dispatch_timer()
 
+    def request_shutdown(self):
+        """ Dispatcher shutdown """
+        self._shutting_down = True
+        Thread(target=self._shutdown_when_safely_possible, daemon=True).start()
+
     def _dispatch(self):
         try:
-            if self._paused:
+            if self._paused or self._shutting_down:
                 return
             self._dispatching = True
             self._dispatch_state = DispatchState()
@@ -120,6 +129,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
                     print(str(drive_error))
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
+        if self._shutting_down:
+            return
         log = Log()
         db = None # pylint: disable=C0103
         driver = None
@@ -178,7 +189,16 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
             self._dispatch()
+            if self._shutting_down:
+                return
             self._sleep_until_next_dispatch_time()
 
     def _start_web_server(self):
         app.run_web_server(self)
+
+    def _shutdown_when_safely_possible(self):
+        while True:
+            if not self._dispatching and not self._paused:
+                os._exit(0) # pylint: disable=W0212
+                return
+            sleep(1)
