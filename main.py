@@ -35,5 +35,5 @@ def start_with_sql_db():
 
 
 if __name__ == "__main__":
-    #start_with_json_db()
-    start_with_sql_db()
+    start_with_json_db()
+    #start_with_sql_db()

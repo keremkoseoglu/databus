@@ -17,6 +17,7 @@ from databus.web.controller.peek import PeekAttachmentController, PeekController
 from databus.web.controller.queue import QueueAttachmentController, QueueDisplayController,\
     QueueListController, QueuePurgeController, QueueStatusUpdateController
 from databus.web.controller.user import UserListController, UserTokenRevokeController
+from databus.web.controller.shutdown import ShutdownController, ShutdownExeController
 
 ##############################
 # Main stuff
@@ -171,3 +172,15 @@ def _export_get_dict():
 @_APP.route("/export_exe", methods=["POST"])
 def _export_exe():
     return ExportExeController(_DISPATCHER).execute()
+
+##############################
+# Shutdown
+##############################
+
+@_APP.route("/shutdown")
+def _shutdown():
+    return ShutdownController(_DISPATCHER).execute()
+
+@_APP.route("/shutdown_exe")
+def _shutdown_exe():
+    return ShutdownExeController(_DISPATCHER).execute()
