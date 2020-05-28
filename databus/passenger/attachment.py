@@ -51,6 +51,10 @@ class AttachmentFormat(Enum):
 
 class Attachment: # pylint: disable=R0903
     """ Attachment class """
+
+    _VALID_CHARS = "1234567890QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm_."
+    _REPLACEMENT_CHAR = "_"
+
     def __init__(self,
                  p_name: str = None,
                  p_format: AttachmentFormat = AttachmentFormat.text,
@@ -60,9 +64,9 @@ class Attachment: # pylint: disable=R0903
         Validator.validate_attachment_format(p_format)
 
         if p_name is None:
-            self.name = ""
+            self._name = ""
         else:
-            self.name = p_name
+            self._name = Attachment._cleanse_name(p_name)
 
         self.format = p_format
 
@@ -72,6 +76,28 @@ class Attachment: # pylint: disable=R0903
             self.text_content = p_text_content
 
         self.binary_content = p_binary_content
+
+    @property
+    def name(self) -> str:
+        """ Attachment name """
+        return self._name
+
+    @name.setter
+    def name(self, p_val: str):
+        """ Attachment name setter
+        We cleanse the attachment name from invalid characters here
+        """
+        self._name = Attachment._cleanse_name(p_val)
+
+    @staticmethod
+    def _cleanse_name(p_val: str) -> str:
+        output = ""
+        for name_char in p_val:
+            if name_char in Attachment._VALID_CHARS:
+                output += name_char
+            else:
+                output += Attachment._REPLACEMENT_CHAR
+        return output
 
 
 class Validator:
