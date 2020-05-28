@@ -17,8 +17,9 @@ class JsonLog:
     def build_log_file_name(self, p_log: Log) -> str:
         """ Builds log file name """
         datetime_part = p_log.creation_datetime.isoformat()
+        safe_datetime_part = datetime_part.replace(":", "_")
         guid_part = str(p_log.guid)
-        return datetime_part + "_" + guid_part + "." + self._args.log_extension
+        return safe_datetime_part + "_" + guid_part + "." + self._args.log_extension
 
     def build_log_file_path(self, p_client_id: str, p_log: Log) -> str:
         """ Builds log file path """
