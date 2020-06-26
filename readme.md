@@ -1,6 +1,8 @@
 # Databus
 This project is an asynchronous data integration platform. It can pull, queue, process and push data within the defined rules. It is very flexible - you can write your own factory or concrete classes easily.
 
+![Databus Queue](/screenshot.png?raw=true "Databus")
+
 ## Installation
 
 ```
