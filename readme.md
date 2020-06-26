@@ -3,14 +3,6 @@ This project is an asynchronous data integration platform. It can pull, queue, p
 
 ## Installation
 
-First, install Vibhaga.
-
-```
-pip install git+http://github.com/keremkoseoglu/vibhaga.git
-```
-
-Then, install Databus.
-
 ```
 pip install git+http://github.com/keremkoseoglu/databus.git
 ```

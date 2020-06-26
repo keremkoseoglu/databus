@@ -33,6 +33,12 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=databus.PYTHON_VERSION,
-    install_requires=get_databus_requirements(),
+    install_requires=[
+        "cython",
+        "flask",
+        "pyodbc",
+        "waitress"
+    ],
+    dependency_links=["https://github.com/keremkoseoglu/vibhaga/tarball/master"],
     include_package_data=True
 )
