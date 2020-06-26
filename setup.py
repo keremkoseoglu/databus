@@ -37,8 +37,8 @@ setuptools.setup(
         "cython",
         "flask",
         "pyodbc",
-        "waitress"
+        "waitress",
+        "vibhaga @ git+https://github.com/keremkoseoglu/vibhaga.git"
     ],
-    dependency_links=["https://github.com/keremkoseoglu/vibhaga/tarball/master"],
     include_package_data=True
 )
