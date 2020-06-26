@@ -33,6 +33,12 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=databus.PYTHON_VERSION,
-    install_requires=get_databus_requirements(),
+    install_requires=[
+        "cython",
+        "flask",
+        "pyodbc",
+        "waitress",
+        "vibhaga @ git+https://github.com/keremkoseoglu/vibhaga.git"
+    ],
     include_package_data=True
 )
