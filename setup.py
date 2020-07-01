@@ -37,8 +37,7 @@ setuptools.setup(
         "cython",
         "flask",
         "pyodbc",
-        "waitress",
-        "vibhaga @ git+https://github.com/keremkoseoglu/vibhaga.git"
+        "waitress"
     ],
     include_package_data=True
 )
