@@ -131,4 +131,4 @@ class PeekController(AbstractController):
             return authentication_error.output
 
         peek = PullerPeek(self.dispatcher).peek(self.authenticated_client_id)
-        return render_template("peek.html", peek=peek)
+        return render_template("peek.html", peek=peek, alias=self.dispatcher.ticket.system_alias)

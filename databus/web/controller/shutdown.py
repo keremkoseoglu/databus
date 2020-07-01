@@ -16,7 +16,7 @@ class ShutdownController(AbstractController):
         if self.authenticated_client_id != Client.ROOT:
             return redirect(url_for("_login"), code=302)
 
-        return render_template("shutdown.html")
+        return render_template("shutdown.html", alias=self.dispatcher.ticket.system_alias)
 
 class ShutdownExeController(AbstractController):
     """ Shutdown execution """

@@ -9,7 +9,8 @@ from databus.dispatcher.primal_factory import PrimalDispatcherFactory
 
 def start_with_json_db():
     """ Starts instance using JSON DB """
-    PrimalDispatcherFactory().create_dispatcher().start()
+    ticket = DispatcherTicket(p_system_alias="Databus DEV")
+    PrimalDispatcherFactory().create_dispatcher(p_ticket=ticket).start()
 
 
 def start_with_sql_db():
@@ -28,7 +29,8 @@ def start_with_sql_db():
     ticket = DispatcherTicket(
         p_database_module="databus.database.sql_db.sql_database",
         p_database_arguments=sql_args,
-        p_external_config_files=[demo_config_file]
+        p_external_config_files=[demo_config_file],
+        p_system_alias="Development"
     )
 
     PrimalDispatcherFactory().create_dispatcher(p_ticket=ticket).start()

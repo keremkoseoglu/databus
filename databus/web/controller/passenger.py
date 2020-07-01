@@ -41,4 +41,9 @@ class PassengerListController(AbstractController):
             expedited = request.args.get("expedited", 0, type=str) == "true"
         except Exception: # pylint: disable=W0703
             expedited = False
-        return render_template("passenger_list.html", clients=clients, expedited=expedited)
+
+        return render_template(
+            "passenger_list.html",
+            clients=clients,
+            expedited=expedited,
+            alias=self.dispatcher.ticket.system_alias)

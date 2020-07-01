@@ -99,7 +99,12 @@ class QueueDisplayController(AbstractController):
 
         passenger = request.args.get("passenger", 0, type=str)
         entry = ClientPassengerQueueReader(self.dispatcher).get_client_passenger_queue_entry(self.requested_client_id, passenger) # pylint: disable=C0301
-        return render_template("queue_display.html", client=self.requested_client_id, entry=entry)
+
+        return render_template(
+            "queue_display.html",
+            client=self.requested_client_id,
+            entry=entry,
+            alias=self.dispatcher.ticket.system_alias)
 
 
 class QueueListController(AbstractController):
@@ -115,7 +120,11 @@ class QueueListController(AbstractController):
         queue_reader = ClientPassengerQueueReader(self.dispatcher)
         entries = queue_reader.get_client_passenger_queue_list(
             p_client_id=self.authenticated_client_id)
-        return render_template("queue_list.html", entries=entries)
+
+        return render_template(
+            "queue_list.html",
+            entries=entries,
+            alias=self.dispatcher.ticket.system_alias)
 
 
 class QueuePurgeController(AbstractController):

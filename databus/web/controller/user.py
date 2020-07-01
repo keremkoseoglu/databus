@@ -41,4 +41,7 @@ class UserListController(AbstractController):
         else:
             clients = [self.authenticated_client_database.client]
 
-        return render_template("user_list.html", clients=clients)
+        return render_template(
+            "user_list.html",
+            clients=clients,
+            alias=self.dispatcher.ticket.system_alias)

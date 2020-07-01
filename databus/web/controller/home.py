@@ -17,7 +17,8 @@ class AboutController(AbstractController):
             email=databus.EMAIL,
             description=databus.DESCRIPTION,
             python_version=databus.PYTHON_VERSION,
-            dispatcher=self.dispatcher)
+            dispatcher=self.dispatcher,
+            alias=self.dispatcher.ticket.system_alias)
 
 
 class HomeController(AbstractController):
@@ -30,4 +31,4 @@ class HomeController(AbstractController):
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
-        return render_template("home.html")
+        return render_template("home.html", alias=self.dispatcher.ticket.system_alias)
