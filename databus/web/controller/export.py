@@ -35,7 +35,7 @@ class ExportController(AbstractController):
 
         exporter = ExporterFactory.get_singleton()
         if exporter.status == ExportStatus.BUSY:
-            return render_template("export_busy.html")
+            return render_template("export_busy.html", alias=self.dispatcher.ticket.system_alias)
 
         list_builder = ExportableClientList(self.dispatcher)
         exportable_clients = list_builder.get_exportable_clients(self.authenticated_client_id)
@@ -44,7 +44,8 @@ class ExportController(AbstractController):
         return render_template(
             "export.html",
             exportable_clients=exportable_clients,
-            db_modules=db_modules)
+            db_modules=db_modules,
+            alias=self.dispatcher.ticket.system_alias)
 
 
 class ExportGetDictController(AbstractController):
@@ -76,7 +77,7 @@ class ExportExeController(AbstractController):
 
         exporter = ExporterFactory.get_singleton()
         if exporter.status == ExportStatus.BUSY:
-            return render_template("export_busy.html")
+            return render_template("export_busy.html", alias=self.dispatcher.ticket.system_alias)
 
         client = request.form["client"]
         db_module = request.form["db_module"]
@@ -107,4 +108,8 @@ class ExportExeController(AbstractController):
             exporter.execute_async(export_request)
         else:
             exporter.execute(export_request)
-        return render_template("export_started.html", mode=mode)
+
+        return render_template(
+            "export_started.html",
+            mode=mode,
+            alias=self.dispatcher.ticket.system_alias)

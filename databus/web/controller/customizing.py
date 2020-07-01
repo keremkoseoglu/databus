@@ -83,7 +83,11 @@ class CustomizingListController(AbstractController):
 
         cust_reader = ClientCustomizingReader(self.dispatcher)
         entries = cust_reader.get_client_customizing_list(p_client_id=self.authenticated_client_id)
-        return render_template("customizing_list.html", entries=entries)
+
+        return render_template(
+            "customizing_list.html",
+            entries=entries,
+            alias=self.dispatcher.ticket.system_alias)
 
 class CustomizingEditController(AbstractController):
     """ Customizing list page """
@@ -98,7 +102,7 @@ class CustomizingEditController(AbstractController):
         node = request.args.get("node", 0, type=str)
         cust_reader = ClientCustomizingReader(self.dispatcher)
         entry = cust_reader.get_client_customizing_entry(self.requested_client_id, node)
-        return render_template("customizing_edit.html", client=self.requested_client_id, node=node, entry=entry) # pylint: disable=C0301
+        return render_template("customizing_edit.html", client=self.requested_client_id, node=node, entry=entry, alias=self.dispatcher.ticket.system_alias) # pylint: disable=C0301
 
 class CustomizingSaveController(AbstractController):
     """ Customizing save """

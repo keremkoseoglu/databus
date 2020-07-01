@@ -53,8 +53,9 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
                  p_dispatcher_observer: DispatcherObserver = None,
                  p_run_web_server: bool = True,
                  p_web_server_port: int = 5000,
-                 p_external_config_files: List[ExternalConfigFile] = None
-                 ): # pylint: disable=R0912, R0913
+                 p_external_config_files: List[ExternalConfigFile] = None,
+                 p_system_alias: str = None
+                 ): # pylint: disable=R0912, R0913, R0915, R0914
 
         if p_database_factory is None:
             self.database_factory = PrimalDatabaseFactory()
@@ -110,6 +111,11 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
             self.external_config_files = []
         else:
             self.external_config_files = p_external_config_files
+
+        if p_system_alias is None or p_system_alias == "":
+            self.system_alias = "Databus"
+        else:
+            self.system_alias = p_system_alias
 
         self.dispatcher_observer = p_dispatcher_observer
         self.run_web_server = p_run_web_server

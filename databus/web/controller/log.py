@@ -74,7 +74,11 @@ class LogListController(AbstractController):
 
         log_reader = ClientLogReader(self.dispatcher)
         entries = log_reader.get_client_log_list(p_client_id=self.authenticated_client_id)
-        return render_template("log_list.html", entries=entries)
+
+        return render_template(
+            "log_list.html",
+            entries=entries,
+            alias=self.dispatcher.ticket.system_alias)
 
 
 class LogPurgeController(AbstractController):
