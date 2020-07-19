@@ -110,6 +110,8 @@ class JsonClient:
         config_file_path = self._get_config_file_path(p_client_id)
         with open(config_file_path) as config_json_file:
             output = config_json_file.read()
+        if "\r\n" in output:
+            output = output.replace("\r\n", "\n")
         return output
 
     def get_single(self, p_id: str) -> Client:
