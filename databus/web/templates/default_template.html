@@ -59,9 +59,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_logoff') }}">👋</a>
             </li>
+            {% if user_is_root %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_shutdown') }}">🛑</a>
             </li>
+            {% endif %}
             {% endblock %}
         </ul>
     </div>
