@@ -117,6 +117,7 @@ class CustomizingSaveController(AbstractController):
         client_db = self.requested_client_database
         node = request.form["node"]
         customizing = request.form["customizing"]
+        customizing = customizing.replace("\r\n", "\n") # Windows fix
 
         if node == _DATABUS_DB_NODE:
             client_db.customizing = customizing
