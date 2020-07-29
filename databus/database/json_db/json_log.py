@@ -49,8 +49,15 @@ class JsonLog:
 
     def get_log_file_list(self, p_client_id: str) -> List[str]:
         """ Log file list """
+        output = []
         log_root_path = self.get_root_path(p_client_id)
-        return [f.name for f in scandir(log_root_path) if f.is_file()]
+        file_list = [f.name for f in scandir(log_root_path) if f.is_file()]
+        supposed_extension = self._args.log_extension.lower()
+        for file_candidate in file_list:
+            extension = path.splitext(file_candidate)[1].replace(".", "").lower()
+            if extension == supposed_extension:
+                output.append(file_candidate)
+        return output
 
     def get_root_path(self, p_client_id: str) -> str:
         """ Returns the root log path for the given client """
