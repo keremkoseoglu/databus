@@ -169,7 +169,7 @@ class JsonQueue:
             "external_id": p_passenger_status.passenger.external_id,
             "internal_id": str(p_passenger_status.passenger.internal_id),
             "source_system": p_passenger_status.passenger.source_system,
-            "passenger_module": p_passenger_status.passenger.__module__,
+            "passenger_module": p_passenger_status.passenger.passenger_module,
             "puller_module": p_passenger_status.passenger.puller_module,
             "puller_notified": p_passenger_status.puller_notified,
             "pull_datetime": p_passenger_status.passenger.pull_datetime.isoformat(),
