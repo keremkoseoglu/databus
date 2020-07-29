@@ -15,7 +15,7 @@ class PrimalPassengerFactory(AbstractPassengerFactory): # pylint: disable=R0903
         candidates = Inspector.get_classes_in_module(p_module, exclude_classes=["AbstractPassenger"]) # pylint: disable=C0301
         for candidate in candidates:
             try:
-                obj_instance = candidate()
+                obj_instance = candidate(p_passenger_module=p_module)
                 if isinstance(obj_instance, AbstractPassenger):
                     return obj_instance
             except Exception: # pylint: disable=W0703
