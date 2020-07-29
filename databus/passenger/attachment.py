@@ -6,6 +6,7 @@ per passenger, consider creating a JSON attachment.
 """
 from enum import Enum
 from typing import List
+from os import path
 
 
 class AttachmentError(Exception):
@@ -103,8 +104,24 @@ class Attachment: # pylint: disable=R0903
 class Validator:
     """ Attachment validator class """
     @staticmethod
-    def ensure_all_names_are_unique(p_attachments: List[Attachment]):
+    def ensure_all_names_are_unique(p_attachments: List[Attachment], p_correct: bool = True):
         """ Prevents duplicate file names among attachments """
+        if p_correct:
+            iter_count = 0
+            while True:
+                try:
+                    Validator._enforce_names_are_unique(p_attachments)
+                    return
+                except AttachmentError as error:
+                    iter_count += 1
+                    if iter_count > 30:
+                        raise error
+                    Validator._rename_duplicates(p_attachments)
+        else:
+            Validator._enforce_names_are_unique(p_attachments)
+
+    @staticmethod
+    def _enforce_names_are_unique(p_attachments: List[Attachment]):
         name_count = {}
         for attachment in p_attachments:
             if attachment.name in name_count:
@@ -115,6 +132,25 @@ class Validator:
         for name in name_count:
             if name_count[name] > 1:
                 raise AttachmentError(AttachmentError.ErrorCode.duplicate_name, p_name=name)
+
+    @staticmethod
+    def _rename_duplicates(p_attachments: List[Attachment]):
+        unique_names = []
+        for attachment in p_attachments:
+            if attachment.name not in unique_names:
+                unique_names.append(attachment.name)
+
+        for name in unique_names:
+            name_count = 0
+            for attachment in p_attachments:
+                if attachment.name != name:
+                    continue
+                name_count += 1
+                if name_count < 2:
+                    continue
+                att_name, att_extension = path.splitext(attachment.name)
+                att_name += " (" + str(name_count) + ")"
+                attachment.name = att_name + att_extension
 
     @staticmethod
     def validate_attachment_format(p_format: AttachmentFormat):
