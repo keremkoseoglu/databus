@@ -112,7 +112,7 @@ class Validator:
                 try:
                     Validator._enforce_names_are_unique(p_attachments)
                     return
-                except AttachmentError as error:
+                except Exception as error:
                     iter_count += 1
                     if iter_count > 30:
                         raise error
