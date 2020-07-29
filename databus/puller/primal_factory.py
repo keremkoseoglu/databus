@@ -18,7 +18,7 @@ class PrimalPullerFactory(AbstractPullerFactory):  # pylint: disable=R0903
         for candidate in candidates:
             try:
                 obj_instance = candidate(p_log)
-                if isinstance(obj_instance, AbstractPuller):
+                if isinstance(obj_instance, AbstractPuller) and obj_instance.__module__ == p_module:
                     return obj_instance
             except Exception: # pylint: disable=W0703
                 continue
