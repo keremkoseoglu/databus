@@ -42,11 +42,13 @@ class ExchangeSettings: # pylint: disable=R0903
 class AbstractExchange(AbstractPuller, ABC):
     """ Abstract class to pull E-Mails from Exchange Server """
     _SOURCE_SYSTEM = "Exchange"
+    _DEFAULT_EMAIL_MODULE = "databus.passenger.email"
 
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
         self._settings = self.settings
         self.account = AbstractExchange._login(self._settings)
+        self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
 
         self.log.append_text(
             "Exchange user: " +
@@ -92,7 +94,8 @@ class AbstractExchange(AbstractPuller, ABC):
                                     p_source_system=AbstractExchange._SOURCE_SYSTEM,
                                     p_attachments=[],
                                     p_puller_module=self.__module__,
-                                    p_pull_datetime=datetime.now())
+                                    p_pull_datetime=datetime.now(),
+                                    p_passenger_module=self.email_module)
 
             for item_attachment in item.attachments:
                 passenger_attachment = Attachment(
