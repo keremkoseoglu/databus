@@ -10,13 +10,14 @@ class AbstractPassenger(ABC): # pylint: disable=R0903
     """ Abstract passenger class """
     _clock_seq: int = 0
 
-    def __init__(self, # pylint: disable=R0913
+    def __init__(self, # pylint: disable=R0913, R0912
                  p_external_id: str = None,
                  p_internal_id: UUID = None,
                  p_source_system: str = None,
                  p_attachments: List[Attachment] = None,
                  p_puller_module: str = None,
-                 p_pull_datetime: datetime = None):
+                 p_pull_datetime: datetime = None,
+                 p_passenger_module: str = None):
 
         if p_external_id is None:
             self.external_id = ""
@@ -48,6 +49,11 @@ class AbstractPassenger(ABC): # pylint: disable=R0903
             self.internal_id = uuid1(clock_seq=AbstractPassenger._clock_seq)
         else:
             self.internal_id = p_internal_id
+
+        if p_passenger_module is None:
+            self.passenger_module = self.__module__
+        else:
+            self.passenger_module = p_passenger_module
 
     @property
     def id_text(self) -> str:

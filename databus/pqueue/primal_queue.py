@@ -45,7 +45,7 @@ class PrimalQueue(AbstractQueue):
 
         for passenger in p_passengers:
             self.log.append_text("Inserting passenger into queue: " + passenger.id_text)
-            client_passenger = self.database.client.get_client_passenger(passenger.__module__)
+            client_passenger = self.database.client.get_client_passenger(passenger.passenger_module)
             pqs = QueueStatusFactory.get_passenger_queue_status(passenger, client_passenger)
             self.database.insert_passenger_queue(pqs)
 

@@ -51,11 +51,7 @@
     "users": [
         {
             "password": "demo",
-<<<<<<< HEAD
-            "token": "528bab0a-d163-11ea-a9b3-acde48001122",
-=======
-            "token": "220a65b6-cb5f-11ea-b04f-acde48001122",
->>>>>>> b29b0e1f4d89a9ec16ca2728a514fc37e83499b8
+            "token": "cb117904-d18d-11ea-9793-acde48001122",
             "username": "demo"
         }
     ]

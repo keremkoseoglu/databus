@@ -364,7 +364,7 @@ class SqlDatabase(AbstractDatabase):
             insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
             insert.add_string("external_id", p_passenger_status.passenger.external_id)
             insert.add_string("source_system", p_passenger_status.passenger.source_system)
-            insert.add_string("passenger_module", p_passenger_status.passenger.__module__)
+            insert.add_string("passenger_module", p_passenger_status.passenger.passenger_module)
             insert.add_string("puller_module", p_passenger_status.passenger.puller_module)
             insert.add_string("puller_notified", DatabusToSql.boolean(False))
             insert.add_string("pulled_on", DatabusToSql.date_time(p_passenger_status.passenger.pull_datetime)) # pylint: disable= C0301
