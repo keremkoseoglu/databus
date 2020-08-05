@@ -5,7 +5,7 @@ This project is an asynchronous data integration platform. It can pull, queue, p
 
 ## Clients
 
-It is currently used by [Eczacibasi Tuketim](https://www.eczacibasituketim.com) to accept B2B orders over E-Mail and transfer them to SAP.
+It is currently used by [Eczacibasi Tuketim](https://www.eczacibasituketim.com) to accept various B2B documents over E-Mail and transfer them to SAP.
 
 ## Installation
 
