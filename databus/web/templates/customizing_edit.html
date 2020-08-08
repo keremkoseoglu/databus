@@ -4,7 +4,7 @@
 <h1>Customizing Edit</h1>
 
 <div class="col-sm-12" id="content">
-    <form action="{{ url_for('_customizing_save') }}" method="post">
+    <form action="{{ url_for('_customizing_save') }}" method="post" onSubmit="return isCustomizingFormValid();">
         <fieldset>
             <input type="hidden" id="client" name="client" value="{{ client }}">
             <input type="hidden" id="node" name="node" value="{{ node }}">
@@ -17,4 +17,18 @@
         </fieldset>
     </form>
 </div>
+
+<script>
+    function isCustomizingFormValid () {
+        jsonString = document.getElementById("customizing").value;
+        try {
+            JSON.parse(jsonString);
+            return true;
+        }
+        catch (e) {
+            alert("Invalid JSON structure");
+            return false;
+        }
+    }
+</script>
 {% endblock %}
