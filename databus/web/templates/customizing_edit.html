@@ -13,6 +13,7 @@
                 <textarea class="form-control" id="customizing" name="customizing" rows="30" style="font-family:monospace;">{{ entry.content }}</textarea>
             </div>
             <br><br>
+            <button type="button" class="btn btn-success" onClick="formatCustomizingJson();">Format JSON</button>
             <button type="submit" class="btn btn-primary">Save</button>
         </fieldset>
     </form>
@@ -29,6 +30,13 @@
             alert("Invalid JSON structure");
             return false;
         }
+    }
+
+    function formatCustomizingJson () {
+        if (!isCustomizingFormValid()) {return;}
+        jsonObject = JSON.parse(document.getElementById("customizing").value);
+        formattedJson = JSON.stringify(jsonObject, null, "\t");
+        document.getElementById("customizing").value = formattedJson;
     }
 </script>
 {% endblock %}

@@ -1,58 +1,58 @@
 {
-    "log_life_span": 1,
-    "passengers": [
-        {
-            "name": "databus.passenger.demo.demo_passenger_1",
-            "processors": [
-                "databus.processor.demo.demo_processor_1",
-                "databus.processor.demo.demo_processor_2"
-            ],
-            "pullers": [
-                "databus.puller.demo.demo_puller_1",
-                "databus.puller.demo.demo_puller_3"
-            ],
-            "pushers": [
-                "databus.pusher.demo.demo_pusher_1",
-                "databus.pusher.demo.demo_pusher_2"
-            ],
-            "queue": "databus.pqueue.primal_queue",
-            "queue_life_span": 1,
-            "sync_frequency": 1
-        },
-        {
-            "name": "databus.passenger.demo.demo_passenger_2",
-            "processors": [
-                "databus.processor.demo.demo_processor_2"
-            ],
-            "pullers": [
-                "databus.puller.demo.demo_puller_2"
-            ],
-            "pushers": [
-                "databus.pusher.demo.demo_pusher_2"
-            ],
-            "queue": "databus.pqueue.primal_queue",
-            "queue_life_span": 1,
-            "sync_frequency": 1
-        },
-        {
-            "name": "databus.passenger.demo.demo_binary_passenger",
-            "processors": [],
-            "pullers": [
-                "databus.puller.demo.demo_binary_puller"
-            ],
-            "pushers": [
-                "databus.pusher.demo.demo_binary_pusher"
-            ],
-            "queue": "databus.pqueue.primal_queue",
-            "queue_life_span": 1,
-            "sync_frequency": 1
-        }
-    ],
-    "users": [
-        {
-            "password": "demo",
-            "token": "6bfde73a-d9a4-11ea-b06b-acde48001122",
-            "username": "demo"
-        }
-    ]
+	"log_life_span": 1,
+	"passengers": [
+		{
+			"name": "databus.passenger.demo.demo_passenger_1",
+			"processors": [
+				"databus.processor.demo.demo_processor_1",
+				"databus.processor.demo.demo_processor_2"
+			],
+			"pullers": [
+				"databus.puller.demo.demo_puller_1",
+				"databus.puller.demo.demo_puller_3"
+			],
+			"pushers": [
+				"databus.pusher.demo.demo_pusher_1",
+				"databus.pusher.demo.demo_pusher_2"
+			],
+			"queue": "databus.pqueue.primal_queue",
+			"queue_life_span": 1,
+			"sync_frequency": 1
+		},
+		{
+			"name": "databus.passenger.demo.demo_passenger_2",
+			"processors": [
+				"databus.processor.demo.demo_processor_2"
+			],
+			"pullers": [
+				"databus.puller.demo.demo_puller_2"
+			],
+			"pushers": [
+				"databus.pusher.demo.demo_pusher_2"
+			],
+			"queue": "databus.pqueue.primal_queue",
+			"queue_life_span": 1,
+			"sync_frequency": 1
+		},
+		{
+			"name": "databus.passenger.demo.demo_binary_passenger",
+			"processors": [],
+			"pullers": [
+				"databus.puller.demo.demo_binary_puller"
+			],
+			"pushers": [
+				"databus.pusher.demo.demo_binary_pusher"
+			],
+			"queue": "databus.pqueue.primal_queue",
+			"queue_life_span": 1,
+			"sync_frequency": 1
+		}
+	],
+	"users": [
+		{
+			"password": "demo",
+			"token": "6bfde73a-d9a4-11ea-b06b-acde48001122",
+			"username": "demo"
+		}
+	]
 }
