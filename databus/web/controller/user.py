@@ -9,7 +9,7 @@ class UserTokenRevokeController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_requested_client()
+            self._authenticate_minding_requested_client(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -32,7 +32,7 @@ class UserListController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate()
+            self._authenticate(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 

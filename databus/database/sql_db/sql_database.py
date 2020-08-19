@@ -9,7 +9,7 @@ import json
 from typing import List
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
-from databus.client.user import Credential, User
+from databus.client.user import Credential, User, Role, str_to_role
 from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
@@ -71,7 +71,11 @@ class ClientDataset:
                     username=user_row["username"],
                     password=user_row["password"],
                     token=user_row["token"])
-                user = User(credential)
+                if "role" in user_row:
+                    role = str_to_role(user_row["role"])
+                else:
+                    role = Role.UNDEFINED
+                user = User(credential=credential, role=role)
                 client.users.append(user)
 
             output.append(client)

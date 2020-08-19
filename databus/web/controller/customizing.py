@@ -77,7 +77,7 @@ class CustomizingListController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_root()
+            self._authenticate_minding_root(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -95,7 +95,7 @@ class CustomizingEditController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_requested_client()
+            self._authenticate_minding_requested_client(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -110,7 +110,7 @@ class CustomizingSaveController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_requested_client()
+            self._authenticate_minding_requested_client(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 

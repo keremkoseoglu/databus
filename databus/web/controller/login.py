@@ -1,6 +1,7 @@
 """ Controller module dealing with logging in and out """
 from flask import make_response, redirect, request, session, url_for
 from databus.client.client import Credential
+from databus.client.user import Role
 from databus.web.controller.abstract_controller import AbstractController
 
 
@@ -22,13 +23,18 @@ class LoginAttemptController(AbstractController):
             credential = None
             if client_db.client.authorization_active:
                 credential = Credential(username=username, password=password)
-                if client_db.client.authenticate(credential) is None:
+                user = client_db.client.authenticate(credential)
+                if user is None:
                     return redirect(url_for("_login"), code=302)
+                user_role = user.role
                 if remember:
                     credential.generate_token()
                     client_db.update_user_credential(credential)
+            else:
+                user_role = Role.ADMINISTRATOR
 
             session["client_id"] = client_db.client_id
+            session["user_role"] = user_role.name
             resp = make_response(redirect(url_for("_home"), code=302))
             if credential is not None and credential.token != "":
                 resp.set_cookie("token", credential.token)

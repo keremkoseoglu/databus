@@ -41,6 +41,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_log_list') }}">Logs</a>
             </li>
+            {% if user_is_admin %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_user_list') }}">Users</a>
             </li>
@@ -50,6 +51,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_export') }}">Export</a>
             </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('_about') }}">About</a>
             </li>

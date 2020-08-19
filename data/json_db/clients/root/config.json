@@ -4,7 +4,8 @@
     "users": [
         {
             "password": "root",
-            "token": "2c4606b6-cb5f-11ea-b04f-acde48001122",
+            "role": "administrator",
+            "token": "acbd8804-e221-11ea-972f-acde48001122",
             "username": "root"
         }
     ]

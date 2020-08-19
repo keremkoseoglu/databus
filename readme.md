@@ -81,6 +81,10 @@ To add a new client (called abc);
 
 If a client doesn't have any users defined, this means that the authentication is not active. The web interface will allow any login for that client.
 
+You may define two user roles, which will affect their capabilities in the web interface.
+- "operator": The standard user, able to browse through files, but unable to configure anything.
+- "administrator": The power user, able to configure as well.
+
 ### Dispatcher
 This is the main engine of Databus. When you start up the dispatcher, the program is running. It is responsible of scheduling & invoking drivers.
 
