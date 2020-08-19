@@ -29,7 +29,7 @@ class ExportController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_root()
+            self._authenticate_minding_root(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -54,7 +54,7 @@ class ExportGetDictController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate_minding_root()
+            self._authenticate_minding_root(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -71,7 +71,7 @@ class ExportExeController(AbstractController):
     def execute(self):
         """ Executes an export request """
         try:
-            self._authenticate()
+            self._authenticate(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 

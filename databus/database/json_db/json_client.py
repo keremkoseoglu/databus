@@ -6,7 +6,7 @@ import pathlib
 from shutil import rmtree
 from typing import List
 from databus.client.client import Client, ClientError, ClientPassenger
-from databus.client.user import User, Credential
+from databus.client.user import User, Credential, str_to_role, Role
 from databus.database.difference_check import Action, DifferenceChecker, TableKey
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.json_db.json_path_builder import JsonPathBuilder
@@ -41,7 +41,11 @@ class JsonClient:
                         username=user_json["username"],
                         password=user_json["password"],
                         token=user_json["token"])
-                    user = User(credential=credential)
+                    if "role" in user_json:
+                        role = str_to_role(user_json["role"])
+                    else:
+                        role = Role.UNDEFINED
+                    user = User(credential=credential, role=role)
                     client_users.append(user)
 
             client_obj = Client(

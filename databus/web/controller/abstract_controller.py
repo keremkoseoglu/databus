@@ -12,6 +12,7 @@ from databus.client.user import User
 from databus.database.abstract_database import AbstractDatabase
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.passenger.attachment import Attachment, AttachmentFormat
+from databus.web.util import user_is_admin
 
 
 class ClientUser: # pylint: disable=R0903
@@ -87,14 +88,17 @@ class AbstractController(ABC):
     def _get_cache_buster() -> str:
         return "&cache_buster=" + str(uuid.uuid1())
 
-    def _authenticate(self):
+    def _authenticate(self, must_be_admin=False):
         self.authenticated_client_id = self._get_authenticated_client_id()
         if self.authenticated_client_id is None:
             output = redirect(url_for("_login"), code=302)
             raise AuthenticationError(output)
+        if must_be_admin and (not user_is_admin()):
+            output = redirect(url_for("_home"), code=302)
+            raise AuthenticationError(output)
 
-    def _authenticate_minding_requested_client(self):
-        self._authenticate()
+    def _authenticate_minding_requested_client(self, must_be_admin=False):
+        self._authenticate(must_be_admin)
         self.requested_client_id = request.args.get("client", "", type=str)
         if self.requested_client_id == "":
             try:
@@ -106,8 +110,8 @@ class AbstractController(ABC):
             output = redirect(url_for("_home"), code=302)
             raise AuthenticationError(output)
 
-    def _authenticate_minding_root(self):
-        self._authenticate()
+    def _authenticate_minding_root(self, must_be_admin=False):
+        self._authenticate(must_be_admin)
         if self.authenticated_client_id == Client.ROOT:
             self.authenticated_client_id = None
 
@@ -121,6 +125,7 @@ class AbstractController(ABC):
             client_user = ClientUserFinder(self.dispatcher).find_by_token(token)
             if client_user is not None:
                 session["client_id"] = client_user.client.id
+                session["user_role"] = client_user.user.role.name
                 return client_user.client.id
 
         return None

@@ -9,7 +9,7 @@ class ShutdownController(AbstractController):
     def execute(self):
         """ Builds and returns the page """
         try:
-            self._authenticate()
+            self._authenticate(must_be_admin=True)
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
@@ -24,7 +24,7 @@ class ShutdownExeController(AbstractController):
     def execute(self):
         """ Shutdown execute """
         try:
-            self._authenticate()
+            self._authenticate(must_be_admin=True)
         except AuthenticationError:
             return "Error shutting down, cant authenticate"
 

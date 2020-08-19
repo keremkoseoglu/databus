@@ -2,7 +2,7 @@
 This mini web interfaces is based on Flask.
 Theme help: https://bootswatch.com/darkly/
 """
-from flask import Flask, render_template, session # pylint: disable=C0301
+from flask import Flask, render_template # pylint: disable=C0301
 from waitress import serve
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher
 from databus.web.controller.customizing import CustomizingEditController,\
@@ -18,6 +18,7 @@ from databus.web.controller.queue import QueueAttachmentController, QueueDisplay
     QueueListController, QueuePurgeController, QueueStatusUpdateController
 from databus.web.controller.user import UserListController, UserTokenRevokeController
 from databus.web.controller.shutdown import ShutdownController, ShutdownExeController
+from databus.web import util
 
 ##############################
 # Main stuff
@@ -40,8 +41,7 @@ def run_web_server(dispatcher: AbstractDispatcher):
 @_APP.context_processor
 def databus_context_processor():
     """ Returns if the user is root or not, used in default template """
-    user_is_root = "client_id" in session and session["client_id"] == "root"
-    return {"user_is_root": user_is_root}
+    return util.get_authorization()
 
 ##############################
 # Home page
