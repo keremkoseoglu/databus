@@ -31,7 +31,7 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
     _DEFAULT_DATABASE_ARGS = {
         JsonDatabaseArguments.KEY_CLIENT_CONFIG: "config.json",
         JsonDatabaseArguments.KEY_CLIENT_DIR: "clients",
-        JsonDatabaseArguments.KEY_DATABASE_DIR: "data/json_db",
+        JsonDatabaseArguments.KEY_DATABASE_DIR: "data|json_db",
         JsonDatabaseArguments.KEY_LOG_DIR: "log",
         JsonDatabaseArguments.KEY_LOG_EXTENSION: "txt",
         JsonDatabaseArguments.KEY_QUEUE_ATTACHMENT_DIR: "attachments",

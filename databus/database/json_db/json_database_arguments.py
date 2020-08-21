@@ -1,5 +1,6 @@
 """ Json database argument module """
 from enum import Enum
+from os import path
 
 
 class JsonDatabaseArgumentError(Exception):
@@ -40,7 +41,7 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
     TEMPLATE = {
         KEY_CLIENT_CONFIG: "config.json",
         KEY_CLIENT_DIR: "clients",
-        KEY_DATABASE_DIR: "databus/database/json_db",
+        KEY_DATABASE_DIR: "databus|database|json_db",
         KEY_LOG_DIR: "log",
         KEY_LOG_EXTENSION: "txt",
         KEY_QUEUE_ATTACHMENT_DIR: "attachments",
@@ -51,7 +52,7 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
     def __init__(self, p_arguments: dict):
         self.client_config = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_CLIENT_CONFIG]
         self.client_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_CLIENT_DIR]
-        self.database_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_DATABASE_DIR]
+        self._database_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_DATABASE_DIR]
         self.log_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_LOG_DIR]
         self.log_extension = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_LOG_EXTENSION]
         self.queue_attachment_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_QUEUE_ATTACHMENT_DIR] # pylint: disable=C0301
@@ -64,7 +65,7 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
             elif key == JsonDatabaseArguments.KEY_CLIENT_DIR:
                 self.client_dir = p_arguments[key]
             elif key == JsonDatabaseArguments.KEY_DATABASE_DIR:
-                self.database_dir = p_arguments[key]
+                self._database_dir = p_arguments[key]
             elif key == JsonDatabaseArguments.KEY_LOG_DIR:
                 self.log_dir = p_arguments[key]
             elif key == JsonDatabaseArguments.KEY_LOG_EXTENSION:
@@ -79,3 +80,14 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
                 raise JsonDatabaseArgumentError(
                     JsonDatabaseArgumentError.ErrorCode.invalid_argument,
                     p_argument=key)
+
+    @property
+    def database_dir(self) -> str:
+        """ Database directory """
+        if "|" in self._database_dir:
+            output = ""
+            fragments = self._database_dir.split("|")
+            for fragment in fragments:
+                output = path.join(output, fragment)
+            return output
+        return self._database_dir
