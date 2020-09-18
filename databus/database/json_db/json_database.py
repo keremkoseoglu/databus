@@ -1,6 +1,7 @@
 """ Implementation module for JSON database """
 from datetime import datetime
 from typing import List
+from uuid import UUID
 from databus.client.client import Client
 from databus.client.log import Log, MessageType
 from databus.client.user import Credential
@@ -116,7 +117,6 @@ class JsonDatabase(AbstractDatabase):
                                     ) -> List[PassengerQueueStatus]:
         """ Reads the requested entries from the disk """
         self.log.append_text("Reading passenger queue entries")
-
         return self._json_queue.get_passengers(p_passenger_module,
                                                p_processor_status,
                                                p_pusher_status,
@@ -152,6 +152,15 @@ class JsonDatabase(AbstractDatabase):
     def update_user_credential(self, p_credential: Credential):
         """ Updates the credential of the given user """
         self._json_client.update_user_credential(self.client_id, p_credential)
+
+    def convert_log_guid_to_id(self, p_guid: UUID) -> str:
+        """ UUID to id conversion """
+        guid_as_str = str(p_guid)
+        log_ids = self._json_log.get_log_file_list(self.client_id)
+        for log_id in log_ids:
+            if guid_as_str in log_id:
+                return log_id
+        return ""
 
     def _get_client(self, p_id: str) -> Client:
         return self._json_client.get_single(p_id)

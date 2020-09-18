@@ -100,11 +100,18 @@ class QueueDisplayController(AbstractController):
         passenger = request.args.get("passenger", 0, type=str)
         entry = ClientPassengerQueueReader(self.dispatcher).get_client_passenger_queue_entry(self.requested_client_id, passenger) # pylint: disable=C0301
 
+        log_ids = []
+        client_database = self.requested_client_database
+        for log_guid in entry.passenger.log_guids:
+            log_id = client_database.convert_log_guid_to_id(log_guid)
+            log_ids.append(log_id)
+
         return render_template(
             "queue_display.html",
             client=self.requested_client_id,
             entry=entry,
-            alias=self.dispatcher.ticket.system_alias)
+            alias=self.dispatcher.ticket.system_alias,
+            log_ids=log_ids)
 
 
 class QueueListController(AbstractController):

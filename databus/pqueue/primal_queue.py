@@ -44,6 +44,7 @@ class PrimalQueue(AbstractQueue):
             return
 
         for passenger in p_passengers:
+            passenger.collect_log_guid(self.log.guid)
             self.log.append_text("Inserting passenger into queue: " + passenger.id_text)
             client_passenger = self.database.client.get_client_passenger(passenger.passenger_module)
             pqs = QueueStatusFactory.get_passenger_queue_status(passenger, client_passenger)
@@ -87,5 +88,6 @@ class PrimalQueue(AbstractQueue):
 
     def update_passenger_status(self, p_status: PassengerQueueStatus):
         """ Updates passenger status """
+        p_status.passenger.collect_log_guid(self.log.guid)
         self.log.append_text("Updating passenger status for " + p_status.passenger.id_text)
         self.database.update_queue_status(p_status)

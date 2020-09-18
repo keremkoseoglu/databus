@@ -6,7 +6,7 @@ from uuid import uuid1, UUID
 from databus.passenger.attachment import Attachment
 
 
-class AbstractPassenger(ABC): # pylint: disable=R0903
+class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
     """ Abstract passenger class """
     _clock_seq: int = 0
 
@@ -17,7 +17,8 @@ class AbstractPassenger(ABC): # pylint: disable=R0903
                  p_attachments: List[Attachment] = None,
                  p_puller_module: str = None,
                  p_pull_datetime: datetime = None,
-                 p_passenger_module: str = None):
+                 p_passenger_module: str = None,
+                 p_log_guids: List[UUID] = None):
 
         if p_external_id is None:
             self.external_id = ""
@@ -55,7 +56,23 @@ class AbstractPassenger(ABC): # pylint: disable=R0903
         else:
             self.passenger_module = p_passenger_module
 
+        if p_log_guids is None:
+            self._log_guids = []
+        else:
+            self._log_guids = p_log_guids
+
     @property
     def id_text(self) -> str:
         """ Returns the unique ID of the passenger as text """
         return self.source_system + " - " + self.external_id + " (" + str(self.internal_id) + ")"
+
+    @property
+    def log_guids(self) -> List[UUID]:
+        """ Returns log guids """
+        return self._log_guids
+
+    def collect_log_guid(self, guid: UUID):
+        """ Appends a new log guid, preventing duplicates """
+        if guid in self._log_guids:
+            return
+        self._log_guids.append(guid)

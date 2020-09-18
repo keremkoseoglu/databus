@@ -58,9 +58,7 @@
     {% endfor %}
 
     <hr class="my-4">
-
     <h2>Attachments</h2>
-
     {% for attachment in entry.passenger.attachments %}
 
         <p>
@@ -68,7 +66,14 @@
                 {{ attachment.name }}
             </a>
         </p>
+    {% endfor %}
 
+    <hr class="my-4">
+    <h2>Logs</h2>
+    {% for log_id in log_ids %}
+        <p>
+            <td><a href="{{ url_for('_log_display') }}?client={{ client }}&log={{log_id}}">{{log_id}}</a></td>
+        </p>
     {% endfor %}
 
   </div>

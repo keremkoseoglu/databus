@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
+from uuid import UUID
 from databus.client.client import Client
 from databus.client.log import Log, MessageType
 from databus.client.user import Credential
@@ -131,6 +132,10 @@ class AbstractDatabase(ABC):
     @abstractmethod
     def update_user_credential(self, p_credential: Credential):
         """ Updates the credential of the given user """
+
+    @abstractmethod
+    def convert_log_guid_to_id(self, p_guid: UUID) -> str:
+        """ UUID to id conversion """
 
     @abstractmethod
     def _get_client(self, p_id: str) -> Client:
