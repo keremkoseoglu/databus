@@ -5,6 +5,7 @@ import json
 from os import mkdir, path, remove
 import shutil
 from typing import List
+import uuid
 from databus.client.log import Log, LogEntry, MessageType
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.json_db.json_path_builder import JsonPathBuilder
@@ -141,6 +142,10 @@ class JsonQueue:
                                                           attachment_json)
                 passenger_obj.attachments.append(attachment_obj)
 
+            if "log_guids" in passenger_json:
+                for log_guid in passenger_json["log_guids"]:
+                    passenger_obj.collect_log_guid(uuid.UUID(log_guid))
+
             paqs = PassengerQueueStatus(p_passenger=passenger_obj,
                                         p_pusher_statuses=[],
                                         p_processor_statuses=[])
@@ -174,6 +179,7 @@ class JsonQueue:
             "puller_notified": p_passenger_status.puller_notified,
             "pull_datetime": p_passenger_status.passenger.pull_datetime.isoformat(),
             "attachments": [],
+            "log_guids": [],
             "processor_statuses": [],
             "pusher_statuses": []
         }
@@ -198,6 +204,9 @@ class JsonQueue:
                                                  passenger_dict["internal_id"])
             else:
                 raise AttachmentError(AttachmentError.ErrorCode.invalid_format, attachment.format)
+
+        for guid in p_passenger_status.passenger.log_guids:
+            passenger_dict["log_guids"].append(str(guid))
 
         for processor_status in p_passenger_status.processor_statuses:
             processor_status_dict = {

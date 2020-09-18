@@ -7,6 +7,7 @@ Check creation_script.sql to create a new database
 from datetime import datetime
 import json
 from typing import List
+from uuid import UUID
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
 from databus.client.user import Credential, User, Role, str_to_role
@@ -284,7 +285,6 @@ class SqlDatabase(AbstractDatabase):
                                     ) -> List[PassengerQueueStatus]:
         """ Reads the requested entries from the disk """
         self.log.append_text("Reading passenger queue entries")
-
         return self._select_from_queue(
             p_passenger_module=p_passenger_module,
             p_processor_status=p_processor_status,
@@ -361,7 +361,6 @@ class SqlDatabase(AbstractDatabase):
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
         """ Writes new files to the database """
         self.log.append_text("Appending passenger " + p_passenger_status.passenger.id_text)
-
         try:
             insert = InsertBuilder(self._query_helper.args, self.client_id)
             insert.table = "queue"
@@ -406,6 +405,7 @@ class SqlDatabase(AbstractDatabase):
                           DatabusToSql.attachment_format(attachment.format))
                 self._query_helper.execute_stored_procedure(sql, values)
 
+            self._insert_logs(p_passenger_status)
             self._query_helper.commit()
         except Exception as error:
             self._query_helper.rollback()
@@ -437,11 +437,21 @@ class SqlDatabase(AbstractDatabase):
                 update.where = where
                 self._query_helper.execute_update(update)
 
+            self._insert_logs(p_status)
             self._query_helper.commit()
 
         except Exception as error:
             self._query_helper.rollback()
             raise error
+
+    def convert_log_guid_to_id(self, p_guid: UUID) -> str:
+        """ UUID to id conversion """
+        guid_as_str = str(p_guid)
+        log_ids = self.get_log_list()
+        for log in log_ids:
+            if guid_as_str in log.log_id:
+                return log.log_id
+        return ""
 
     def update_user_credential(self, p_credential: Credential):
         """ Updates the credential of the given user """
@@ -455,10 +465,22 @@ class SqlDatabase(AbstractDatabase):
         update.where = where
         self._query_helper.execute_update(update)
 
+    def _insert_logs(self, p_passenger_status: PassengerQueueStatus):
+        del_where = "queue_id = '" + p_passenger_status.passenger.internal_id + "'"
+        self._query_helper.delete("queue_log", p_where=del_where)
+
+        insert = InsertBuilder(self._query_helper.args, self.client_id)
+        for log in p_passenger_status.passenger.log_guids:
+            insert.table = "queue_log"
+            insert.add_string("queue_id", p_passenger_status.passenger.internal_id)
+            insert.add_string("log_id", str(log))
+            self._query_helper.execute_insert(insert)
+
     def _delete_from_queue(self, p_where: str = ""):
         self._query_helper.delete("queue_attachment", p_where)
         self._query_helper.delete("queue_processor", p_where)
         self._query_helper.delete("queue_pusher", p_where)
+        self._query_helper.delete("queue_log", p_where)
         self._query_helper.delete("queue", p_where)
 
     def _get_client(self, p_id: str) -> Client:
@@ -542,6 +564,10 @@ class SqlDatabase(AbstractDatabase):
                     p_text_content=txt_content,
                     p_binary_content=bin_content)
                 passenger.attachments.append(attachment)
+
+            log_list = self._query_helper.select_all("queue_log", queue_where)
+            for log in log_list:
+                passenger.collect_log_guid(UUID(log["log_id"]))
 
             output_row = PassengerQueueStatus(
                 p_passenger=passenger,
