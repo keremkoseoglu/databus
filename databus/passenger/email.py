@@ -9,7 +9,8 @@ from databus.passenger.attachment import Attachment
 
 class Email(AbstractPassenger):
     """ E-Mail passenger class """
-    _EXCEL_EXTENSIONS = [".xls", ".xlsx"]
+    _EXCEL_EXTENSIONS = [".xls", ".XLS", ".xlsx", ".XLSX"]
+    _XML_EXTENSIONS = [".xml", ".XML"]
 
     def __init__(self, # pylint: disable=R0913
                  p_external_id: str = None,
@@ -36,13 +37,22 @@ class Email(AbstractPassenger):
     @property
     def excel_attachments(self) -> List[Attachment]:
         """ Returns a list of Excel attachments """
+        return self.get_attachments_with_extensions(Email._EXCEL_EXTENSIONS)
+
+    @property
+    def xml_attachments(self) -> List[Attachment]:
+        """ Returns a list of XML attachments """
+        return self.get_attachments_with_extensions(Email._XML_EXTENSIONS)
+
+    def get_attachments_with_extensions(self, p_extensions: List[str]) -> List[Attachment]:
+        """ Returns attachments with given extensions """
         output = []
         for candidate in self.attachments:
             if "." not in candidate.name:
                 continue
             file_name_parts = os.path.splitext(candidate.name)
             extension = file_name_parts[1].lower()
-            if extension not in Email._EXCEL_EXTENSIONS:
+            if extension not in p_extensions:
                 continue
             output.append(candidate)
         return output
