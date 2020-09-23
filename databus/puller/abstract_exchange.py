@@ -47,6 +47,7 @@ class AbstractExchange(AbstractPuller, ABC):
     def __init__(self, p_log: Log = None):
         super().__init__(p_log)
         self._settings = self.settings
+        self._email_decorator = None
         self.account = AbstractExchange._login(self._settings)
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
 
@@ -115,9 +116,21 @@ class AbstractExchange(AbstractPuller, ABC):
 
                 email_passenger.attachments.append(passenger_attachment)
 
+            if self._email_decorator is not None:
+                self._email_decorator(email_passenger)
             self.log.append_text("Got mail from Exchange: " + email_passenger.id_text)
             output.append(email_passenger)
 
+        return output
+
+    def pull_with_email_decorator(self, p_decorator) -> List[AbstractPassenger]:
+        """ Pulls E-Mails, calling p_decorator() to modify
+        received email objects. p_decorator takes one parameter of type 
+        databus.passenger.email.Email
+        """
+        self._email_decorator = p_decorator
+        output = self.pull()
+        self._email_decorator = None
         return output
 
     def send_email(self, to: [str], subject: str, body: str): # pylint: disable=C0103
