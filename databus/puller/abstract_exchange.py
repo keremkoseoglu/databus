@@ -116,7 +116,7 @@ class AbstractExchange(AbstractPuller, ABC):
                 email_passenger.attachments.append(passenger_attachment)
 
             if self._email_decorator is not None:
-                self._email_decorator(email_passenger)
+                self._email_decorator(item, email_passenger)
             self.log.append_text("Got mail from Exchange: " + email_passenger.id_text)
             output.append(email_passenger)
 
@@ -129,8 +129,9 @@ class AbstractExchange(AbstractPuller, ABC):
 
     def pull_with_email_decorator(self, p_decorator) -> List[AbstractPassenger]:
         """ Pulls E-Mails, calling p_decorator() to modify
-        received email objects. p_decorator takes one parameter of type 
-        databus.passenger.email.Email
+        received email objects. p_decorator takes two parameters:
+        1) Exchange item
+        2) databus.passenger.email.Email
         """
         self._email_decorator = p_decorator
         output = self._pull()
