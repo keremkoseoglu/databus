@@ -98,10 +98,21 @@ class AbstractExchange(AbstractPuller, ABC):
                                     p_passenger_module=self.email_module)
 
             for item_attachment in item.attachments:
-                passenger_attachment = Attachment(
-                    p_name=item_attachment.name,
-                    p_format=AttachmentFormat.binary,
-                    p_binary_content=item_attachment.content)
+                if any(["text" in item_attachment.content_type,
+                        "txt" in item_attachment.content_type,
+                        "html" in item_attachment.content_type,
+                        "json" in item_attachment.content_type,
+                        "xml" in item_attachment.content_type]):
+                    passenger_attachment = Attachment(
+                        p_name=item_attachment.name,
+                        p_format=AttachmentFormat.text,
+                        p_text_content=item_attachment.content)
+                else:
+                    passenger_attachment = Attachment(
+                        p_name=item_attachment.name,
+                        p_format=AttachmentFormat.binary,
+                        p_binary_content=item_attachment.content)
+
                 email_passenger.attachments.append(passenger_attachment)
 
             self.log.append_text("Got mail from Exchange: " + email_passenger.id_text)
