@@ -85,8 +85,7 @@ class AbstractExchange(AbstractPuller, ABC):
         another folder?
         """
 
-    def pull(self) -> List[AbstractPassenger]:
-        """ Reads E-Mails from the given Exchange Server account """
+    def _pull(self) -> List[AbstractPassenger]:
         output = []
 
         for item in self.account.inbox.all().order_by('-datetime_received'):  # pylint: disable=E1101
@@ -123,13 +122,18 @@ class AbstractExchange(AbstractPuller, ABC):
 
         return output
 
+    def pull(self) -> List[AbstractPassenger]:
+        """ Reads E-Mails from the given Exchange Server account """
+        self._email_decorator = None
+        return self._pull()
+
     def pull_with_email_decorator(self, p_decorator) -> List[AbstractPassenger]:
         """ Pulls E-Mails, calling p_decorator() to modify
         received email objects. p_decorator takes one parameter of type 
         databus.passenger.email.Email
         """
         self._email_decorator = p_decorator
-        output = self.pull()
+        output = self._pull()
         self._email_decorator = None
         return output
 
