@@ -106,7 +106,7 @@ class AbstractExchange(AbstractPuller, ABC):
                     passenger_attachment = Attachment(
                         p_name=item_attachment.name,
                         p_format=AttachmentFormat.text,
-                        p_text_content=str(item_attachment.content))
+                        p_text_content=str(item_attachment.content)[2:])
                 else:
                     passenger_attachment = Attachment(
                         p_name=item_attachment.name,
