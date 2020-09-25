@@ -98,6 +98,13 @@ class AbstractExchange(AbstractPuller, ABC):
                                     p_passenger_module=self.email_module)
 
             for item_attachment in item.attachments:
+                try:
+                    dummy = item_attachment.name
+                    dummy = item_attachment.content_type
+                    dummy = item_attachment.content
+                except Exception: # pylint: disable=W0703
+                    continue
+
                 if any(["text" in item_attachment.content_type,
                         "txt" in item_attachment.content_type,
                         "html" in item_attachment.content_type,
