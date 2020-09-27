@@ -1,4 +1,11 @@
-""" Abstract module to pull E-Mails from Exchange Server """
+""" Abstract module to pull E-Mails from Exchange Server
+
+If the expected E-Mails land to a single Exchange account, you can use
+this module.
+
+If the expected E-Mail can land on multiple Exchange accounts, you can use
+databus.puller.abstract_multi_exchange .
+"""
 from abc import ABC, abstractmethod, abstractproperty
 from datetime import datetime
 from typing import List
@@ -44,12 +51,13 @@ class AbstractExchange(AbstractPuller, ABC):
     _SOURCE_SYSTEM = "Exchange"
     _DEFAULT_EMAIL_MODULE = "databus.passenger.email"
 
-    def __init__(self, p_log: Log = None):
+    def __init__(self, p_log: Log = None, p_alias: str = ""):
         super().__init__(p_log)
         self._settings = self.settings
         self._email_decorator = None
         self.account = AbstractExchange._login(self._settings)
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
+        self.alias = p_alias
 
         self.log.append_text(
             "Exchange user: " +

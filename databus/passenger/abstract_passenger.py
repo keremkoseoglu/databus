@@ -76,3 +76,10 @@ class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
         if guid in self._log_guids:
             return
         self._log_guids.append(guid)
+
+    def get_attachment_by_name(self, name: str) -> Attachment:
+        """ Returns the attachment """
+        for attachment in self.attachments:
+            if attachment.name == name:
+                return attachment
+        return None

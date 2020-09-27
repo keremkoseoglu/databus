@@ -1,2 +1,5 @@
+ [MESSAGES CONTROL]
+ disable=R0903
+
 [SIMILARITIES]
 min-similarity-lines=100
