@@ -113,6 +113,11 @@ class AbstractExchange(AbstractPuller, ABC):
                 except Exception: # pylint: disable=W0703
                     continue
 
+                if any([item_attachment.name is None,
+                        item_attachment.content_type is None,
+                        item_attachment.content is None]):
+                    continue
+
                 if any(["text" in item_attachment.content_type,
                         "txt" in item_attachment.content_type,
                         "html" in item_attachment.content_type,
