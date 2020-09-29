@@ -1,4 +1,6 @@
 site_name: Databus
 nav:
     - Home: index.md
-    - About: about.md
+    - Setup: setup.md
+    - Components: components.md
+    - Contact: contact.md
