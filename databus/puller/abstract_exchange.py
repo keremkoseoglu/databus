@@ -122,7 +122,7 @@ class AbstractExchange(AbstractPuller, ABC):
                         "txt" in item_attachment.content_type,
                         "html" in item_attachment.content_type,
                         "json" in item_attachment.content_type,
-                        "xml" in item_attachment.content_type]):
+                        "application/xml" in item_attachment.content_type]):
                     passenger_attachment = Attachment(
                         p_name=item_attachment.name,
                         p_format=AttachmentFormat.text,
