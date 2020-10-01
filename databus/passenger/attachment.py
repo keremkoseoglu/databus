@@ -91,6 +91,17 @@ class Attachment: # pylint: disable=R0903
         self._name = Attachment._cleanse_name(p_val)
 
     @staticmethod
+    def guess_format_by_mime_type(p_mime_type: str) -> AttachmentFormat:
+        """ Returns if attachment is text or binary """
+        if any(["text" in p_mime_type,
+                "txt" in p_mime_type,
+                "html" in p_mime_type,
+                "json" in p_mime_type,
+                "application/xml" in p_mime_type]):
+            return AttachmentFormat.text
+        return AttachmentFormat.binary
+
+    @staticmethod
     def _cleanse_name(p_val: str) -> str:
         output = ""
         for name_char in p_val:

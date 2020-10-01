@@ -118,11 +118,10 @@ class AbstractExchange(AbstractPuller, ABC):
                         item_attachment.content is None]):
                     continue
 
-                if any(["text" in item_attachment.content_type,
-                        "txt" in item_attachment.content_type,
-                        "html" in item_attachment.content_type,
-                        "json" in item_attachment.content_type,
-                        "application/xml" in item_attachment.content_type]):
+                attachment_format = Attachment.guess_format_by_mime_type(
+                    item_attachment.content_type)
+
+                if attachment_format == AttachmentFormat.text:
                     passenger_attachment = Attachment(
                         p_name=item_attachment.name,
                         p_format=AttachmentFormat.text,
