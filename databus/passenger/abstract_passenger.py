@@ -133,7 +133,9 @@ class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
 
                 if file_format == AttachmentFormat.text:
                     with open(extracted_path, "r") as extracted_file:
-                        file_content = str(extracted_file.readlines())[2:][:-2]
+                        file_content = extracted_file.read()
+                        file_content = file_content.replace("\n", " ")
+                        file_content = file_content.replace("\t", " ")
                     unzip_attachment = Attachment(
                         p_name=file_in_zip,
                         p_format=AttachmentFormat.text,
