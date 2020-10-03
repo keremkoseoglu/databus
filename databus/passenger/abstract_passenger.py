@@ -7,6 +7,8 @@ from zipfile import ZipFile
 import os
 import shutil
 import mimetypes
+from urlextract import URLExtract
+import requests
 from databus.passenger.attachment import Attachment, AttachmentFormat
 
 
@@ -145,7 +147,7 @@ class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
                         file_content = extracted_file.read()
                     unzip_attachment = Attachment(
                         p_name=file_in_zip,
-                        p_format=AttachmentFormat.text,
+                        p_format=AttachmentFormat.binary,
                         p_binary_content=file_content)
 
                 new_attachments.append(unzip_attachment)
@@ -159,3 +161,61 @@ class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
 
         for new_attachment in new_attachments:
             self.attachments.append(new_attachment)
+
+    def download_links_in_html_as_attachments(self, p_html: str, p_extensions: List[str]):
+        """ Scans the given HTML file, finds links, downloads
+        the files and saves them as attachments.
+        This method supports only text attachments at this time.
+        """
+        # Build clean HTML
+        if p_html is None or len(p_html) <= 0:
+            return
+        clean_html = p_html.replace("\r", "").replace("\n", "")
+        html_tag_pos = clean_html.lower().find("<html")
+        if html_tag_pos < 0:
+            return
+        clean_html = clean_html[html_tag_pos:]
+
+       # Extract URL's
+        extractor = URLExtract()
+        urls = extractor.find_urls(clean_html)
+
+        # Download as necessary
+        for url in urls:
+            low_url = url.lower()
+            has_eligible_extension = False
+            for extension in p_extensions:
+                low_extension = "." + extension.lower()
+                if low_extension in low_url:
+                    has_eligible_extension = True
+                    break
+            if not has_eligible_extension:
+                continue
+
+            if "urldefense.com" in url:
+                real_http_pos = low_url.rfind("http")
+                clean_url = url[real_http_pos:].replace("__", "")
+            else:
+                clean_url = url
+            if clean_url[-1] == "/":
+                clean_url = clean_url[:-1]
+
+            filename = os.path.basename(clean_url)
+            dummy_name, extension = os.path.splitext(filename)
+            extension = extension.replace(".", "")
+            file_format = Attachment.guess_format_by_file_extension(extension)
+
+            response = requests.get(clean_url, allow_redirects=True)
+
+            if file_format == AttachmentFormat.text:
+                downloaded_attachment = Attachment(
+                    p_name=filename,
+                    p_format=AttachmentFormat.text,
+                    p_text_content=response.text)
+            else:
+                downloaded_attachment = Attachment(
+                    p_name=filename,
+                    p_format=AttachmentFormat.binary,
+                    p_binary_content=response.content)
+
+            self.attachments.append(downloaded_attachment)
