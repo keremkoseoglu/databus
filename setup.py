@@ -37,6 +37,7 @@ setuptools.setup(
         "cython",
         "flask",
         "pyodbc",
+        "urlextract",
         "waitress"
     ],
     include_package_data=True
