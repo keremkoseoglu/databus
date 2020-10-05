@@ -108,18 +108,21 @@ class AbstractExchange(AbstractPuller, ABC):
             for item_attachment in item.attachments:
                 try:
                     dummy = item_attachment.name
-                    dummy = item_attachment.content_type
                     dummy = item_attachment.content
                 except Exception: # pylint: disable=W0703
                     continue
 
                 if any([item_attachment.name is None,
-                        item_attachment.content_type is None,
                         item_attachment.content is None]):
                     continue
 
-                attachment_format = Attachment.guess_format_by_mime_type(
-                    item_attachment.content_type)
+                if any([item_attachment.content_type is None,
+                        item_attachment.content_type == ""]):
+                    attachment_format = Attachment.guess_format_by_file_name(
+                        item_attachment.name)
+                else:
+                    attachment_format = Attachment.guess_format_by_mime_type(
+                        item_attachment.content_type)
 
                 if attachment_format == AttachmentFormat.text:
                     passenger_attachment = Attachment(

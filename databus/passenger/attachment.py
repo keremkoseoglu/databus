@@ -104,10 +104,18 @@ class Attachment: # pylint: disable=R0903
     @staticmethod
     def guess_format_by_file_extension(p_extension: str) -> AttachmentFormat:
         """ Returns if attachment is text or binary """
-        low_ext = p_extension.lower()
+        low_ext = p_extension.lower().replace(".", "")
         if low_ext in ["txt", "html", "json", "xml"]:
             return AttachmentFormat.text
         return AttachmentFormat.binary
+
+    @staticmethod
+    def guess_format_by_file_name(p_name: str) -> AttachmentFormat:
+        """ Returns if attachment is text or binary """
+        name_split = path.splitext(p_name)
+        if len(name_split) < 2:
+            return Attachment.guess_format_by_file_extension("")
+        return Attachment.guess_format_by_file_extension(name_split[1])
 
     @staticmethod
     def _cleanse_name(p_val: str) -> str:
