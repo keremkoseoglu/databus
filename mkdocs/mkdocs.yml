@@ -1,0 +1,7 @@
+site_name: Databus
+theme: readthedocs
+nav:
+    - Home: index.md
+    - Setup: setup.md
+    - Components: components.md
+    - Contact: contact.md
