@@ -1,7 +1,18 @@
 site_name: Databus
 theme: readthedocs
 nav:
-    - Home: index.md
-    - Setup: setup.md
-    - Components: components.md
-    - Contact: contact.md
+    - Overview:
+        - Home: index.md
+        - Installation: installation.md
+        - Startup: startup.md
+    - Components:
+        - Database: database.md
+        - Client: client.md
+        - Dispatcher: dispatcher.md
+        - Driver: driver.md
+        - Passenger: passenger.md
+        - Puller: puller.md
+        - Queue: queue.md
+        - Processor: processor.md
+        - Pusher: pusher.md
+        - Web: web.md
