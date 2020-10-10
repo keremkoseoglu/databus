@@ -3,9 +3,11 @@ theme: readthedocs
 nav:
     - Overview:
         - Home: index.md
+        - How it works: how.md
         - Installation: installation.md
         - Startup: startup.md
     - Components:
+        - Architecture: architecture.md
         - Database: database.md
         - Client: client.md
         - Dispatcher: dispatcher.md
