@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Web - Databus</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Web";
+    var mkdocs_page_input_path = "web.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Databus</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <p class="caption"><span class="caption-text">Overview</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../how/">How it works</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../startup/">Startup</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Components</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../database/">Database</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../client/">Client</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dispatcher/">Dispatcher</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../driver/">Driver</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../passenger/">Passenger</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../puller/">Puller</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../queue/">Queue</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../processor/">Processor</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../pusher/">Pusher</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Web</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#logging-in">Logging in</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#passengers">Passengers</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#peek">Peek</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#queue">Queue</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#log">Log</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#users">Users</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#customizing">Customizing</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#export">Export</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#about">About</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#logout">Logout</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#shutdown">Shutdown</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Databus</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Components &raquo;</li>
+        
+      
+    
+    <li>Web</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="web">Web</h1>
+<p>Databus has a built-in Flask website, which shows log and queue data. Whenever the dispatcher is started, the web server is activated too. The Web interface is hosted on <a href="https://pypi.org/project/waitress/">Waitress</a>. Web related files are stored in databus/web. It uses <a href="https://getbootstrap.com/">BootStrap</a>, <a href="https://jquery.com/">JQuery</a> and some minor open source JavaScript libraries.</p>
+<h2 id="configuration">Configuration</h2>
+<p>If you don't do any configuration, the Web interface will start as soon as Databus is started. It runs on <a href="http://localhost:5000">http://localhost:5000</a> by default. However, you can change the port or disable the Web interface on your <a href="../dispatcher/">dispatcher ticket</a>.</p>
+<h2 id="logging-in">Logging in</h2>
+<p>When you access the site for the first time, you are asked for three parameters to log in. </p>
+<p><img alt="Login" src="../img/web_login.png?raw=true" title="Login" /></p>
+<ul>
+<li><a href="../client/">Client</a>: Name of the client you want to manage. This can be any client defined in the <a href="../database/">database</a>, or "root" if you'll do something more adventureous.</li>
+<li>Username: Obvious.</li>
+<li>Password: Obvious.</li>
+</ul>
+<p>The web contents will change depending on the <a href="../client/">role of the user</a>. If you log in using a client account, you can only manage that particular client. If you log in with the <strong>root</strong> account, you can manage all clients and take extra actions; such as shutting down Databus.</p>
+<p>If you just installed Databus, you can use one of the supplied accounts.</p>
+<ul>
+<li>demo - demo - demo</li>
+<li>root - root - root</li>
+</ul>
+<h2 id="passengers">Passengers</h2>
+<p>This section will list the passengers defined in the <a href="../database/">database</a>. </p>
+<p><img alt="Passengers" src="../img/web_pass.png?raw=true" title="Passengers" /></p>
+<p>If you click "Expedite" for a passenger, the <a href="../dispatcher/">dispatcher</a> will sync that passenger within a minute - instead of waiting for its next schedule.</p>
+<h2 id="peek">Peek</h2>
+<p>This section can be used to peek into the <a href="../puller/">source systems</a> to see what is waiting to be pulled. For example, if your app is pulling E-Mails from Exchange, this section will peek into the inbox and show what's there.</p>
+<p><img alt="Peek" src="../img/web_peek.png?raw=true" title="Peek" /></p>
+<h2 id="queue">Queue</h2>
+<p>This section will show the <a href="../passenger/">passengers</a> in the <a href="../queue/">queue</a> along their statuses.</p>
+<p><img alt="Queue" src="../img/web_queue.png?raw=true" title="Queue" /></p>
+<p>If you click "Purge", the completed <a href="../passenger/">passengers</a> will be removed from the queue. According to your <a href="../database/">database configuration</a>, Databus automatically purges old queue entries anwyay - but this button is useful if you need to purge manually.</p>
+<p>If you click on a <a href="../passenger/">passenger</a>, you can see its details.</p>
+<p><img alt="Queue" src="../img/web_queue_disp.png?raw=true" title="Queue display" /></p>
+<ul>
+<li>
+<p>You can click any status to change it. For example, clicking on a "Complete" status will change it to "Incomplete"; forcing the <a href="../driver/">driver</a> to re-process it. Or; clicking on an "Incomplete" status will change it to "Complete" so that the <a href="../driver/">driver</a> won't process it further.</p>
+</li>
+<li>
+<p>Attachments can be viewed &amp; downloaded directly.</p>
+</li>
+<li>
+<p>Log files related to that particular <a href="../passenger/">passenger</a> can be viewed from here directly.</p>
+</li>
+</ul>
+<h2 id="log">Log</h2>
+<p>Generated log files can be viewed here. Good for hunting down errors.</p>
+<p><img alt="Log" src="../img/web_log.png?raw=true" title="Log" /></p>
+<p>If you click "Purge", all log files will be removed. According to your <a href="../database/">database configuration</a>, Databus automatically purges old log files anwyay - but this button is useful if you need to purge manually.</p>
+<p>If you click on a log file, you can see its contents.</p>
+<p><img alt="Log" src="../img/web_log_disp.png?raw=true" title="Log display" /></p>
+<h2 id="users">Users</h2>
+<p>This section will list the users defined in the <a href="../database/">database</a>. </p>
+<p><img alt="User" src="../img/web_user.png?raw=true" title="User" /></p>
+<p>If you click "Revoke token", Databus will no longer remember this user and he/she will need to re-authenticate.</p>
+<h2 id="customizing">Customizing</h2>
+<p>This is the section where you can alter system parameters. </p>
+<p><img alt="Customizing" src="../img/web_cust.png?raw=true" title="Customizing" /></p>
+<p>You will see two kinds of nodes here.</p>
+<ul>
+<li>Nodes starting with __ are files of the Databus standard. </li>
+<li>Nodes with regular names are additional files provided in the <a href="../dispatcher/">dispatcher ticket</a></li>
+</ul>
+<p>Typically, each file here is expected to be in JSON format.</p>
+<p>Some __ nodes can only be accessed with the root user.</p>
+<h2 id="export">Export</h2>
+<p>If you want to backup your data or migrate to another <a href="../database/">database</a>, this is your section.</p>
+<p><img alt="Export" src="../img/web_export.png?raw=true" title="Export" /></p>
+<p>Depending on the database you have selected, Databus will ask for additional parameters.</p>
+<p>The export operation can be executed in two modes:</p>
+<ul>
+<li>Async: In the background. Good for large volumes of data.</li>
+<li>Sync: In the foreground, real time. Good for small volumes of data.</li>
+</ul>
+<h2 id="about">About</h2>
+<p>Provides a good amount of system information.</p>
+<p><img alt="About" src="../img/web_about.png?raw=true" title="About" /></p>
+<h2 id="logout">Logout</h2>
+<p>The 👋 emoji on top can be used to logout of Databus.</p>
+<h2 id="shutdown">Shutdown</h2>
+<p>The 🔴 emoji on top can be used to shutdown Databus. The system will finish active <a href="../driver/">drivers</a> first, then shutdown safely. If you shutdown in any other way, you may cause unwanted data inconsistencies. Note that shutting the system down is only available to the <a href="../client/">root user</a>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../pusher/" class="btn btn-neutral" title="Pusher"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../pusher/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

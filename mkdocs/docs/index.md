@@ -2,7 +2,7 @@
 
 Databus is an asynchronous data integration platform. It can pull, queue, process and push data within the defined rules; and is managed over a [simple Web interface](web.md).
 
-Databus is very flexible - you can write your own factory or concrete classes easily.
+It is open source and available at [GitHub](https://github.com/keremkoseoglu/databus) & [PYPI](https://pypi.org/project/databus-keremkoseoglu/)
 
 ![Databus Queue](img/screenshot.png?raw=true "Databus")
 
