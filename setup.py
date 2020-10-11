@@ -38,6 +38,7 @@ setuptools.setup(
         "flask",
         "pyodbc",
         "urlextract",
+        "vibhaga-keremkoseoglu",
         "waitress"
     ],
     include_package_data=True
