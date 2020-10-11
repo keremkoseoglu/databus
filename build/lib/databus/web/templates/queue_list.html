@@ -1,0 +1,57 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('table.table-hover').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+<h1>Queue List</h1>
+
+{% for entry in entries %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">{{ entry.client.id }}</li>
+        <li class="breadcrumb-item active">{{ entry.client_passenger.name }}</li>
+    </ol>
+
+    <table id="" class="table table-hover">
+        <thead>
+        <tr>
+            <td>File</td>
+            <td>Status</td>
+            <td>Date</td>
+            <td>Source</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for queue_entry in entry.queues %}
+            <tr>
+                <td><a href="{{ url_for('_queue_display') }}?client={{ entry.client.id }}&passenger={{queue_entry.passenger.internal_id}}">{{queue_entry.passenger.id_text}}</a></td>
+                <td>
+                    {% if queue_entry.status.name == "complete" %}
+                    <span class="badge badge-success">Complete</span>
+                    {% else %}
+                    <span class="badge badge-warning">Incomplete</span>
+                    {% endif %}
+                </td>
+                <td>{{ queue_entry.passenger.pull_datetime }}</td>
+                <td>{{ queue_entry.passenger.source_system }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+
+    <form action="{{ url_for('_queue_purge') }}">
+        <input type="hidden" id="client" name="client" value="{{ entry.client.id }}">
+        <input type="hidden" id="passenger" name="passenger" value="{{ entry.client_passenger.name }}">
+        <input type="submit" class="btn btn-danger" value="Purge" />
+    </form>
+    <br><br>
+
+{% endfor %}
+
+{% endblock %} 

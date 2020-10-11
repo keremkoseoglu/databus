@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Databus</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables/jquery.dataTables.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery/jquery-3.5.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+
+  
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary"><div class="container">
+    <a class="navbar-brand" href="{{ url_for('_home') }}">{{alias}}</a>
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+          {% block menu %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_passenger_list') }}">Passenger</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_peek') }}">Peek</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_queue_list') }}">Queue</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_log_list') }}">Logs</a>
+            </li>
+            {% if user_is_admin %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_user_list') }}">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_customizing_list') }}">Customizing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_export') }}">Export</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_about') }}">About</a>
+            </li>
+            <li class="nav-item">
+              &nbsp;
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_logoff') }}">👋</a>
+            </li>
+            {% if user_is_root %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('_shutdown') }}">🛑</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+        </ul>
+        <img src="{{ url_for('static', filename='img/bus_50.png') }}">
+    </div>
+  </div></nav>
+
+  <div class="container">
+    &nbsp;<br>
+    {% block body %}
+    {% endblock %}
+  </div>
+
+</body>
+</html>

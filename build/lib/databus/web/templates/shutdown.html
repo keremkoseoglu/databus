@@ -1,0 +1,28 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript">
+        function executeShutdown() {
+          $( "#areyousure" ).hide();
+          shutdown_url = "{{ url_for('_shutdown_exe') }}";
+
+          $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: shutdown_url,
+            success: function(response) {
+                $( "#areyousure" ).text(response);
+                $( "#areyousure" ).show();
+            }
+        });
+
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Shutdown</h1>
+    <p class="text-danger" id="areyousure">You are about to shutdown Databus, <a href="#" onclick="executeShutdown();">click here to confirm</a>.</p>
+
+{% endblock %}
+

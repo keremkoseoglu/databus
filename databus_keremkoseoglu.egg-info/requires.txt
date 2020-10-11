@@ -1,0 +1,6 @@
+cython
+flask
+pyodbc
+urlextract
+vibhaga-keremkoseoglu
+waitress

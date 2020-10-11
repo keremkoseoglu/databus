@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: databus-keremkoseoglu
+Version: 6.6.2
+Summary: Databus is a framework to transfer data between systems.
+Home-page: https://github.com/keremkoseoglu/databus
+Author: Kerem Koseoglu
+Author-email: kerem@keremkoseoglu.com
+License: UNKNOWN
+Description: A framework to transfer data between systems
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6.5
+Description-Content-Type: text/markdown

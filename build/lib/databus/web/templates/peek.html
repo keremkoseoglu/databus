@@ -1,0 +1,53 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('table.table-hover').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+<h1>Peek</h1>
+
+{% for client_peek_result in peek %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">{{ client_peek_result.client.id }}</li>
+    </ol>
+
+    {% for puller_peek_result in client_peek_result.results %}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">{{ client_peek_result.client.id }}</li>
+            <li class="breadcrumb-item active">{{ puller_peek_result.puller_module }}</li>
+        </ol>
+
+        <table id="" class="table table-hover">
+            <thead>
+            <tr>
+                <td>Source</td>
+                <td>ID</td>
+                <td>Attachmets</td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for passenger in puller_peek_result.passengers %}
+                <tr>
+                    <td>{{ passenger.source_system }}</td>
+                    <td>{{ passenger.external_id }}</td>
+                    <td>
+                        {% for attachment in passenger.attachments %}
+                        <a href="{{ url_for('_peek_attachment') }}?client={{ client_peek_result.client.id }}&puller={{ puller_peek_result.puller_module }}&passenger={{passenger.external_id}}&file={{attachment.name}}">
+                            {{ attachment.name }}
+                        </a><br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+
+    {% endfor %}
+{% endfor %}
+
+{% endblock %}

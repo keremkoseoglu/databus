@@ -1,0 +1,80 @@
+{% extends "default_template.html" %}
+
+{% block body %}
+<h1>Queue Display</h1>
+
+<div class="jumbotron">
+    <p class="lead">{{ entry.passenger.id_text }}</p>
+    <p><b>Pulled from: </b>{{ entry.passenger.source_system }}</p>
+    <p><b>Pulled by: </b>{{ entry.passenger.puller_module }}</p>
+    <p><b>Pulled on: </b>{{ entry.passenger.pull_datetime }}</p>
+    <p>
+        <b>Puller notified:</b> 
+        {% if entry.puller_notified %}
+        <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&puller_notified=false">
+            <span class="badge badge-success">Yes</span>
+        </a>
+        {% else %}
+        <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&puller_notified=true">
+            <span class="badge badge-warning">No</span>
+        </a>
+        {% endif %}
+    </p>
+
+    <hr class="my-4">
+
+    <h2>Processors</h2>
+
+    {% for status in entry.processor_statuses %}
+        <p>
+            <b>{{ status.processor_module }}: </b>
+            {% if status.status.name == "complete" %}
+            <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&processor={{ status.processor_module }}&processed=false">
+                <span class="badge badge-success">Complete</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&processor={{ status.processor_module }}&processed=true">
+                <span class="badge badge-warning">Incomplete</span>
+            </a>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+    <h2>Pushers</h2>
+
+    {% for status in entry.pusher_statuses %}
+        <p>
+            <b>{{ status.pusher_module }}: </b>
+            {% if status.status.name == "complete" %}
+            <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&pusher={{ status.pusher_module }}&pushed=false">
+                <span class="badge badge-success">Complete</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('_queue_status_update') }}?client={{ client }}&passenger={{ entry.passenger.internal_id }}&pusher={{ status.pusher_module }}&pushed=true">
+                <span class="badge badge-warning">Incomplete</span>
+            </a>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+    <hr class="my-4">
+    <h2>Attachments</h2>
+    {% for attachment in entry.passenger.attachments %}
+
+        <p>
+            <a href="{{ url_for('_queue_attachment') }}?client={{ client }}&passenger={{entry.passenger.internal_id}}&file={{attachment.name}}">
+                {{ attachment.name }}
+            </a>
+        </p>
+    {% endfor %}
+
+    <hr class="my-4">
+    <h2>Logs</h2>
+    {% for log_id in log_ids %}
+        <p>
+            <td><a href="{{ url_for('_log_display') }}?client={{ client }}&log={{log_id}}">{{log_id}}</a></td>
+        </p>
+    {% endfor %}
+
+  </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('#logs').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+<h1>Log List</h1>
+
+{% for entry in entries %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">{{ entry.client.id }}</li>
+    </ol>
+
+    <table id="logs" class="table table-hover">
+        <thead>
+        <tr>
+            <td>Message</td>
+            <td>File</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for log_file in entry.logs %}
+            <tr>
+                <td>
+                    {% if log_file.worst_message_type.name == "error" %}
+                    <span class="badge badge-danger">Error</span>
+                    {% elif log_file.worst_message_type.name == "warning" %}
+                    <span class="badge badge-warning">Warning</span>
+                    {% else %}
+                    <span class="badge badge-success">Info</span>
+                    {% endif %}
+                </td>
+                <td><a href="{{ url_for('_log_display') }}?client={{ entry.client.id }}&log={{log_file.log_id}}">{{log_file.log_id}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+
+    <form action="{{ url_for('_log_purge') }}">
+        <input type="hidden" id="client" name="client" value="{{ entry.client.id }}">
+        <input type="submit" class="btn btn-danger" value="Purge" />
+    </form>
+    <br><br>
+
+{% endfor %}
+{% endblock %}

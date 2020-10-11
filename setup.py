@@ -6,7 +6,7 @@ import databus
 
 def get_databus_requirements() -> []:
     """ Returns a list of requirements """
-    output = [] 
+    output = []
     lib_folder = os.path.dirname(os.path.realpath(__file__))
     requirement_path = lib_folder + '/requirements.txt'
 

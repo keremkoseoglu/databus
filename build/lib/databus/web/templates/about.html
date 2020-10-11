@@ -1,0 +1,48 @@
+{% extends "default_template.html" %}
+
+{% block body %}
+<h1>About</h1>
+<p class="lead">{{ description }}</p>
+<p>
+    <b>Version:</b> {{ version }}<br>
+    <b>Requires:</b> Python {{ python_version }}<br>
+    <b>Author:</b> <a href="mailto:{{ email }}">{{ author }}</a><br>
+</p>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Dispatcher ticket</li>
+    <li class="breadcrumb-item active">Database</li>
+</ol>
+<p>
+    <b>Factory:</b> {{ dispatcher.ticket.database_factory.__module__ }}<br>
+    <b>Module:</b> {{ dispatcher.ticket.database_module }}<br>
+    {% for arg in dispatcher.ticket.database_arguments %}
+    <b>{{ arg }}:</b> 
+    {% if arg == "password" %}
+        (hidden)
+    {% else %}
+        {{ dispatcher.ticket.database_arguments[arg] }}
+    {% endif %}
+    <br>
+    {% endfor %}
+</p>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Dispatcher ticket</li>
+    <li class="breadcrumb-item active">Driver</li>
+</ol>
+<p>
+    <b>Factory:</b> {{ dispatcher.ticket.driver_factory.__module__ }}<br>
+    <b>Module:</b> {{ dispatcher.ticket.driver_module }}<br>
+</p>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Dispatcher ticket</li>
+    <li class="breadcrumb-item active">Misc. factories</li>
+</ol>
+<p>
+    <b>Passenger:</b> {{ dispatcher.ticket.passenger_factory.__module__ }}<br>
+    <b>Queue:</b> {{ dispatcher.ticket.queue_factory.__module__ }}<br>
+    <b>Puller:</b> {{ dispatcher.ticket.puller_factory.__module__ }}<br>
+    <b>Processor:</b> {{ dispatcher.ticket.processor_factory.__module__ }}<br>
+    <b>Pusher:</b> {{ dispatcher.ticket.pusher_factory.__module__ }}
+</p>
+{% endblock %}

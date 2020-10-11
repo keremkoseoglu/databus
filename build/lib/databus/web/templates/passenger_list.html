@@ -1,0 +1,78 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('table.table-hover').DataTable();
+
+            {% if expedited %}
+            alert("Passenger expedited");
+            {% endif %}
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+<h1>Passengers</h1>
+
+{% for client in clients %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">{{ client.id }}</li>
+    </ol>
+
+    <table id="" class="table table-hover">
+        <thead>
+        <tr>
+            <td>Passenger</td>
+            <td>Action</td>
+            <td>Frequency</td>
+            <td>Pullers</td>
+            <td>Queue</td>
+            <td>Span</td>
+            <td>Processors</td>
+            <td>Pushers</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for passenger in client.passengers %}
+            <tr>
+                <td>
+                    <b>{{ passenger.name.split(".")[passenger.name.count(".")] }}</b>
+                </td>
+                <td>
+                    <a href="{{ url_for('_passenger_expedite') }}?client={{ client.id }}&passenger={{ passenger.name }}">
+                        <span class="badge badge-success">Expedite</span>
+                    </a>
+                </td>
+                <td>{{ passenger.sync_frequency }}</td>
+                <td>
+                    {% for puller in passenger.puller_modules %}
+                        <span class="badge badge-light">{{ puller.split(".")[puller.count(".")] }}</span>
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <span class="badge badge-light">{{ passenger.queue_module.split(".")[passenger.queue_module.count(".")] }}</span>
+                </td>
+                <td>{{ passenger.queue_life_span }}</td>
+                <td>
+                    {% for processor in passenger.processor_modules %}
+                        <span class="badge badge-light">{{ processor.split(".")[processor.count(".")] }}</span>
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for pusher in passenger.pusher_modules %}
+                        <span class="badge badge-light">{{ pusher.split(".")[pusher.count(".")] }}</span>
+                        <br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+
+{% endfor %}
+
+{% endblock %} 

@@ -1,0 +1,47 @@
+{% extends "default_template.html" %}
+
+{% block head %}
+    <script type="text/javascript" class="init">
+        $(document).ready(function() {
+            $('table.table-hover').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+<h1>Users</h1>
+
+{% for client in clients %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">{{ client.id }}</li>
+    </ol>
+
+    <table id="" class="table table-hover">
+        <thead>
+        <tr>
+            <td>User</td>
+            <td>Action</td>
+            <td>Token</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for user in client.users %}
+            <tr>
+                <td>
+                    <b>{{ user.credential.username }}</b>
+                </td>
+                <td>
+                    <a href="{{ url_for('_user_token_revoke') }}?client={{ client.id }}&user={{ user.credential.username }}">
+                        <span class="badge badge-danger">Revoke token</span>
+                    </a>
+                </td>
+                <td><span class="badge badge-light">{{ user.credential.token }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+
+{% endfor %}
+
+{% endblock %} 
