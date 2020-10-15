@@ -10,7 +10,7 @@ It is open source and available at [GitHub](https://github.com/keremkoseoglu/dat
 
 It is currently used by [Eczacibasi Tuketim](https://www.eczacibasituketim.com) to accept various B2B documents over E-Mail and transfer them to SAP.
 
-Databus is also the backbone of various products; such as [Measy](https://github.com/keremkoseoglu/measy). You can inspect Measy as an implementation demo of Databus.
+Databus is also the backbone of various products; such as [Measy](https://keremkoseoglu.github.io/measy/). You can inspect Measy as an implementation demo of Databus.
 
 ## Contact
 
