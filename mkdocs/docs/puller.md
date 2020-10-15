@@ -10,7 +10,7 @@ You can find some demo implementations under databus/puller/demo, or check "[Use
 
 Databus provides an abstract puller class for Exhange Server under databus/puller/abstract_exchange.py. If you need to get E-Mails from an Exchange Server, you can implement your concrete class and start using it right away. Exchange Server will return passengers of type [E-Mail](passenger.md).
 
-A sample implementation can be found in [Measy](https://github.com/keremkoseoglu/measy/).
+A sample implementation can be found in [Measy](https://keremkoseoglu.github.io/measy/).
 
 ### Multi Exchange Server
 
@@ -18,7 +18,7 @@ If you need to check multiple Exchange accounts for a particular type of E-Mail,
 
 Obviously, it uses Exchange Server puller (explained above) behind the scenes.
 
-A sample implementation can be found in [Measy](https://github.com/keremkoseoglu/measy/).
+A sample implementation can be found in [Measy](https://keremkoseoglu.github.io/measy/).
 
 ## Implementing a new puller
 
