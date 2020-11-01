@@ -1,6 +1,7 @@
 """ Default queue module """
 from datetime import datetime
 from typing import List
+from databus.client.log import LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.abstract_queue import AbstractQueue
 from databus.pqueue.queue_status import QueueStatus, PassengerQueueStatus, QueueStatusFactory
@@ -43,9 +44,25 @@ class PrimalQueue(AbstractQueue):
         if len(p_passengers) <= 0:
             return
 
+        existing_passengers = self.database.get_passenger_queue_entries()
+
         for passenger in p_passengers:
             passenger.collect_log_guid(self.log.guid)
             self.log.append_text("Inserting passenger into queue: " + passenger.id_text)
+
+            already_exists = False
+            for existing_passenger in existing_passengers:
+                if all([existing_passenger.passenger.source_system == passenger.source_system,
+                        existing_passenger.passenger.external_id == passenger.external_id]):
+                    already_exists = True
+                    break
+
+            if already_exists:
+                self.log.append_entry(LogEntry(
+                    p_message="Passenger already in queue, skipping",
+                    p_type=MessageType.warning))
+                continue
+
             client_passenger = self.database.client.get_client_passenger(passenger.passenger_module)
             pqs = QueueStatusFactory.get_passenger_queue_status(passenger, client_passenger)
             self.database.insert_passenger_queue(pqs)
