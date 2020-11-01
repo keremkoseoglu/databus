@@ -8,6 +8,7 @@ databus.puller.abstract_multi_exchange .
 """
 from abc import ABC, abstractmethod, abstractproperty
 from datetime import datetime
+from enum import Enum
 from typing import List
 from uuid import uuid1
 from exchangelib import DELEGATE, Account, Configuration, Credentials, Mailbox, Message
@@ -46,6 +47,31 @@ class ExchangeSettings: # pylint: disable=R0903
             self.server = p_server
 
 
+class ExchangeFolderParent(Enum):
+    """ Defines the possible parents of a folder """
+    UNDEFINED = 0
+    INBOX = 1
+    ROOT = 2
+
+
+class ExchangeFolder:
+    """ Defines the path of a folder """
+    def __init__(self,
+                 p_parent: ExchangeFolderParent = ExchangeFolderParent.UNDEFINED,
+                 p_path: str = ""):
+        self.parent = p_parent
+        self.path = p_path
+
+    def get_folder_object(self, p_account: Account):
+        """ Returns an Exchange folder object """
+        # print(p_account.root.tree())
+        if self.parent == ExchangeFolderParent.INBOX:
+            return p_account.inbox / self.path
+        if self.parent == ExchangeFolderParent.ROOT:
+            return p_account.root / "Top of Information Store" / self.path
+        raise Exception("Unexpected folder parent: " + self.parent.name)
+
+
 class AbstractExchange(AbstractPuller, ABC):
     """ Abstract class to pull E-Mails from Exchange Server """
     _SOURCE_SYSTEM = "Exchange"
@@ -69,28 +95,114 @@ class AbstractExchange(AbstractPuller, ABC):
     def settings(self) -> ExchangeSettings:
         """ Returns parameters to connect to Exchange server """
 
-    def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
-        """ Deletes seated passengers from the Exchange inbox
-        This method is expected to be called from notify_passengers_seated in your concrete class.
-        """
-        for seated_passenger in p_seated_passengers:
-            log_txt = "Attempting to delete mail from inbox: " + seated_passenger.id_text
-            self.log.append_text(log_txt)
+    def delete_inbox_items(self, p_message_ids: List[str]):
+        """ Deletes inbox items """
+        for message_id in p_message_ids:
+            self.log.append_text("Attempting to delete: " + message_id)
             found_in_inbox = False
             for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
-                if seated_passenger.external_id == inbox_item.message_id:
+                if message_id == inbox_item.message_id:
                     found_in_inbox = True
                     inbox_item.soft_delete()
-                    self.log.append_text("Deleted!")
+                    self.log.append_text("Success!")
                     break
             if not found_in_inbox:
                 self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
+    def forward_inbox_items(self, p_message_ids: List[str], p_recipients: List[str]):
+        """ Forwards inbox items to the desired recipients """
+        for message_id in p_message_ids:
+            self.log.append_text("Attempting to forward: " + message_id)
+            found_in_inbox = False
+            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
+                if message_id == inbox_item.message_id:
+                    found_in_inbox = True
+                    inbox_item.forward(
+                        subject="FWD: " + inbox_item.subject,
+                        body="Forwarded by Databus",
+                        to_recipients=p_recipients)
+                    self.log.append_text("Success!")
+                    break
+            if not found_in_inbox:
+                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+
+    def trash_inbox_items(self, p_message_ids: List[str]):
+        """ Moves inbox items to trash """
+        for message_id in p_message_ids:
+            self.log.append_text("Attempting to trash: " + message_id)
+            found_in_inbox = False
+            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
+                if message_id == inbox_item.message_id:
+                    found_in_inbox = True
+                    inbox_item.move_to_trash()
+                    self.log.append_text("Success!")
+                    break
+            if not found_in_inbox:
+                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+
+    def move_inbox_items(self, p_message_ids: List[str], p_folder: ExchangeFolder):
+        """ Moves inbox items to the desired folder """
+        target_folder = p_folder.get_folder_object(self.account)
+
+        for message_id in p_message_ids:
+            self.log.append_text("Attempting to move: " + message_id)
+            found_in_inbox = False
+            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
+                if message_id == inbox_item.message_id:
+                    found_in_inbox = True
+                    inbox_item.move(target_folder)
+                    self.log.append_text("Success!")
+                    break
+            if not found_in_inbox:
+                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+
+    def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
+        """ Deletes seated passengers from the inbox.
+        This method is expected to be called from notify_passengers_seated in your concrete class.
+        """
+        message_ids = []
+        for seated_passenger in p_seated_passengers:
+            message_ids.append(seated_passenger.external_id)
+        self.delete_inbox_items(message_ids)
+
+    def forward_seated_passengers(self,
+                                  p_seated_passengers: List[AbstractPassenger],
+                                  p_recipients: List[str]):
+        """ Forwards seated passengers to the desired recipients
+        This method is expected to be called from notify_passengers_seated in your concrete class.
+        """
+        message_ids = []
+        for seated_passenger in p_seated_passengers:
+            message_ids.append(seated_passenger.external_id)
+        self.forward_inbox_items(message_ids, p_recipients)
+        self.delete_inbox_items(message_ids)
+
+    def trash_seated_passengers(self, p_seated_passengers: List[AbstractPassenger]):
+        """ Puts seated passengers into the recycle bin
+        This method is expected to be called from notify_passengers_seated in your concrete class.
+        """
+        message_ids = []
+        for seated_passenger in p_seated_passengers:
+            message_ids.append(seated_passenger.external_id)
+        self.trash_inbox_items(message_ids)
+
+    def move_seated_passengers(self,
+                               p_seated_passengers: List[AbstractPassenger],
+                               p_folder: ExchangeFolder):
+        """ Moves seated passengers to the desired folder
+        This method is expected to be called from notify_passengers_seated in your concrete class.
+        """
+        message_ids = []
+        for seated_passenger in p_seated_passengers:
+            message_ids.append(seated_passenger.external_id)
+        self.move_inbox_items(message_ids, p_folder)
+
     @abstractmethod
     def notify_passengers_seated(self, p_seated_passengers: List[AbstractPassenger]):
         """ This method is called whenever the E-Mail from Exchange is properly queued.
-        You can delete the E-Mail from Exchange Inbox here, or maybe move it to
-        another folder?
+        When a passenger is seated, the E-Mail message shouldn't reside in the inbox.
+        Otherwise, it would be processed again.
+        You are advised to call one of the *_seated_passengers* methods from here.
         """
 
     def _pull(self) -> List[AbstractPassenger]:
