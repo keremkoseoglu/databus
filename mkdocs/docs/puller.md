@@ -10,6 +10,11 @@ You can find some demo implementations under databus/puller/demo, or check "[Use
 
 Databus provides an abstract puller class for Exhange Server under databus/puller/abstract_exchange.py. If you need to get E-Mails from an Exchange Server, you can implement your concrete class and start using it right away. Exchange Server will return passengers of type [E-Mail](passenger.md).
 
+You basically need to fill two points here:
+
+- **settings**: Return your Exchange credentials and settings
+- **notify_passengers_seated**: The action to take when a passenger is seated. Typically, you would want to call one of the ...seated_passengers... methods from here.
+
 A sample implementation can be found in [Measy](https://keremkoseoglu.github.io/measy/).
 
 ### Multi Exchange Server
