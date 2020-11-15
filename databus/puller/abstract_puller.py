@@ -5,6 +5,18 @@ from databus.client.log import Log
 from databus.passenger.abstract_passenger import AbstractPassenger
 
 
+class AbstractPullerError(Exception):
+    """ Abstract puller exception """
+
+    def __init__(self,
+                 p_error_description: str):
+        super().__init__()
+        self.error_description = p_error_description
+
+    def __str__(self):
+        return self.error_description
+
+
 class AbstractPuller(ABC):
     """ Abstract puller class """
     def __init__(self, p_log: Log = None):

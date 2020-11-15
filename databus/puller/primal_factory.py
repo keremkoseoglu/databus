@@ -2,7 +2,7 @@
 from vibhaga.inspector import Inspector
 from databus.client.log import Log
 from databus.puller.abstract_factory import AbstractPullerFactory, PullerCreationError
-from databus.puller.abstract_puller import AbstractPuller
+from databus.puller.abstract_puller import AbstractPuller, AbstractPullerError
 
 
 class PrimalPullerFactory(AbstractPullerFactory):  # pylint: disable=R0903
@@ -20,6 +20,8 @@ class PrimalPullerFactory(AbstractPullerFactory):  # pylint: disable=R0903
                 obj_instance = candidate(p_log)
                 if isinstance(obj_instance, AbstractPuller) and obj_instance.__module__ == p_module:
                     return obj_instance
+            except AbstractPullerError as puller_error:
+                raise puller_error
             except Exception: # pylint: disable=W0703
                 continue
 

@@ -17,7 +17,7 @@ from databus.client.log import Log, LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.passenger.email import Email
-from databus.puller.abstract_puller import AbstractPuller
+from databus.puller.abstract_puller import AbstractPuller, AbstractPullerError
 
 
 class ExchangeSettings: # pylint: disable=R0903
@@ -88,7 +88,12 @@ class AbstractExchange(AbstractPuller, ABC):
         super().__init__(p_log)
         self._settings = self.settings
         self._email_decorator = None
-        self.account = AbstractExchange._login(self._settings)
+
+        try:
+            self.account = AbstractExchange._login(self._settings)
+        except Exception as login_error:
+            raise AbstractPullerError(str(login_error))
+
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
         self.alias = p_alias
 
