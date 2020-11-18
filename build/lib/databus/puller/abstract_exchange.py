@@ -12,11 +12,12 @@ from enum import Enum
 from typing import List
 from uuid import uuid1
 from exchangelib import DELEGATE, Account, Configuration, Credentials, Mailbox, Message
+from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter
 from databus.client.log import Log, LogEntry, MessageType
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.passenger.attachment import Attachment, AttachmentFormat
 from databus.passenger.email import Email
-from databus.puller.abstract_puller import AbstractPuller
+from databus.puller.abstract_puller import AbstractPuller, AbstractPullerError
 
 
 class ExchangeSettings: # pylint: disable=R0903
@@ -25,7 +26,8 @@ class ExchangeSettings: # pylint: disable=R0903
                  p_email: str = None,
                  p_username: str = None,
                  p_password: str = None,
-                 p_server: str = None):
+                 p_server: str = None,
+                 p_disable_ssl_validation: bool = None):
         if p_email is None:
             self.email = ""
         else:
@@ -45,6 +47,11 @@ class ExchangeSettings: # pylint: disable=R0903
             self.server = ""
         else:
             self.server = p_server
+
+        if p_disable_ssl_validation is None:
+            self.disable_ssl_validation = False
+        else:
+            self.disable_ssl_validation = p_disable_ssl_validation
 
 
 class ExchangeFolderParent(Enum):
@@ -81,7 +88,12 @@ class AbstractExchange(AbstractPuller, ABC):
         super().__init__(p_log)
         self._settings = self.settings
         self._email_decorator = None
-        self.account = AbstractExchange._login(self._settings)
+
+        try:
+            self.account = AbstractExchange._login(self._settings)
+        except Exception as login_error:
+            raise AbstractPullerError(str(login_error))
+
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
         self.alias = p_alias
 
@@ -288,6 +300,9 @@ class AbstractExchange(AbstractPuller, ABC):
 
     @staticmethod
     def _login(settings: ExchangeSettings) -> Account:
+        if settings.disable_ssl_validation:
+            BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
+
         credentials = Credentials(username=settings.username,
                                   password=settings.password)
 

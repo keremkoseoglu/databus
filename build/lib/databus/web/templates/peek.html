@@ -11,6 +11,12 @@
 {% block body %}
 <h1>Peek</h1>
 
+{% if peek_error != "" %}
+    <div class="alert alert-danger" role="alert">
+    <b>Peek error:</b> {{ peek_error }}
+    </div>
+{% endif %}
+
 {% for client_peek_result in peek %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item active">{{ client_peek_result.client.id }}</li>

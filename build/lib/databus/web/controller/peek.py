@@ -130,5 +130,15 @@ class PeekController(AbstractController):
         except AuthenticationError as authentication_error:
             return authentication_error.output
 
-        peek = PullerPeek(self.dispatcher).peek(self.authenticated_client_id)
-        return render_template("peek.html", peek=peek, alias=self.dispatcher.ticket.system_alias)
+        try:
+            peek = PullerPeek(self.dispatcher).peek(self.authenticated_client_id)
+            peek_error = ""
+        except Exception as diaper: # pylint: disable=W0703
+            peek = []
+            peek_error = str(diaper)
+
+        return render_template(
+            "peek.html",
+            peek=peek,
+            peek_error=peek_error,
+            alias=self.dispatcher.ticket.system_alias)
