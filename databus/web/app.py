@@ -17,6 +17,9 @@ from databus.web.controller.peek import PeekAttachmentController, PeekController
 from databus.web.controller.queue import QueueAttachmentController, QueueDisplayController,\
     QueueListController, QueuePurgeController, QueueStatusUpdateController
 from databus.web.controller.user import UserListController, UserTokenRevokeController
+from databus.web.controller.system import SystemController
+from databus.web.controller.pause import PauseController
+from databus.web.controller.resume import ResumeController
 from databus.web.controller.shutdown import ShutdownController, ShutdownExeController
 from databus.web import util
 
@@ -180,8 +183,20 @@ def _export_exe():
     return ExportExeController(_DISPATCHER).execute()
 
 ##############################
-# Shutdown
+# System
 ##############################
+
+@_APP.route("/system")
+def _system():
+    return SystemController(_DISPATCHER).execute()
+
+@_APP.route("/pause")
+def _pause():
+    return PauseController(_DISPATCHER).execute()
+
+@_APP.route("/resume")
+def _resume():
+    return ResumeController(_DISPATCHER).execute()
 
 @_APP.route("/shutdown")
 def _shutdown():

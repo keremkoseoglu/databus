@@ -19,3 +19,4 @@ Once Databus is up and running, here is what it does:
 - Each client can transport any number of [passengers](passenger.md)
 - Different [passengers](passenger.md) can have different [sync schedules](dispatcher.md)
 - In case of an error, Databus will [retry the operation](queue.md)
+- You can pause / resume Databus if needed

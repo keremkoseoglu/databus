@@ -113,6 +113,10 @@ Provides a good amount of system information.
 
 The 👋 emoji on top can be used to logout of Databus.
 
-## Shutdown
+## System
 
-The 🔴 emoji on top can be used to shutdown Databus. The system will finish active [drivers](driver.md) first, then shutdown safely. If you shutdown in any other way, you may cause unwanted data inconsistencies. Note that shutting the system down is only available to the [root user](client.md).
+The 🎛 emoji on top can be used to access the system page. Note that this section is only available to the [root user](client.md).
+
+- **Pause**: The system will finish active [drivers](driver.md) first, then pause safely. [The dispatcher](dispatcher.md) will deactivate until you resume.
+- **Resume**: The system will continue working. This means that [the dispatcher](dispatcher.md) will activate again.
+- **Shutdown**: The system will finish active [drivers](driver.md) first, then shutdown safely. If you shutdown in any other way, you may cause unwanted data inconsistencies. 

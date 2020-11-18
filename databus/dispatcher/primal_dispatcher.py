@@ -66,6 +66,16 @@ class DispatchState: # pylint: disable=R0903
         self.clients = List[Client]
 
 
+class DispatcherStatus:
+    """ Status of the dispatcher """
+    def __init__(self):
+        self.pausing = False
+        self.paused = False
+        self.dispatching = False
+        self.exporting = False
+        self.shutting_down = False
+
+
 class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
     """ Default dispatcher implementation """
 
@@ -74,9 +84,27 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._dispatch_state = DispatchState()
         self._next_dispatch_time = datetime.now()
         self._tick_count = ClientPassengerTickCount()
-        self._paused = False
-        self._dispatching = False
-        self._shutting_down = False
+        self._status = DispatcherStatus()
+
+    @property
+    def dispatching(self) -> bool:
+        """ Is the dispatcher active or not """
+        return self._status.dispatching
+
+    @property
+    def paused(self) -> bool:
+        """ Is the dispatcher paused or not """
+        return self._status.pausing or self._status.paused
+
+    @property
+    def exporting(self) -> bool:
+        """ Is export active or not """
+        return self._status.exporting
+
+    @property
+    def shutting_down(self) -> bool:
+        """ Is shutdown active or not """
+        return self._status.shutting_down
 
     def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
         """ Prioritizes the passenger in the next cycle """
@@ -84,15 +112,14 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
 
     def export_data_begin(self):
         """ Indicates that data export is starting """
-        if self._dispatching:
-            raise Exception("Can't export while dispatching")
-        if self._shutting_down:
-            raise Exception("Can't export while shutting down")
-        self._paused = True
+        self.request_pause()
+        self._wait_until_paused()
+        self._status.exporting = True
 
     def export_data_end(self):
         """ Indicates that data export is ending """
-        self._paused = False
+        self._status.exporting = False
+        self.resume()
 
     def start(self):
         """ Starts the dispatcher timer and web server """
@@ -102,19 +129,41 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
 
     def request_shutdown(self):
         """ Dispatcher shutdown """
-        self._shutting_down = True
+        self._status.shutting_down = True
         Thread(target=self._shutdown_when_safely_possible, daemon=True).start()
+
+    def request_pause(self):
+        """ Pauses dispatcher
+        This is the antonym of resume
+        """
+        if self.paused:
+            return
+        if self._status.shutting_down:
+            raise Exception("Can't pause while shutting down")
+
+        self._status.pausing = True
+        self._status.paused = False
+        Thread(target=self._pause_when_safely_possible, daemon=True).start()
+
+    def resume(self):
+        """ Resumes the dispatcher
+        This is the antonym of pause
+        """
+        if self._status.pausing:
+            raise Exception("Pause in progress, can't resume yet")
+        self._status.pausing = False
+        self._status.paused = False
 
     def _dispatch(self):
         try:
-            if self._paused or self._shutting_down:
+            if self.paused or self._status.shutting_down:
                 return
-            self._dispatching = True
+            self._status.dispatching = True
             self._dispatch_state = DispatchState()
             self._read_clients()
             self._drive_high_time_passengers()
         finally:
-            self._dispatching = False
+            self._status.dispatching = False
 
     def _drive_high_time_passengers(self):
         for client in self._dispatch_state.clients:
@@ -129,7 +178,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
                     print(str(drive_error))
 
     def _drive_passenger(self, p_client: Client, p_client_passenger: ClientPassenger):
-        if self._shutting_down:
+        if self.paused or self._status.shutting_down:
             return
         log = Log()
         db = None # pylint: disable=C0103
@@ -189,16 +238,32 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         while True:
             self._next_dispatch_time = self._next_dispatch_time + timedelta(0, 60)
             self._dispatch()
-            if self._shutting_down:
+            if self._status.shutting_down:
                 return
             self._sleep_until_next_dispatch_time()
 
     def _start_web_server(self):
         app.run_web_server(self)
 
+    def _pause_when_safely_possible(self):
+        while True:
+            if not self._status.dispatching:
+                self._status.pausing = False
+                self._status.paused = True
+                return
+            sleep(1)
+
+    def _wait_until_paused(self):
+        while True:
+            if self.paused:
+                return
+            if (not self._status.pausing) and (not self._status.paused):
+                raise Exception("Pause failed")
+            sleep(1)
+
     def _shutdown_when_safely_possible(self):
         while True:
-            if not self._dispatching and not self._paused:
+            if not self._status.dispatching and not self._status.exporting:
                 os._exit(0) # pylint: disable=W0212
                 return
             sleep(1)

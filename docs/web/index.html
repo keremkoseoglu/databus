@@ -104,7 +104,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#logout">Logout</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#shutdown">Shutdown</a>
+    <li class="toctree-l2"><a class="reference internal" href="#system">System</a>
     </li>
     </ul>
                     </li>
@@ -221,8 +221,13 @@
 <p><img alt="About" src="../img/web_about.png?raw=true" title="About" /></p>
 <h2 id="logout">Logout</h2>
 <p>The 👋 emoji on top can be used to logout of Databus.</p>
-<h2 id="shutdown">Shutdown</h2>
-<p>The 🔴 emoji on top can be used to shutdown Databus. The system will finish active <a href="../driver/">drivers</a> first, then shutdown safely. If you shutdown in any other way, you may cause unwanted data inconsistencies. Note that shutting the system down is only available to the <a href="../client/">root user</a>.</p>
+<h2 id="system">System</h2>
+<p>The 🎛 emoji on top can be used to access the system page. Note that this section is only available to the <a href="../client/">root user</a>.</p>
+<ul>
+<li><strong>Pause</strong>: The system will finish active <a href="../driver/">drivers</a> first, then pause safely. <a href="../dispatcher/">The dispatcher</a> will deactivate until you resume.</li>
+<li><strong>Resume</strong>: The system will continue working. This means that <a href="../dispatcher/">the dispatcher</a> will activate again.</li>
+<li><strong>Shutdown</strong>: The system will finish active <a href="../driver/">drivers</a> first, then shutdown safely. If you shutdown in any other way, you may cause unwanted data inconsistencies. </li>
+</ul>
               
             </div>
           </div>
