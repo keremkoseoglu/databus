@@ -141,6 +141,26 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
 
         return dummy_db.get_clients()
 
+    @property
+    @abstractmethod
+    def dispatching(self) -> bool:
+        """ Is the dispatcher active or not """
+
+    @property
+    @abstractmethod
+    def paused(self) -> bool:
+        """ Is the dispatcher paused or not """
+
+    @property
+    @abstractmethod
+    def exporting(self) -> bool:
+        """ Is export active or not """
+
+    @property
+    @abstractmethod
+    def shutting_down(self) -> bool:
+        """ Is shutdown active or not """
+
     @abstractmethod
     def expedite_client_passenger(self, p_client_id: str, p_passenger_module: str):
         """ Prioritizes the passenger in the next cycle """
@@ -184,3 +204,15 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
     @abstractmethod
     def request_shutdown(self):
         """ Dispatcher shutdown """
+
+    @abstractmethod
+    def request_pause(self):
+        """ Pauses dispatcher
+        This is the antonym of resume
+        """
+
+    @abstractmethod
+    def resume(self):
+        """ Resumes the dispatcher
+        This is the antonym of pause
+        """
