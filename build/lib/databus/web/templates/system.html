@@ -1,0 +1,14 @@
+{% extends "default_template.html" %}
+
+{% block body %}
+    <h1>System</h1>
+    <div class="alert alert-secondary" role="alert">
+        <b>Status: {{status}}</b>
+    </div>
+    <ul>
+        <li><a class="nav-link" href="{{ url_for('_pause') }}">Pause</a></li>
+        <li><a class="nav-link" href="{{ url_for('_resume') }}">Resume</a></li>
+        <li><a class="nav-link" href="{{ url_for('_shutdown') }}">Shutdown</a></li>
+    </ul>
+{% endblock %}
+

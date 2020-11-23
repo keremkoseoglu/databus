@@ -105,9 +105,12 @@ databus/web/controller/home.py
 databus/web/controller/log.py
 databus/web/controller/login.py
 databus/web/controller/passenger.py
+databus/web/controller/pause.py
 databus/web/controller/peek.py
 databus/web/controller/queue.py
+databus/web/controller/resume.py
 databus/web/controller/shutdown.py
+databus/web/controller/system.py
 databus/web/controller/user.py
 databus/web/static/css/bootstrap/bootstrap-grid.css
 databus/web/static/css/bootstrap/bootstrap-grid.css.map
@@ -153,10 +156,13 @@ databus/web/templates/home.html
 databus/web/templates/log_list.html
 databus/web/templates/login.html
 databus/web/templates/passenger_list.html
+databus/web/templates/pause.html
 databus/web/templates/peek.html
 databus/web/templates/queue_display.html
 databus/web/templates/queue_list.html
+databus/web/templates/resume.html
 databus/web/templates/shutdown.html
+databus/web/templates/system.html
 databus/web/templates/user_list.html
 databus_keremkoseoglu.egg-info/PKG-INFO
 databus_keremkoseoglu.egg-info/SOURCES.txt
