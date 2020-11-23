@@ -23,7 +23,7 @@ setuptools.setup(
     author=databus.AUTHOR,
     author_email=databus.EMAIL,
     description=databus.DESCRIPTION,
-    long_description="A framework to transfer data between systems",
+    long_description="An async middleware framework with web UI",
     long_description_content_type="text/markdown",
     url="https://github.com/keremkoseoglu/databus",
     packages=setuptools.find_packages(),

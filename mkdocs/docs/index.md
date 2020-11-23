@@ -1,6 +1,6 @@
 # Databus
 
-Databus is a middleware platform. It can pull, queue, process and push data within the defined rules; and is managed over a [simple Web interface](web.md).
+Databus is an async middleware platform. It can pull, queue, process and push data within the defined rules; and is managed over a [simple Web interface](web.md).
 
 It is open source and available at [GitHub](https://github.com/keremkoseoglu/databus) & [PYPI](https://pypi.org/project/databus-keremkoseoglu/)
 
