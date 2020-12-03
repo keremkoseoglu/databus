@@ -143,6 +143,28 @@
 <li><strong>notify_passengers_seated</strong>: The action to take when a passenger is seated. Typically, you would want to call one of the ...seated_passengers... methods from here.</li>
 </ul>
 <p>A sample implementation can be found in <a href="https://keremkoseoglu.github.io/measy/">Measy</a>.</p>
+<p>Sample config JSON for on-premise Exchange server:</p>
+<pre><code>&quot;exchange&quot;: {
+    &quot;server&quot;: &quot;mail.your_server.com&quot;,
+    &quot;username&quot;: &quot;your_username&quot;,
+    &quot;password&quot;: &quot;your_password&quot;,
+    &quot;email&quot;: &quot;your_username@your_domain.com&quot;,
+    &quot;product_owners&quot;: [],
+    &quot;disable_ssl_validation&quot;: true
+}
+</code></pre>
+
+<p>Sample config JSON for Office 365:</p>
+<pre><code>&quot;exchange&quot;: {
+    &quot;server&quot;: &quot;outlook.office365.com&quot;,
+    &quot;username&quot;: &quot;your_username@your_domain.com&quot;,
+    &quot;password&quot;: &quot;your_password&quot;,
+    &quot;email&quot;: &quot;your_username@your_domain.com&quot;,
+    &quot;product_owners&quot;: [],
+    &quot;disable_ssl_validation&quot;: false
+}
+</code></pre>
+
 <h3 id="multi-exchange-server">Multi Exchange Server</h3>
 <p>If you need to check multiple Exchange accounts for a particular type of E-Mail, you'll be pleased to know that Databus provides an abstract puller just for that! Checkdatabus/puller/abstract_multi_exchange.py. Create your own concrete class, fill the abstract methods and you are good to go!</p>
 <p>Obviously, it uses Exchange Server puller (explained above) behind the scenes.</p>

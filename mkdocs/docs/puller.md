@@ -17,6 +17,30 @@ You basically need to fill two points here:
 
 A sample implementation can be found in [Measy](https://keremkoseoglu.github.io/measy/).
 
+Sample config JSON for on-premise Exchange server:
+```
+"exchange": {
+    "server": "mail.your_server.com",
+    "username": "your_username",
+    "password": "your_password",
+    "email": "your_username@your_domain.com",
+    "product_owners": [],
+    "disable_ssl_validation": true
+}
+```
+
+Sample config JSON for Office 365:
+```
+"exchange": {
+    "server": "outlook.office365.com",
+    "username": "your_username@your_domain.com",
+    "password": "your_password",
+    "email": "your_username@your_domain.com",
+    "product_owners": [],
+    "disable_ssl_validation": false
+}
+```
+
 ### Multi Exchange Server
 
 If you need to check multiple Exchange accounts for a particular type of E-Mail, you'll be pleased to know that Databus provides an abstract puller just for that! Checkdatabus/puller/abstract_multi_exchange.py. Create your own concrete class, fill the abstract methods and you are good to go!
