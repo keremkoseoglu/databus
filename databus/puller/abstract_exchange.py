@@ -22,7 +22,7 @@ from databus.puller.abstract_puller import AbstractPuller, AbstractPullerError
 
 class ExchangeSettings: # pylint: disable=R0903
     """ Parameters to connect to Exchange Server """
-    def __init__(self,
+    def __init__(self, # pylint: disable=R0913
                  p_email: str = None,
                  p_username: str = None,
                  p_password: str = None,
