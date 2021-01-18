@@ -56,7 +56,9 @@ databus/passenger/abstract_factory.py
 databus/passenger/abstract_passenger.py
 databus/passenger/attachment.py
 databus/passenger/email.py
+databus/passenger/html_link_downloader.py
 databus/passenger/primal_factory.py
+databus/passenger/unzip.py
 databus/passenger/demo/__init__.py
 databus/passenger/demo/demo_binary_passenger.py
 databus/passenger/demo/demo_passenger_1.py
