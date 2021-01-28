@@ -17,14 +17,22 @@ class Unzipper:
         self._attachments = []
         self._deletable_indices = []
         self._new_attachments = []
+        self._eligible_file_extensions = []
         self._extract_dir = os.path.join(Unzipper._TMP_ZIP_DIR, Unzipper._TMP_ZIP_EXTRACT_DIR)
         self._zip_path = os.path.join(Unzipper._TMP_ZIP_DIR, Unzipper._TMP_ZIP_FILE)
 
-    def execute(self, p_attachments: List[Attachment]):
+    def execute(self,
+                p_attachments: List[Attachment],
+                p_extensions: List[str] = None):
         """ Unzips attachments """
         self._attachments = p_attachments
         self._deletable_indices = []
         self._new_attachments = []
+
+        if p_extensions is None:
+            self._eligible_file_extensions = []
+        else:
+            self._eligible_file_extensions = p_extensions
 
         self._unzip()
         self._delete_zip_files()
@@ -36,11 +44,30 @@ class Unzipper:
         with open(self._zip_path, "wb") as zip_file:
             zip_file.write(p_bin)
 
+    def _is_file_eligible(self, p_filename: str) -> bool:
+        if p_filename is None or len(p_filename) <= 0:
+            return False
+        if len(self._eligible_file_extensions) <= 0:
+            return True
+        filename_len = len(p_filename)
+        for efe in self._eligible_file_extensions:
+            extension_len = len(efe)
+            if filename_len <= (extension_len+1):
+                continue
+            filename_fragment = "." + p_filename[-extension_len:]
+            supposed_extension = "." + efe
+            if filename_fragment.lower() == supposed_extension.lower():
+                return True
+
+        return False
+
     def _extract_zip_file(self):
         extracted_files = []
         with ZipFile(self._zip_path) as zip_file:
             files_in_zip = zip_file.namelist()
             for file_in_zip in files_in_zip:
+                if not self._is_file_eligible(file_in_zip):
+                    continue
                 extract_path = os.path.join(self._extract_dir, file_in_zip)
                 zip_file.extract(file_in_zip, self._extract_dir)
                 extracted_files.append(extract_path)
