@@ -85,11 +85,11 @@ class AbstractPassenger(ABC): # pylint: disable=R0903, R0902
                 return attachment
         return None
 
-    def unzip_attachments(self):
+    def unzip_attachments(self, p_extensions: List[str] = None):
         """ Finds .ZIP attachments, and turns them into regular
         attachments within the same object
         """
-        Unzipper().execute(self.attachments)
+        Unzipper().execute(self.attachments, p_extensions)
 
     def download_links_in_html_as_attachments(self, p_html: str, p_extensions: List[str]):
         """ Scans the given HTML file, finds links, downloads
