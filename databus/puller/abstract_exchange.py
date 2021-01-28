@@ -217,54 +217,82 @@ class AbstractExchange(AbstractPuller, ABC):
         You are advised to call one of the *_seated_passengers* methods from here.
         """
 
+    @staticmethod
+    def _get_exchange_item_summary(item) -> str:
+        result = ""
+        if item is None:
+            return result
+
+        result = "id: " + str(item.message_id)
+
+        if item.author is not None:
+            if item.author.name is not None:
+                result += ", author: " + str(item.author.name)
+            if item.author.email_address is not None:
+                result += " (" + str(item.author.email_address) + ")"
+
+        if item.subject is not None:
+            result += ", subject: " + str(item.subject)
+
+        result = result.replace("<", "").replace(">", "")
+        return result
+
     def _pull(self) -> List[AbstractPassenger]:
         output = []
 
         for item in self.account.inbox.all().order_by('-datetime_received'):  # pylint: disable=E1101
-            email_passenger = Email(p_external_id=item.message_id,
-                                    p_internal_id=uuid1(),
-                                    p_source_system=AbstractExchange._SOURCE_SYSTEM,
-                                    p_attachments=[],
-                                    p_puller_module=self.__module__,
-                                    p_pull_datetime=datetime.now(),
-                                    p_passenger_module=self.email_module)
+            try:
+                summary = AbstractExchange._get_exchange_item_summary(item)
+                self.log.append_text("Encountered Exchange E-Mail: " + summary)
 
-            for item_attachment in item.attachments:
-                try:
-                    dummy = item_attachment.name
-                    dummy = item_attachment.content
-                except Exception: # pylint: disable=W0703
-                    continue
+                email_passenger = Email(p_external_id=item.message_id,
+                                        p_internal_id=uuid1(),
+                                        p_source_system=AbstractExchange._SOURCE_SYSTEM,
+                                        p_attachments=[],
+                                        p_puller_module=self.__module__,
+                                        p_pull_datetime=datetime.now(),
+                                        p_passenger_module=self.email_module)
 
-                if any([item_attachment.name is None,
-                        item_attachment.content is None]):
-                    continue
+                for item_attachment in item.attachments:
+                    try:
+                        dummy = item_attachment.name
+                        dummy = item_attachment.content
+                    except Exception: # pylint: disable=W0703
+                        continue
 
-                if any([item_attachment.content_type is None,
-                        item_attachment.content_type == ""]):
-                    attachment_format = Attachment.guess_format_by_file_name(
-                        item_attachment.name)
-                else:
-                    attachment_format = Attachment.guess_format_by_mime_type(
-                        item_attachment.content_type)
+                    if any([item_attachment.name is None,
+                            item_attachment.content is None]):
+                        continue
 
-                if attachment_format == AttachmentFormat.text:
-                    passenger_attachment = Attachment(
-                        p_name=item_attachment.name,
-                        p_format=AttachmentFormat.text,
-                        p_text_content=str(item_attachment.content)[2:])
-                else:
-                    passenger_attachment = Attachment(
-                        p_name=item_attachment.name,
-                        p_format=AttachmentFormat.binary,
-                        p_binary_content=item_attachment.content)
+                    if any([item_attachment.content_type is None,
+                            item_attachment.content_type == ""]):
+                        attachment_format = Attachment.guess_format_by_file_name(
+                            item_attachment.name)
+                    else:
+                        attachment_format = Attachment.guess_format_by_mime_type(
+                            item_attachment.content_type)
 
-                email_passenger.attachments.append(passenger_attachment)
+                    if attachment_format == AttachmentFormat.text:
+                        passenger_attachment = Attachment(
+                            p_name=item_attachment.name,
+                            p_format=AttachmentFormat.text,
+                            p_text_content=str(item_attachment.content)[2:])
+                    else:
+                        passenger_attachment = Attachment(
+                            p_name=item_attachment.name,
+                            p_format=AttachmentFormat.binary,
+                            p_binary_content=item_attachment.content)
 
-            if self._email_decorator is not None:
-                self._email_decorator(item, email_passenger)
-            self.log.append_text("Got mail from Exchange: " + email_passenger.id_text)
-            output.append(email_passenger)
+                    email_passenger.attachments.append(passenger_attachment)
+
+                if self._email_decorator is not None:
+                    self._email_decorator(item, email_passenger)
+                output.append(email_passenger)
+                self.log.append_text("Got Exchange mail " + email_passenger.id_text)
+
+            except Exception as error:
+                self.log.append_entry(LogEntry(p_message="Error: " + str(error),
+                                               p_type=MessageType.error))
 
         return output
 
