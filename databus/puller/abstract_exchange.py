@@ -285,10 +285,19 @@ class AbstractExchange(AbstractPuller, ABC):
 
                     email_passenger.attachments.append(passenger_attachment)
 
-                if self._email_decorator is not None:
-                    self._email_decorator(item, email_passenger)
-                output.append(email_passenger)
                 self.log.append_text("Got Exchange mail " + email_passenger.id_text)
+
+                if self._email_decorator is None:
+                    ignore_email = False
+                else:
+                    ignore_email = self._email_decorator(item, email_passenger)
+                    if ignore_email is None:
+                        ignore_email = False
+
+                if ignore_email:
+                    self.log.append_text("E-Mail eliminated by decorator")
+                else:
+                    output.append(email_passenger)
 
             except Exception as error:
                 self.log.append_entry(LogEntry(p_message="Error: " + str(error),
