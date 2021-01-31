@@ -1,0 +1,67 @@
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Dispatching client demo passenger databus.passenger.demo.demo_passenger_1
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Creating database databus.database.json_db.json_database
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Checking schema
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Creating driver databus.driver.primal_driver
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Creating ticket
+[2021-01-31T09:47:45.047219][databus.dispatcher.primal_dispatcher][info] Driving
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Driving...
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Deleting old log files
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Deleting logs before 2021-01-30T09:47:45.794710
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Pulling new passengers
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Pulling via databus.puller.demo.demo_puller_1
+[2021-01-31T09:47:45.047219][databus.puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_1 (399f080c-6390-11eb-8003-acde48001122)
+[2021-01-31T09:47:45.047219][databus.puller.demo.demo_puller_1][info] Got passenger DEMO_SYSTEM - ID_1_2 (39a01422-6390-11eb-8004-acde48001122)
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_1 (399f080c-6390-11eb-8003-acde48001122)
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_1_2 (39a01422-6390-11eb-8004-acde48001122)
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Pulling via databus.puller.demo.demo_puller_3
+[2021-01-31T09:47:45.047219][databus.puller.demo.demo_puller_3][info] Got passenger DEMO_SYSTEM - ID_3_1 (39a29d6e-6390-11eb-8007-acde48001122)
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_3_1 (39a29d6e-6390-11eb-8007-acde48001122)
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Writing new passengers to queue
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/06778f9e-6390-11eb-8003-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (06778f9e-6390-11eb-8003-acde48001122)
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/06778f9e-6390-11eb-8003-acde48001122/attachments/puller1_file1.txt
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/067bcb90-6390-11eb-8007-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (067bcb90-6390-11eb-8007-acde48001122)
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/067bcb90-6390-11eb-8007-acde48001122/attachments/puller3_file1.txt
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/073d2114-6390-11eb-801a-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_2_1 (073d2114-6390-11eb-801a-acde48001122)
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/078e8aae-6390-11eb-8028-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_BIN_1 (078e8aae-6390-11eb-8028-acde48001122)
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/078e8aae-6390-11eb-8028-acde48001122/attachments/sample_binary_file.png
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/0678eed4-6390-11eb-8004-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (0678eed4-6390-11eb-8004-acde48001122)
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_1 (399f080c-6390-11eb-8003-acde48001122)
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][warning] Passenger already in queue, skipping
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_1_2 (39a01422-6390-11eb-8004-acde48001122)
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][warning] Passenger already in queue, skipping
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_3_1 (39a29d6e-6390-11eb-8007-acde48001122)
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][warning] Passenger already in queue, skipping
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Notifying pullers about seated passengers
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Reading puller notifiable passengers
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/06778f9e-6390-11eb-8003-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/067bcb90-6390-11eb-8007-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/073d2114-6390-11eb-801a-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/078e8aae-6390-11eb-8028-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/0678eed4-6390-11eb-8004-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Reading processable passengers from queue
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Reading processable passengers of type databus.passenger.demo.demo_passenger_1
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/06778f9e-6390-11eb-8003-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/067bcb90-6390-11eb-8007-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/073d2114-6390-11eb-801a-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/078e8aae-6390-11eb-8028-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/0678eed4-6390-11eb-8004-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Processing unprocessed passengers
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Reading deliverable passengers from queue
+[2021-01-31T09:47:45.047219][databus.pqueue.primal_queue][info] Reading deliverable passengers of type databus.passenger.demo.demo_passenger_1
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/06778f9e-6390-11eb-8003-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/067bcb90-6390-11eb-8007-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/073d2114-6390-11eb-801a-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/078e8aae-6390-11eb-8028-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/software/Tesuji/Parametre/databus/data/json_db/clients/demo/pqueue/0678eed4-6390-11eb-8004-acde48001122/passenger.json
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Pushing deliverable passengers
+[2021-01-31T09:47:45.047219][databus.driver.primal_driver][info] Drive complete
+[2021-01-31T09:47:45.047219][databus.database.json_db.json_database][info] Writing log to disk
