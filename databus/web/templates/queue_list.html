@@ -48,7 +48,7 @@
     <form action="{{ url_for('_queue_purge') }}">
         <input type="hidden" id="client" name="client" value="{{ entry.client.id }}">
         <input type="hidden" id="passenger" name="passenger" value="{{ entry.client_passenger.name }}">
-        <input type="submit" class="btn btn-danger" value="Purge" />
+        <input type="submit" class="btn btn-danger" value="Purge" onClick="this.form.submit(); this.disabled=true; this.value='Purging...';" />
     </form>
     <br><br>
 
