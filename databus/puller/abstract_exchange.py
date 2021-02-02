@@ -111,46 +111,40 @@ class AbstractExchange(AbstractPuller, ABC):
         """ Deletes inbox items """
         for message_id in p_message_ids:
             self.log.append_text("Attempting to delete: " + message_id)
-            found_in_inbox = False
-            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
-                if message_id == inbox_item.message_id:
-                    found_in_inbox = True
-                    inbox_item.soft_delete()
-                    self.log.append_text("Success!")
-                    break
-            if not found_in_inbox:
-                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+            try:
+                inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
+                inbox_item.soft_delete()
+                self.log.append_text("Success!")
+            except Exception as error:
+                self.log.append_text(LogEntry(p_message=str(error), p_type=MessageType.warning))
+                self.log.append_entry(LogEntry(p_message="Assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
     def forward_inbox_items(self, p_message_ids: List[str], p_recipients: List[str]):
         """ Forwards inbox items to the desired recipients """
         for message_id in p_message_ids:
             self.log.append_text("Attempting to forward: " + message_id)
-            found_in_inbox = False
-            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
-                if message_id == inbox_item.message_id:
-                    found_in_inbox = True
-                    inbox_item.forward(
-                        subject="FWD: " + inbox_item.subject,
-                        body="Forwarded by Databus",
-                        to_recipients=p_recipients)
-                    self.log.append_text("Success!")
-                    break
-            if not found_in_inbox:
-                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+            try:
+                inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
+                inbox_item.forward(
+                    subject="FWD: " + inbox_item.subject,
+                    body="Forwarded by Databus",
+                    to_recipients=p_recipients)
+                self.log.append_text("Success!")
+            except Exception as error:
+                self.log.append_text(LogEntry(p_message=str(error), p_type=MessageType.warning))
+                self.log.append_entry(LogEntry(p_message="Assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
     def trash_inbox_items(self, p_message_ids: List[str]):
         """ Moves inbox items to trash """
         for message_id in p_message_ids:
             self.log.append_text("Attempting to trash: " + message_id)
-            found_in_inbox = False
-            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
-                if message_id == inbox_item.message_id:
-                    found_in_inbox = True
-                    inbox_item.move_to_trash()
-                    self.log.append_text("Success!")
-                    break
-            if not found_in_inbox:
-                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+            try:
+                inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
+                inbox_item.move_to_trash()
+                self.log.append_text("Success!")
+            except Exception as error:
+                self.log.append_text(LogEntry(p_message=str(error), p_type=MessageType.warning))
+                self.log.append_entry(LogEntry(p_message="Assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
     def move_inbox_items(self, p_message_ids: List[str], p_folder: ExchangeFolder):
         """ Moves inbox items to the desired folder """
@@ -158,15 +152,13 @@ class AbstractExchange(AbstractPuller, ABC):
 
         for message_id in p_message_ids:
             self.log.append_text("Attempting to move: " + message_id)
-            found_in_inbox = False
-            for inbox_item in self.account.inbox.all().order_by('-datetime_received'): # pylint: disable=E1101
-                if message_id == inbox_item.message_id:
-                    found_in_inbox = True
-                    inbox_item.move(target_folder)
-                    self.log.append_text("Success!")
-                    break
-            if not found_in_inbox:
-                self.log.append_entry(LogEntry(p_message="Item not found in inbox, assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
+            try:
+                inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
+                inbox_item.move(target_folder)
+                self.log.append_text("Success!")
+            except Exception as error:
+                self.log.append_text(LogEntry(p_message=str(error), p_type=MessageType.warning))
+                self.log.append_entry(LogEntry(p_message="Assuming manual deletion", p_type=MessageType.warning)) # pylint: disable=C0301
 
     def delete_seated_passengers_from_inbox(self, p_seated_passengers: List[AbstractPassenger]):
         """ Deletes seated passengers from the inbox.
