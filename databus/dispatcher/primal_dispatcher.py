@@ -4,6 +4,7 @@ from threading import Thread
 from time import sleep
 from typing import List
 import os
+import atexit
 from databus.client.client import Client
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log, LogEntry, MessageType
@@ -85,6 +86,7 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         self._next_dispatch_time = datetime.now()
         self._tick_count = ClientPassengerTickCount()
         self._status = DispatcherStatus()
+        atexit.register(self._shutdown_when_safely_possible)
 
     @property
     def dispatching(self) -> bool:
