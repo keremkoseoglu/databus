@@ -35,6 +35,7 @@ setuptools.setup(
     python_requires=databus.PYTHON_VERSION,
     install_requires=[
         "cython",
+        "exchangelib",
         "flask",
         "pyodbc",
         "urlextract",
