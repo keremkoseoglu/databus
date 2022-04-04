@@ -9,7 +9,7 @@ from databus.dispatcher.primal_factory import PrimalDispatcherFactory
 
 def start_with_json_db():
     """ Starts instance using JSON DB """
-    ticket = DispatcherTicket(p_system_alias="Databus DEV")
+    ticket = DispatcherTicket(p_system_alias="Databus DEV", p_web_server_port=5001)
     PrimalDispatcherFactory().create_dispatcher(p_ticket=ticket).start()
 
 
