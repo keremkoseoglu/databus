@@ -1,10 +1,11 @@
 """ Databus setup module """
 import os
+from typing import List
 import setuptools
 import databus
 
 
-def get_databus_requirements() -> []:
+def get_databus_requirements() -> List:
     """ Returns a list of requirements """
     output = []
     lib_folder = os.path.dirname(os.path.realpath(__file__))

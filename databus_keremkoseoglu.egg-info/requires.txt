@@ -1,4 +1,5 @@
 cython
+exchangelib
 flask
 pyodbc
 urlextract

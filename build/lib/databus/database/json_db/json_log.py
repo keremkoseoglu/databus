@@ -68,9 +68,8 @@ class JsonLog:
         log_file_content = p_log.entries_as_string
         log_file_path = self.build_log_file_path(p_client_id, p_log)
 
-        log_file = open(log_file_path, "w+")
-        log_file.write(log_file_content)
-        log_file.close()
+        with open(log_file_path, "w+") as log_file:
+            log_file.write(log_file_content)
 
     def _get_path_builder(self, p_client_id: str) -> JsonPathBuilder:
         return JsonPathBuilder(p_client_id, self._args)
