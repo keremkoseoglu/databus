@@ -1,4 +1,8 @@
-""" Log module """
+""" Log module
+It could be a better idea to use the logging module instead of this file.
+However; it is too late now. There are too many dependencies.
+I'll keep this file as-is for the sake of backward compability.
+"""
 from datetime import datetime
 from enum import Enum
 import inspect
