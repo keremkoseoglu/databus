@@ -28,7 +28,7 @@ class ClientError(Exception):
     def message(self) -> str:
         """ Client error message """
         if self.error_code == ClientError.ErrorCode.client_not_found:
-            return "Client " + self.client_id + " not found"
+            return f"Client {self.client_id} not found"
         if self.error_code == ClientError.ErrorCode.parameter_missing:
             return "Parameter missing, can't find client"
         if self.error_code == ClientError.ErrorCode.authentication_error:
@@ -64,8 +64,8 @@ class ClientPassengerError(Exception):
     def message(self) -> str:
         """ Client passenger error text """
         if self.error_code == ClientPassengerError.ErrorCode.passenger_not_found:
-            return self.client_id + " doesn't contain passenger " + self.passenger_name
-        return "Client passenger error: " + self.client_id + " " + self.passenger_name
+            return f"{self.client_id} doesn't contain passenger {self.passenger_name}"
+        return f"Client passenger error: {self.client_id} {self.passenger_name}"
 
 
 class Client:

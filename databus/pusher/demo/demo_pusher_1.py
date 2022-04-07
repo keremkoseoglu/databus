@@ -7,5 +7,5 @@ class DemoPusher1(AbstractPusher): # pylint: disable=R0903
     """ Demo pusher class """
     def push(self, p_passenger: PassengerQueueStatus):
         """ Push demonstration """
-        self.log.append_text("Pushed passenger " + p_passenger.passenger.id_text)
+        self.log.append_text(f"Pushed passenger {p_passenger.passenger.id_text}")
         p_passenger.set_pusher_status(self.__module__, QueueStatus.complete)

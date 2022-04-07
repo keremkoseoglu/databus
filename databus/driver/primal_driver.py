@@ -77,7 +77,7 @@ class PrimalDriver(AbstractDriver):
         else:
             log = p_log
 
-        log.append_entry(LogEntry(p_message="Driver error: " + str(p_exception),
+        log.append_entry(LogEntry(p_message=f"Driver error: {str(p_exception)}",
                                   p_type=MessageType.error))
 
     def _notify_pullers_about_seated_passengers(self):
@@ -133,7 +133,7 @@ class PrimalDriver(AbstractDriver):
         try:
             self._bus.ticket.log.append_text("Pulling new passengers")
             for puller_module in self._bus.ticket.client_passenger.puller_modules:
-                self._bus.ticket.log.append_text("Pulling via " + puller_module)
+                self._bus.ticket.log.append_text(f"Pulling via {puller_module}")
 
                 new_passengers = self.pull_passengers_from_module(
                     puller_module,
@@ -141,7 +141,7 @@ class PrimalDriver(AbstractDriver):
 
                 for new_passenger in new_passengers:
                     self._bus.new_passengers.append(new_passenger)
-                    self._bus.ticket.log.append_text("Got new passenger: " + new_passenger.id_text)
+                    self._bus.ticket.log.append_text(f"Got new passenger: {new_passenger.id_text}")
         except Exception as pull_error: # pylint: disable=W0703
             self._log_exception(pull_error)
 
@@ -151,7 +151,7 @@ class PrimalDriver(AbstractDriver):
 
             for deliverable_passenger in self._bus.deliverable_passengers:
                 self._bus.ticket.log.append_text(
-                    "Delivering " + deliverable_passenger.passenger.id_text)
+                    f"Delivering {deliverable_passenger.passenger.id_text}")
 
                 for pusher_status in deliverable_passenger.pusher_statuses:
                     if pusher_status.status == QueueStatus.complete:
@@ -180,7 +180,7 @@ class PrimalDriver(AbstractDriver):
 
             for undelivered_passenger in self._bus.deliverable_passengers:
                 self._bus.ticket.log.append_text(
-                    "Undelivered passenger: " + undelivered_passenger.passenger.id_text)
+                    f"Undelivered passenger: {undelivered_passenger.passenger.id_text}")
         except Exception as read_error: # pylint: disable=W0703
             self._log_exception(read_error)
 

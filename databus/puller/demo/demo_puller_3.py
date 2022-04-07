@@ -13,7 +13,7 @@ class DemoPuller3(AbstractPuller):
         """ Fake operation """
         for seated_passenger in p_seated_passengers:
             self.log.append_text(
-                "Demo puller 3 notified about seated passenger " + seated_passenger.id_text)
+                f"Demo puller 3 notified about seated passenger {seated_passenger.id_text}")
 
     def pull(self) -> List[DemoPassenger1]:
         """ Fake operation """
@@ -28,6 +28,6 @@ class DemoPuller3(AbstractPuller):
                                                  p_format=AttachmentFormat.text,
                                                  p_text_content="Lorem Ipsum"))
         output.append(passenger1)
-        self.log.append_text("Got passenger " + passenger1.id_text)
+        self.log.append_text(f"Got passenger {passenger1.id_text}")
 
         return output

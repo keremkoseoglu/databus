@@ -12,7 +12,7 @@ class UpdateBuilder(Modifiable):
     @property
     def update_command(self) -> str:
         """ Update command """
-        query = "UPDATE " + self.table + " SET "
+        query = f"UPDATE {self.table} SET "
 
         first_val = True
         for keyval in self._key_values:

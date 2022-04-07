@@ -26,7 +26,7 @@ class DispatcherCreationError(Exception):
     def message(self) -> str:
         """ Error message """
         if self.error_code == DispatcherCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " dispatcher instance"
+            return f"Can't create {self.module} dispatcher instance"
         return "Dispatcher creation error"
 
 

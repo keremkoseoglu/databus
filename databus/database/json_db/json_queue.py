@@ -41,11 +41,11 @@ class PassengerError(Exception):
     def message(self) -> str:
         """ Returns error message as text """
         if self.error_code == PassengerError.ErrorCode.internal_id_missing:
-            return "Passenger " + self.passenger_id + " is missing internal ID"
+            return f"Passenger {self.passenger_id} is missing internal ID"
         if self.error_code == PassengerError.ErrorCode.puller_module_missing:
-            return "Passenger " + self.passenger_id + " is missing puller module"
+            return f"Passenger {self.passenger_id} is missing puller module"
         if self.error_code == PassengerError.ErrorCode.already_exists:
-            return "Passenger " + self.passenger_id + " exists already"
+            return f"Passenger {self.passenger_id} exists already"
         return "Passenger error"
 
 
@@ -72,7 +72,7 @@ class JsonQueue:
         all_passenger_directories = self._path.passenger_directories
         for passenger in p_passengers:
             if passenger.internal_id in all_passenger_directories:
-                self._log.append_text("Deleting passenger directory " + passenger.internal_id)
+                self._log.append_text(f"Deleting passenger directory {passenger.internal_id}")
                 passenger_dir_path = self._path.get_passenger_directory_path(passenger.internal_id)
                 shutil.rmtree(passenger_dir_path)
 
@@ -80,7 +80,7 @@ class JsonQueue:
         """ Deletes all passengers from the disk """
         all_passenger_directories = self._path.passenger_directories
         for passenger_directory in all_passenger_directories:
-            self._log.append_text("Deleting passenger directory " + passenger_directory)
+            self._log.append_text(f"Deleting passenger directory {passenger_directory}")
             passenger_dir_path = self._path.get_passenger_directory_path(passenger_directory)
             shutil.rmtree(passenger_dir_path)
 
@@ -135,7 +135,7 @@ class JsonQueue:
             passenger_obj.source_system = passenger_json["source_system"]
             passenger_obj.puller_module = passenger_json["puller_module"]
             passenger_obj.pull_datetime = pull_datetime
-            self._log.append_text("Found passenger " + passenger_obj.id_text)
+            self._log.append_text(f"Found passenger {passenger_obj.id_text}")
 
             for attachment_json in passenger_json["attachments"]:
                 attachment_obj = self._get_attachment_obj(passenger_obj.internal_id,
@@ -167,7 +167,7 @@ class JsonQueue:
 
     def insert_passenger(self, p_passenger_status: PassengerQueueStatus):
         """ Creates a new folder & puts files within """
-        self._log.append_text("Adding passenger " + p_passenger_status.passenger.id_text + " to queue") # pylint: disable=C0301
+        self._log.append_text(f"Adding passenger {p_passenger_status.passenger.id_text} to queue") # pylint: disable=C0301
         self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.insert)
 
         passenger_dict = {
@@ -267,13 +267,13 @@ class JsonQueue:
 
     def update_passenger(self, p_passenger_status: PassengerQueueStatus):
         """ Updates passenger """
-        self._log.append_text("Updating passenger " + p_passenger_status.passenger.id_text)
+        self._log.append_text(f"Updating passenger {p_passenger_status.passenger.id_text}")
         self._validate_passenger_status(p_passenger_status, JsonQueue.DataOperation.update)
         self.delete_passengers([p_passenger_status.passenger])
         self.insert_passenger(p_passenger_status)
 
     def _delete_attachment_file(self, p_file_name: str, p_internal_id: str):
-        self._log.append_text("Deleting attachment " + p_file_name)
+        self._log.append_text(f"Deleting attachment {p_file_name}")
 
         full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
         if not path.exists(full_path):
@@ -286,7 +286,7 @@ class JsonQueue:
                             p_format=AttachmentFormat[p_attachment_json["format"]])
 
         full_path = self._path.get_attachment_file_path(p_internal_id, output.name)
-        self._log.append_text("Reading attachment from disk: " + full_path)
+        self._log.append_text(f"Reading attachment from disk: {full_path}")
 
         if output.format == AttachmentFormat.text:
             with open(full_path, "r", encoding="utf-8") as text_file:
@@ -313,7 +313,7 @@ class JsonQueue:
     def _validate_passenger_status(self,
                                    p_passenger_status: PassengerQueueStatus,
                                    p_operation: DataOperation):
-        self._log.append_text("Validating passenger status for " + p_passenger_status.passenger.id_text) # pylint: disable=C0301
+        self._log.append_text(f"Validating passenger status for {p_passenger_status.passenger.id_text}") # pylint: disable=C0301
 
         if str(p_passenger_status.passenger.internal_id) == "":
             raise PassengerError(PassengerError.ErrorCode.internal_id_missing,
@@ -357,12 +357,12 @@ class JsonQueue:
                                    p_file_content: bytearray,
                                    p_internal_id: str):
         full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
-        self._log.append_text("Writing binary attachment to disk: " + full_path)
+        self._log.append_text(f"Writing binary attachment to disk: {full_path}")
         with open(full_path, "wb") as bin_file:
             bin_file.write(p_file_content)
 
     def _write_passenger_json_into_file(self, p_json: dict):
         passenger_file_path = self._path.get_passenger_file_path(p_json["internal_id"])
-        self._log.append_text("Writing passenger file to disk: " + passenger_file_path)
+        self._log.append_text(f"Writing passenger file to disk: {passenger_file_path}")
         with open(passenger_file_path, "w", encoding="utf-8") as json_file:
             json.dump(p_json, json_file)

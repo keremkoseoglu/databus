@@ -60,7 +60,7 @@ class JsonDatabase(AbstractDatabase):
 
     def delete_old_logs(self, p_before: datetime):
         """ Deletes old logs from the disk """
-        self.log.append_text("Deleting logs before " + p_before.isoformat())
+        self.log.append_text(f"Deleting logs before {p_before.isoformat()}")
         self._json_log.delete_log_file_before(self.client.id, p_before, self.log)
 
     def delete_passenger_queue(self, p_passengers: List[AbstractPassenger]):
@@ -92,8 +92,8 @@ class JsonDatabase(AbstractDatabase):
     def get_log_list(self) -> List[LogListItem]:
         """ Returns log entries """
         output = []
-        b_warning = "[" + MessageType.warning.name + "]"
-        b_error = "[" + MessageType.error.name + "]"
+        b_warning = f"[{MessageType.warning.name}]"
+        b_error = f"[{MessageType.error.name}]"
 
         log_ids = self._json_log.get_log_file_list(self.client_id)
         for log_id in log_ids:
@@ -141,12 +141,12 @@ class JsonDatabase(AbstractDatabase):
 
     def insert_passenger_queue(self, p_passenger_status: PassengerQueueStatus):
         """ Writes new files to the disk """
-        self.log.append_text("Appending passenger " + p_passenger_status.passenger.id_text)
+        self.log.append_text(f"Appending passenger {p_passenger_status.passenger.id_text}")
         self._json_queue.insert_passenger(p_passenger_status)
 
     def update_queue_status(self, p_status: PassengerQueueStatus):
         """ Updates queue files on the disk """
-        self.log.append_text("Updating passenger " + p_status.passenger.id_text)
+        self.log.append_text(f"Updating passenger {p_status.passenger.id_text}")
         self._json_queue.update_passenger(p_status)
 
     def update_user_credential(self, p_credential: Credential):

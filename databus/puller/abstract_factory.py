@@ -26,7 +26,7 @@ class PullerCreationError(Exception):
     def message(self) -> str:
         """ Puller creation error message """
         if self.error_code == PullerCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " puller instance"
+            return f"Can't create {self.module} puller instance"
         if self.error_code == PullerCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create puller instance"
         return "Puller creation error"

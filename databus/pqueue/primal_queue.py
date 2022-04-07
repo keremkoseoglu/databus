@@ -30,7 +30,7 @@ class PrimalQueue(AbstractQueue):
 
         for queue_entry in deletable_queue_entries:
             self.log.append_text(
-                "Initiating deletion for completed passenger " + queue_entry.passenger.id_text)
+                f"Initiating deletion for completed passenger {queue_entry.passenger.id_text}")
             deletable_passengers.append(queue_entry.passenger)
 
         self.database.delete_passenger_queue(deletable_passengers)
@@ -72,7 +72,7 @@ class PrimalQueue(AbstractQueue):
         Passengers returned here are pulled, queued, processed and puller-notified,
         but not delivered
         """
-        self.log.append_text("Reading deliverable passengers of type " + p_passenger_module)
+        self.log.append_text(f"Reading deliverable passengers of type {p_passenger_module}")
         output = []
 
         candidates = self.database.get_passenger_queue_entries(
@@ -90,7 +90,7 @@ class PrimalQueue(AbstractQueue):
         Passengers returned here are pulled, queued and puller-notified,
         but not processed
         """
-        self.log.append_text("Reading processable passengers of type " + p_passenger_module)
+        self.log.append_text(f"Reading processable passengers of type {p_passenger_module}")
         return self.database.get_passenger_queue_entries(
             p_passenger_module=p_passenger_module,
             p_processor_status=QueueStatus.incomplete)
@@ -106,5 +106,5 @@ class PrimalQueue(AbstractQueue):
     def update_passenger_status(self, p_status: PassengerQueueStatus):
         """ Updates passenger status """
         p_status.passenger.collect_log_guid(self.log.guid)
-        self.log.append_text("Updating passenger status for " + p_status.passenger.id_text)
+        self.log.append_text(f"Updating passenger status for {p_status.passenger.id_text}")
         self.database.update_queue_status(p_status)

@@ -24,7 +24,7 @@ class PassengerCreationError(Exception):
     def message(self) -> str:
         """ Passenger creation error message """
         if self.error_code == PassengerCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " passenger instance"
+            return f"Can't create {self.module} passenger instance"
         if self.error_code == PassengerCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create passenger instance"
         return "Passenger creation error"

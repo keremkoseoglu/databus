@@ -29,7 +29,7 @@ class DriverCreationError(Exception):
     def message(self) -> str:
         """ Error message as string """
         if self.error_code == DriverCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " driver instance"
+            return f"Can't create {self.module} driver instance"
         return "Driver creation error"
 
 

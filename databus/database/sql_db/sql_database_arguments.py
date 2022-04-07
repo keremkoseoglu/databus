@@ -23,7 +23,7 @@ class SqlDatabaseArgumentError(Exception):
     def message(self) -> str:
         """ Error message as string """
         if self.error_code == SqlDatabaseArgumentError.ErrorCode.invalid_argument:
-            return "Invalid SqlDatabase argument: " + self.argument
+            return f"Invalid SqlDatabase argument: {self.argument}"
         return "SqlDatabase argument error"
 
 
