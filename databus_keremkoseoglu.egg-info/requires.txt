@@ -2,6 +2,7 @@ cython
 exchangelib
 flask
 pyodbc
+requests
 urlextract
 vibhaga-keremkoseoglu
 waitress
