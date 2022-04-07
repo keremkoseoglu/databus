@@ -104,7 +104,7 @@ class JsonClient:
         """ Returns the contents of the config file as JSON """
         output = ""
         config_file_path = self._get_config_file_path(p_client_id)
-        with open(config_file_path) as config_json_file:
+        with open(config_file_path, encoding="utf-8") as config_json_file:
             output = json.load(config_json_file)
         return output
 
@@ -112,7 +112,7 @@ class JsonClient:
         """ Returns the contents of the config file as string """
         output = ""
         config_file_path = self._get_config_file_path(p_client_id)
-        with open(config_file_path) as config_json_file:
+        with open(config_file_path, encoding="utf-8") as config_json_file:
             output = config_json_file.read()
         if "\r\n" in output:
             output = output.replace("\r\n", "\n")
@@ -130,7 +130,7 @@ class JsonClient:
     def save_config(self, p_client_id: str, p_config: str):
         """ Writes the provided configuration to the disk """
         config_file_path = self._get_config_file_path(p_client_id)
-        with open(config_file_path, "w") as config_json_file:
+        with open(config_file_path, "w", encoding="utf-8") as config_json_file:
             config_json_file.write(p_config)
 
     def update_user_credential(self, p_client_id: str, p_credential: Credential):
@@ -139,7 +139,7 @@ class JsonClient:
             if client_directory != p_client_id:
                 continue
             config_file_path = self._get_config_file_path(client_directory)
-            with open(config_file_path) as config_json_file:
+            with open(config_file_path, encoding="utf-8") as config_json_file:
                 config_json = json.load(config_json_file)
             if "users" not in config_json:
                 config_json["users"] = []
@@ -156,7 +156,7 @@ class JsonClient:
                     "token": p_credential.token
                 }
                 config_json["users"].append(user)
-            with open(config_file_path, "w") as config_json_file:
+            with open(config_file_path, "w", encoding="utf-8") as config_json_file:
                 json.dump(config_json, config_json_file, indent=4, sort_keys=True)
             return
 

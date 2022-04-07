@@ -1,5 +1,5 @@
 """ Module for value conversions """
-from abc import ABC, abstractstaticmethod
+from abc import ABC, abstractmethod
 from databus.client.log import MessageType
 from databus.passenger.attachment import AttachmentFormat
 from databus.pqueue.queue_status import QueueStatus
@@ -8,23 +8,28 @@ from databus.pqueue.queue_status import QueueStatus
 class AbstractConverter(ABC):
     """ Abstract converter class """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def attachment_format(input_val):
         """ Attachment format conversion """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def boolean(input_val):
         """ Boolean value conversion """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def date_time(input_val):
         """ Date conversion """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def message_type(input_val):
         """ Message type conversion """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def queue_status(input_val):
         """ Queue status conversion """
 

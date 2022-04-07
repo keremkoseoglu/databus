@@ -156,8 +156,8 @@ class Validator:
             else:
                 name_count[attachment.name] = 1
 
-        for name in name_count:
-            if name_count[name] > 1:
+        for name, count in name_count.items():
+            if count > 1:
                 raise AttachmentError(AttachmentError.ErrorCode.duplicate_name, p_name=name)
 
     @staticmethod

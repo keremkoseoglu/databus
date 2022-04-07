@@ -6,7 +6,7 @@ databus.puller.abstract_exchange.
 If the expected E-Mail can land on multiple Exchange accounts, you can use
 this module.
 """
-from abc import ABC, abstractproperty
+from abc import ABC, abstractmethod
 import json
 from typing import List
 from databus.client.log import Log
@@ -28,7 +28,8 @@ class AbstractMultiExchange(AbstractPuller, ABC):
     def __init__(self, p_log: Log = None):
         super().__init__(p_log=p_log)
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def exchange_accounts(self) -> List[ExchangeAccount]:
         """ Returns a list of Exchange accounts """
 

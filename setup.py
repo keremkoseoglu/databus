@@ -12,7 +12,7 @@ def get_databus_requirements() -> List:
     requirement_path = lib_folder + '/requirements.txt'
 
     if os.path.isfile(requirement_path):
-        with open(requirement_path) as f:
+        with open(requirement_path, encoding="utf-8") as f:
             output = f.read().splitlines()
 
     return output
@@ -39,6 +39,7 @@ setuptools.setup(
         "exchangelib",
         "flask",
         "pyodbc",
+        "requests",
         "urlextract",
         "vibhaga-keremkoseoglu",
         "waitress"

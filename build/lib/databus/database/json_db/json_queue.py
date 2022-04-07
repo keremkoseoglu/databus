@@ -289,7 +289,7 @@ class JsonQueue:
         self._log.append_text("Reading attachment from disk: " + full_path)
 
         if output.format == AttachmentFormat.text:
-            with open(full_path, "r") as text_file:
+            with open(full_path, "r", encoding="utf-8") as text_file:
                 output.text_content = text_file.read()
         elif output.format == AttachmentFormat.binary:
             with open(full_path, "rb") as bin_file:
