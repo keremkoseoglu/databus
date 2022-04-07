@@ -12,7 +12,7 @@ class DeleteBuilder(Modifiable):
     @property
     def delete_command(self) -> str:
         """ Delete command """
-        query = "DELETE FROM " + self.table
+        query = f"DELETE FROM {self.table}"
         query += self.where.where
         return query
 

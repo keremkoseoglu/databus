@@ -22,7 +22,7 @@ class ResumeController(AbstractController):
             error = ""
         except Exception as raised_error:
             success = False
-            error = "Resume error: " + str(raised_error)
+            error = f"Resume error: {str(raised_error)}"
 
         return render_template(
             "resume.html",

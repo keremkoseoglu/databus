@@ -48,12 +48,11 @@ class ExternalConfigFileManager:
     def get_files_of_client(self, p_client_id: str) -> List[ExternalConfigFile]:
         """ Returns all files of given client """
         output = []
-        for file_key in self._files:
-            file_obj = self._files[file_key]
+        for _, file_obj in self._files.items():
             if file_obj.client_id == p_client_id:
                 output.append(file_obj)
         return output
 
     @staticmethod
     def _build_file_key(p_client_id: str, p_file_id: str) -> str:
-        return p_client_id + "__" + p_file_id
+        return f"{p_client_id}__{p_file_id}"

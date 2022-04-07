@@ -29,7 +29,7 @@ class DemoBinaryPuller(AbstractPuller):
             p_format=AttachmentFormat.binary,
             p_binary_content=DemoBinaryPuller._get_sample_binary()))
         output.append(passenger1)
-        self.log.append_text("Got passenger " + passenger1.id_text)
+        self.log.append_text(f"Got passenger {passenger1.id_text}")
         return output
 
     @staticmethod

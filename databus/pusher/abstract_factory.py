@@ -26,7 +26,7 @@ class PusherCreationError(Exception):
     def message(self) -> str:
         """ Error message as text """
         if self.error_code == PusherCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " pusher instance"
+            return f"Can't create {self.module} pusher instance"
         if self.error_code == PusherCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create pusher instance"
         return "Pusher creation error"

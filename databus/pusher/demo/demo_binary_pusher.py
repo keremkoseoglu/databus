@@ -11,7 +11,7 @@ class DemoBinaryPusher(AbstractPusher): # pylint: disable=R0903
 
     def push(self, p_passenger: PassengerQueueStatus):
         """ Push demonstration """
-        self.log.append_text("Pushing passenger " + p_passenger.passenger.id_text)
+        self.log.append_text(f"Pushing passenger {p_passenger.passenger.id_text}")
         DemoBinaryPusher._write_binary_file(p_passenger.passenger.attachments[0].binary_content)
         p_passenger.set_pusher_status(self.__module__, QueueStatus.complete)
 

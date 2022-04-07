@@ -2,7 +2,7 @@
 from os import path
 from sys import modules
 
-__version__ = "7.1.11"
+__version__ = "7.1.12"
 AUTHOR = "Kerem Koseoglu"
 EMAIL = "kerem@keremkoseoglu.com"
 DESCRIPTION = "Databus is a middleware framework"

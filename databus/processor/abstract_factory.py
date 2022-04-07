@@ -25,7 +25,7 @@ class ProcessorCreationError(Exception):
     def message(self) -> str:
         """ Error message as text """
         if self.error_code == ProcessorCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " processor instance"
+            return f"Can't create {self.module} processor instance"
         if self.error_code == ProcessorCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create processor instance"
         return "Processor creation error"

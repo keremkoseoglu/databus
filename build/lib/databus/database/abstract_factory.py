@@ -36,7 +36,7 @@ class DatabaseCreationError(Exception):
     def message(self) -> str:
         """ Long text of the error """
         if self.error_code == DatabaseCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " instance for client " + self.client_id
+            return f"Can't create {self.module} instance for client {self.client_id}"
         if self.error_code == DatabaseCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create database instance"
         return "Database creation error"

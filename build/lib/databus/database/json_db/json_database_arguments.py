@@ -23,7 +23,7 @@ class JsonDatabaseArgumentError(Exception):
     def message(self) -> str:
         """ Error message as string """
         if self.error_code == JsonDatabaseArgumentError.ErrorCode.invalid_argument:
-            return "Invalid JsonDatabase argument: " + self.argument
+            return f"Invalid JsonDatabase argument: {self.argument}"
         return "JsonDatabase argument error"
 
 

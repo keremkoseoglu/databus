@@ -22,7 +22,7 @@ class PauseController(AbstractController):
             error = ""
         except Exception as raised_error:
             success = False
-            error = "Pause error: " + str(raised_error)
+            error = f"Pause error: {str(raised_error)}"
 
         return render_template(
             "pause.html",

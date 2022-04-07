@@ -80,12 +80,12 @@ class QueryHelper:
         The where condition is used as a literal value, so it's not polluted by
         client ID or anything.
         """
-        query = "SELECT * FROM " + self.path_builder.get_table_path(p_table) + p_literal_where
+        query = f"SELECT * FROM {self.path_builder.get_table_path(p_table)}{p_literal_where}"
         return self._driver.select(query)
 
     def select_all_no_where(self, p_table: str, p_order_by: str = "") -> dict:
         """ Selects & returns all entries from table, without WHERE conditions """
-        query = "SELECT * FROM " + self.path_builder.get_table_path(p_table)
+        query = f"SELECT * FROM {self.path_builder.get_table_path(p_table)}"
         if p_order_by != "":
             query += " ORDER BY " + p_order_by
         return self._driver.select(query)

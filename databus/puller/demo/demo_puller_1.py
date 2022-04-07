@@ -13,7 +13,7 @@ class DemoPuller1(AbstractPuller):
         """ Handles passengers which are queued already """
         for seated_passenger in p_seated_passengers:
             self.log.append_text(
-                "Demo puller 1 notified about seated passenger " + seated_passenger.id_text)
+                f"Demo puller 1 notified about seated passenger {seated_passenger.id_text}")
 
     def pull(self) -> List[DemoPassenger1]:
         """ Fake pull from imaginary source system """
@@ -28,7 +28,7 @@ class DemoPuller1(AbstractPuller):
                                                  p_format=AttachmentFormat.text,
                                                  p_text_content="Lorem Ipsum"))
         output.append(passenger1)
-        self.log.append_text("Got passenger " + passenger1.id_text)
+        self.log.append_text(f"Got passenger {passenger1.id_text}")
 
         passenger2 = DemoPassenger1()
         passenger2.external_id = "ID_1_2"
@@ -36,6 +36,6 @@ class DemoPuller1(AbstractPuller):
         passenger2.source_system = "DEMO_SYSTEM"
         passenger2.puller_module = self.__module__
         output.append(passenger2)
-        self.log.append_text("Got passenger " + passenger2.id_text)
+        self.log.append_text(f"Got passenger {passenger2.id_text}")
 
         return output

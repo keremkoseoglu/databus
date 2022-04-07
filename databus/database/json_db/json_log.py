@@ -36,7 +36,7 @@ class JsonLog:
             log_file_date = datetime(year=int(split2[0]), month=int(split2[1]), day=int(split2[2]))
             if log_file_date < p_before:
                 full_log_file_path = path.join(log_root_path, log_file)
-                p_log.append_text("Deleting " + full_log_file_path)
+                p_log.append_text(f"Deleting {full_log_file_path}")
                 remove(full_log_file_path)
 
     def get_log_file_content(self, p_client_id: str, p_log_file: str) -> str:

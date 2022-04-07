@@ -36,11 +36,11 @@ class AttachmentError(Exception):
     def message(self) -> str:
         """ Attachment error text """
         if self.ErrorCode == AttachmentError.ErrorCode.invalid_format:
-            return "Invalid attachment format: " + self.format
+            return f"Invalid attachment format: {self.format}"
         if self.ErrorCode == AttachmentError.ErrorCode.invalid_name:
-            return "Invalid attachment name: " + self.name
+            return f"Invalid attachment name: {self.name}"
         if self.ErrorCode == AttachmentError.ErrorCode.duplicate_name:
-            return "Duplicate attachment name: " + self.name
+            return f"Duplicate attachment name: {self.name}"
         return "Attachment error"
 
 

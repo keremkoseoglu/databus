@@ -65,7 +65,7 @@ class DifferenceChecker: # pylint: disable=R0903
                 break
 
         if table_key is None:
-            raise Exception("No key provided for table " + p_table_name)
+            raise Exception(f"No key provided for table {p_table_name}")
 
         target_found = False
         for tar_line in tar_lines:

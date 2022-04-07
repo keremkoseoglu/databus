@@ -75,7 +75,7 @@ class DatabusToSql(AbstractConverter):
             return "U"
         if input_val == MessageType.warning:
             return "W"
-        raise Exception("Unknown message type " + str(input_val))
+        raise Exception(f"Unknown message type {str(input_val)}")
 
     @staticmethod
     def queue_status(input_val):
@@ -106,7 +106,7 @@ class SqlToDatabus(AbstractConverter):
             return AttachmentFormat.binary
         if input_val == "T":
             return AttachmentFormat.text
-        raise Exception("Unknown attachment format " + input_val)
+        raise Exception(f"Unknown attachment format {input_val}")
 
     @staticmethod
     def boolean(input_val):
@@ -143,4 +143,4 @@ class SqlToDatabus(AbstractConverter):
             return QueueStatus.incomplete
         if input_val == "C":
             return QueueStatus.complete
-        raise Exception("Unknown queue status " + str(input_val))
+        raise Exception(f"Unknown queue status {str(input_val)}")

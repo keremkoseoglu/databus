@@ -34,5 +34,5 @@ class DemoPassenger1(AbstractPassenger):
     def hello_world(self):
         """ Dummy method """
         print("Demo passenger 1 says hello world!")
-        print("My id is: " + str(self.internal_id))
-        print("My dataset is: " + self.dataset)
+        print(f"My id is: {str(self.internal_id)}")
+        print(f"My dataset is: {self.dataset}")

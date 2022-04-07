@@ -30,7 +30,7 @@ class QueueCreationError(Exception):
     def message(self) -> str:
         """ Error message as text """
         if self.error_code == QueueCreationError.ErrorCode.cant_create_instance:
-            return "Can't create " + self.module + " queue instance"
+            return f"Can't create {self.module} queue instance"
         if self.error_code == QueueCreationError.ErrorCode.parameter_missing:
             return "Parameters missing, can't create database instance"
         return "Database creation error"

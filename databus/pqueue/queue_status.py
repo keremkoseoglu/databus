@@ -133,7 +133,7 @@ class QueueStatusError(Exception):
     def message(self) -> str:
         """ Returns error message as string """
         if self.error_code == QueueStatusError.ErrorCode.module_missing:
-            return "Passenger " + self.passenger_id + " is missing " + self.queue_status_type + " module" # pylint: disable=C0301
+            return f"Passenger {self.passenger_id} is missing {self.queue_status_type} module" # pylint: disable=C0301
         return "Passenger error"
 
 

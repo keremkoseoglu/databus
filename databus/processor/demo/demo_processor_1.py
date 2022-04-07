@@ -15,6 +15,6 @@ class DemoProcessor1(AbstractProcessor): # pylint: disable=R0903
             last_passenger = p_passengers[len(p_passengers)-1]
             last_passenger.set_all_processor_statuses(QueueStatus.complete)
             last_passenger.set_all_pusher_statuses(QueueStatus.complete)
-            self.log.append_text("Remaining passengers: " + str(len(p_passengers)))
+            self.log.append_text(f"Remaining passengers: {str(len(p_passengers))}")
         else:
             return

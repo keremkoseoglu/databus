@@ -76,7 +76,7 @@ class ExchangeFolder:
             return p_account.inbox / self.path
         if self.parent == ExchangeFolderParent.ROOT:
             return p_account.root / "Top of Information Store" / self.path
-        raise Exception("Unexpected folder parent: " + self.parent.name)
+        raise Exception(f"Unexpected folder parent: {self.parent.name}")
 
 
 class AbstractExchange(AbstractPuller, ABC):
@@ -111,7 +111,7 @@ class AbstractExchange(AbstractPuller, ABC):
     def delete_inbox_items(self, p_message_ids: List[str]):
         """ Deletes inbox items """
         for message_id in p_message_ids:
-            self.log.append_text("Attempting to delete: " + message_id)
+            self.log.append_text(f"Attempting to delete: {message_id}")
             try:
                 inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
                 inbox_item.soft_delete()
@@ -127,7 +127,7 @@ class AbstractExchange(AbstractPuller, ABC):
             try:
                 inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
                 inbox_item.forward(
-                    subject="FWD: " + inbox_item.subject,
+                    subject=f"FWD: {inbox_item.subject}",
                     body="Forwarded by Databus",
                     to_recipients=p_recipients)
                 self.log.append_text("Success!")
@@ -138,7 +138,7 @@ class AbstractExchange(AbstractPuller, ABC):
     def trash_inbox_items(self, p_message_ids: List[str]):
         """ Moves inbox items to trash """
         for message_id in p_message_ids:
-            self.log.append_text("Attempting to trash: " + message_id)
+            self.log.append_text(f"Attempting to trash: {message_id}")
             try:
                 inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
                 inbox_item.move_to_trash()
@@ -152,7 +152,7 @@ class AbstractExchange(AbstractPuller, ABC):
         target_folder = p_folder.get_folder_object(self.account)
 
         for message_id in p_message_ids:
-            self.log.append_text("Attempting to move: " + message_id)
+            self.log.append_text(f"Attempting to move: {message_id}")
             try:
                 inbox_item = self.account.inbox.get(message_id=message_id) # pylint: disable=E1101
                 inbox_item.move(target_folder)
@@ -236,7 +236,7 @@ class AbstractExchange(AbstractPuller, ABC):
         for item in self.account.inbox.all().order_by('-datetime_received'):  # pylint: disable=E1101
             try:
                 summary = AbstractExchange._get_exchange_item_summary(item)
-                self.log.append_text("Encountered Exchange E-Mail: " + summary)
+                self.log.append_text(f"Encountered Exchange E-Mail: {summary}")
 
                 email_passenger = Email(p_external_id=item.message_id,
                                         p_internal_id=uuid1(),
@@ -293,7 +293,7 @@ class AbstractExchange(AbstractPuller, ABC):
                     output.append(email_passenger)
 
             except Exception as error:
-                self.log.append_entry(LogEntry(p_message="Error: " + str(error),
+                self.log.append_entry(LogEntry(p_message=f"Error: {str(error)}",
                                                p_type=MessageType.error))
 
         return output
@@ -314,7 +314,7 @@ class AbstractExchange(AbstractPuller, ABC):
         self._email_decorator = None
         return output
 
-    def send_email(self, to: [str], subject: str, body: str): # pylint: disable=C0103
+    def send_email(self, to: List[str], subject: str, body: str): # pylint: disable=C0103
         """ Sends an E-Mail via Exchange Server """
         to_recipients = []
         for recipient in to:
