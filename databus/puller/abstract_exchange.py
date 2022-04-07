@@ -6,7 +6,7 @@ this module.
 If the expected E-Mail can land on multiple Exchange accounts, you can use
 databus.puller.abstract_multi_exchange .
 """
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import Enum
 from typing import List
@@ -92,7 +92,7 @@ class AbstractExchange(AbstractPuller, ABC):
         try:
             self.account = AbstractExchange._login(self._settings)
         except Exception as login_error:
-            raise AbstractPullerError(str(login_error))
+            raise AbstractPullerError from login_error
 
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
         self.alias = p_alias
@@ -103,7 +103,8 @@ class AbstractExchange(AbstractPuller, ABC):
             " - " +
             self._settings.email)
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def settings(self) -> ExchangeSettings:
         """ Returns parameters to connect to Exchange server """
 
@@ -229,7 +230,7 @@ class AbstractExchange(AbstractPuller, ABC):
         result = result.replace("<", "").replace(">", "")
         return result
 
-    def _pull(self) -> List[AbstractPassenger]:
+    def _pull(self) -> List[AbstractPassenger]:  # pylint: disable=R0912
         output = []
 
         for item in self.account.inbox.all().order_by('-datetime_received'):  # pylint: disable=E1101

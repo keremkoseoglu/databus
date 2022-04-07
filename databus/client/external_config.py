@@ -12,14 +12,14 @@ class ExternalConfigFile: # pylint: disable=R0903
     @property
     def file_content(self) -> str:
         """ Reads file content from the disk & returns """
-        with open(self.path, "r") as text_file:
+        with open(self.path, "r", encoding="utf-8") as text_file:
             output = text_file.read()
         return output
 
     @file_content.setter
     def file_content(self, p_content: str):
         """ Writes file content to disk """
-        with open(self.path, "w") as text_file:
+        with open(self.path, "w", encoding="utf-8") as text_file:
             text_file.write(p_content)
 
 
@@ -48,8 +48,7 @@ class ExternalConfigFileManager:
     def get_files_of_client(self, p_client_id: str) -> List[ExternalConfigFile]:
         """ Returns all files of given client """
         output = []
-        for file_key in self._files:
-            file_obj = self._files[file_key]
+        for _, file_obj in self._files.items():
             if file_obj.client_id == p_client_id:
                 output.append(file_obj)
         return output

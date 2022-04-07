@@ -281,7 +281,7 @@ class JsonQueue:
             return
         remove(full_path)
 
-    def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: {}) -> Attachment:
+    def _get_attachment_obj(self, p_internal_id: str, p_attachment_json: dict) -> Attachment:
         output = Attachment(p_name=p_attachment_json["name"],
                             p_format=AttachmentFormat[p_attachment_json["format"]])
 
@@ -289,7 +289,7 @@ class JsonQueue:
         self._log.append_text("Reading attachment from disk: " + full_path)
 
         if output.format == AttachmentFormat.text:
-            with open(full_path, "r") as text_file:
+            with open(full_path, "r", encoding="utf-8") as text_file:
                 output.text_content = text_file.read()
         elif output.format == AttachmentFormat.binary:
             with open(full_path, "rb") as bin_file:
@@ -303,7 +303,7 @@ class JsonQueue:
         try:
             passenger_file_path = self._path.get_passenger_file_path(p_internal_id)
             self._log.append_text("Reading passenger file " + passenger_file_path)
-            with open(passenger_file_path) as json_file:
+            with open(passenger_file_path, encoding="utf-8") as json_file:
                 passengers_json = json.load(json_file)
             return passengers_json
         except Exception as error: # pylint: disable=W0703
@@ -349,7 +349,7 @@ class JsonQueue:
                                     p_internal_id: str):
         full_path = self._path.get_attachment_file_path(p_internal_id, p_file_name)
         self._log.append_text("Writing text attachment to disk: " + full_path)
-        with open(full_path, "w") as text_file:
+        with open(full_path, "w", encoding="utf-8") as text_file:
             text_file.write(p_file_content)
 
     def _write_attachment_file_bin(self,
@@ -364,5 +364,5 @@ class JsonQueue:
     def _write_passenger_json_into_file(self, p_json: dict):
         passenger_file_path = self._path.get_passenger_file_path(p_json["internal_id"])
         self._log.append_text("Writing passenger file to disk: " + passenger_file_path)
-        with open(passenger_file_path, "w") as json_file:
+        with open(passenger_file_path, "w", encoding="utf-8") as json_file:
             json.dump(p_json, json_file)
