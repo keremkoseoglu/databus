@@ -1,10 +1,9 @@
 """ Abstract queue factory module """
-from abc import abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
 from databus.pqueue.abstract_queue import AbstractQueue
-
 
 class QueueCreationError(Exception):
     """ Queue creation exception """
@@ -36,9 +35,8 @@ class QueueCreationError(Exception):
         return "Database creation error"
 
 
-class AbstractQueueFactory: # pylint: disable=R0903
+class AbstractQueueFactory(Protocol): # pylint: disable=R0903
     """ Abstract queue factory class """
-    @abstractmethod
     def create_queue(self,
                      p_module: str,
                      p_database: AbstractDatabase,

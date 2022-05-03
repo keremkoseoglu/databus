@@ -1,9 +1,8 @@
 """ Abstract processor factory module """
-from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.client.log import Log
 from databus.processor.abstract_processor import AbstractProcessor
-
 
 class ProcessorCreationError(Exception):
     """ Abstract processor creation exception """
@@ -31,8 +30,7 @@ class ProcessorCreationError(Exception):
         return "Processor creation error"
 
 
-class AbstractProcessorFactory(ABC): # pylint: disable=R0903
+class AbstractProcessorFactory(Protocol): # pylint: disable=R0903
     """ Abstract processor factory """
-    @abstractmethod
     def create_processor(self, p_module: str, p_log: Log) -> AbstractProcessor:
         """ Processor factory """

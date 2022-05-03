@@ -1,11 +1,9 @@
 """ Abstract database factory """
-from abc import ABC, abstractmethod
 from enum import Enum
-from typing import List
+from typing import List, Protocol
 from databus.client.log import Log
 from databus.database.abstract_database import AbstractDatabase
 from databus.passenger.abstract_factory import AbstractPassengerFactory
-
 
 class DatabaseCreationError(Exception):
     """ Central database creation exception class """
@@ -42,9 +40,8 @@ class DatabaseCreationError(Exception):
         return "Database creation error"
 
 
-class AbstractDatabaseFactory(ABC): # pylint: disable=R0903
+class AbstractDatabaseFactory(Protocol): # pylint: disable=R0903
     """ Abstract database factory """
-    @abstractmethod
     def create_database(self, # pylint: disable=R0913
                         p_module: str,
                         p_client_id: str,
@@ -55,11 +52,9 @@ class AbstractDatabaseFactory(ABC): # pylint: disable=R0903
         """ Abstract method for database creation """
 
     @property
-    @abstractmethod
     def database_modules(self) -> List[str]:
         """ Returns a list of database modules in the system """
 
     @property
-    @abstractmethod
     def database_classes(self) -> List[str]:
         """ Returns a list of database classes in the system """

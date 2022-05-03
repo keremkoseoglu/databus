@@ -1,16 +1,15 @@
 """ Observer module for significant dispatcher events """
-from abc import ABC, abstractmethod
+from typing import Protocol
 from databus.client.client import Client
 from databus.client.client_passenger import ClientPassenger
 from databus.client.log import Log
 
 
-class DispatcherObserver(ABC): # pylint: disable=R0903
+class DispatcherObserver(Protocol): # pylint: disable=R0903
     """ Observer class for significant dispatcher events
     You can implement this class into your project and pass it via
     the dispatcher ticket.
     """
-    @abstractmethod
     def drive_passenger_complete(self,
                                  p_client: Client,
                                  p_client_passenger: ClientPassenger,

@@ -1,8 +1,7 @@
 """ Abstract passenger factory module """
-from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.passenger.abstract_passenger import AbstractPassenger
-
 
 class PassengerCreationError(Exception):
     """ Passenger creation exception class """
@@ -30,8 +29,7 @@ class PassengerCreationError(Exception):
         return "Passenger creation error"
 
 
-class AbstractPassengerFactory(ABC): # pylint: disable=R0903
+class AbstractPassengerFactory(Protocol): # pylint: disable=R0903
     """ Abstract passenger factory class """
-    @abstractmethod
     def create_passenger(self, p_module: str) -> AbstractPassenger:
         """ Abstract passenger factory """

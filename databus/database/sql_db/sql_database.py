@@ -1,7 +1,11 @@
 """ Module for SQL databases
 
 Command to start docker module:
-docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallyStrongPwd123' -p 1433:1433 microsoft/mssql-server-linux
+docker run  -d
+            --name sql_server_demo
+            -e 'ACCEPT_EULA=Y'
+            -e 'SA_PASSWORD=reallyStrongPwd123'
+            -p 1433:1433 microsoft/mssql-server-linux
 Check creation_script.sql to create a new database
 """
 from datetime import datetime
