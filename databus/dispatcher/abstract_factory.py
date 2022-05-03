@@ -1,13 +1,10 @@
 """ Abstract factory module """
-from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, DispatcherTicket
-
-
 
 class DispatcherCreationError(Exception):
     """ Dispatcher creation exception """
-
     class ErrorCode(Enum):
         """ Error code """
         cant_create_instance: 1
@@ -30,8 +27,7 @@ class DispatcherCreationError(Exception):
         return "Dispatcher creation error"
 
 
-class AbstractDispatcherFactory(ABC): # pylint: disable=R0903
+class AbstractDispatcherFactory(Protocol): # pylint: disable=R0903
     """ Abstract dispatcher factory class """
-    @abstractmethod
     def create_dispatcher(self, p_module: str, p_ticket: DispatcherTicket) -> AbstractDispatcher:
         """ Creates a new dispatcher """

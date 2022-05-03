@@ -1,12 +1,11 @@
 """ Abstract driver factory module """
-from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.driver.abstract_driver import AbstractDriver
 from databus.processor.abstract_factory import AbstractProcessorFactory
 from databus.pqueue.abstract_factory import AbstractQueueFactory
 from databus.puller.abstract_factory import AbstractPullerFactory
 from databus.pusher.abstract_factory import AbstractPusherFactory
-
 
 class DriverCreationError(Exception):
     """ Driver creation exception """
@@ -33,9 +32,8 @@ class DriverCreationError(Exception):
         return "Driver creation error"
 
 
-class AbstractDriverFactory(ABC): # pylint: disable=R0903
+class AbstractDriverFactory(Protocol): # pylint: disable=R0903
     """ Abstract driver factory class """
-    @abstractmethod
     def create_driver(self, # pylint: disable=R0913
                       p_module: str,
                       p_queue_factory: AbstractQueueFactory,

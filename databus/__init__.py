@@ -2,11 +2,11 @@
 from os import path
 from sys import modules
 
-__version__ = "7.1.12"
+__version__ = "8.0.0"
 AUTHOR = "Kerem Koseoglu"
 EMAIL = "kerem@keremkoseoglu.com"
 DESCRIPTION = "Databus is a middleware framework"
-PYTHON_VERSION = ">=3.6.5"
+PYTHON_VERSION = ">=3.8.2"
 
 
 def get_root_path() -> str:

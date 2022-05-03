@@ -1,9 +1,8 @@
 """ Abstract pusher factory module """
-from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Protocol
 from databus.client.log import Log
 from databus.pusher.abstract_pusher import AbstractPusher
-
 
 class PusherCreationError(Exception):
     """ Pusher creation exception class """
@@ -32,8 +31,7 @@ class PusherCreationError(Exception):
         return "Pusher creation error"
 
 
-class AbstractPusherFactory(ABC): # pylint: disable=R0903
+class AbstractPusherFactory(Protocol): # pylint: disable=R0903
     """ Abstract pusher factory class """
-    @abstractmethod
     def create_pusher(self, p_module: str, p_log: Log) -> AbstractPusher:
         """ Creates a new pusher object """
