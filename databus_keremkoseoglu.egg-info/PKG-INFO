@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: databus-keremkoseoglu
-Version: 7.1.12
+Version: 8.0.0
 Summary: Databus is a middleware framework
 Home-page: https://github.com/keremkoseoglu/databus
 Author: Kerem Koseoglu
@@ -11,5 +11,5 @@ Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.6.5
+Requires-Python: >=3.8.2
 Description-Content-Type: text/markdown
