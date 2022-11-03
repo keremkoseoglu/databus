@@ -99,70 +99,77 @@ class JsonQueue:
             if p_internal_id is not None and passenger_directory != p_internal_id:
                 continue
 
-            passenger_json = self._get_passenger_file_as_json(passenger_directory)
-            pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"]) # pylint: disable=C0301
+            try:
+                passenger_json = self._get_passenger_file_as_json(passenger_directory)
 
-            if p_pusher_status is not None and len(passenger_json["pusher_statuses"]) > 0:
-                a_pusher_found = False
-                for pusher_status in passenger_json["pusher_statuses"]:
-                    if pusher_status["status"] == p_pusher_status.name:
-                        a_pusher_found = True
-                        break
-                if not a_pusher_found:
+                pull_datetime = JsonToolkit.convert_json_date_to_datetime(passenger_json["pull_datetime"]) # pylint: disable=C0301
+
+                if p_pusher_status is not None and len(passenger_json["pusher_statuses"]) > 0:
+                    a_pusher_found = False
+                    for pusher_status in passenger_json["pusher_statuses"]:
+                        if pusher_status["status"] == p_pusher_status.name:
+                            a_pusher_found = True
+                            break
+                    if not a_pusher_found:
+                        continue
+
+                if p_processor_status is not None and len(passenger_json["processor_statuses"]) > 0:
+                    a_processor_found = False
+                    for processor_status in passenger_json["processor_statuses"]:
+                        if processor_status["status"] == p_processor_status.name:
+                            a_processor_found = True
+                            break
+                    if not a_processor_found:
+                        continue
+
+                if p_passenger_module is not None and passenger_json["passenger_module"] != p_passenger_module: # pylint: disable=C0301
                     continue
 
-            if p_processor_status is not None and len(passenger_json["processor_statuses"]) > 0:
-                a_processor_found = False
+                if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified: # pylint: disable=C0301
+                    continue
+
+                if p_pulled_before is not None and pull_datetime > p_pulled_before:
+                    continue
+
+                passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"]) # pylint: disable=C0301
+                passenger_obj.internal_id = passenger_json["internal_id"]
+                passenger_obj.external_id = passenger_json["external_id"]
+                passenger_obj.source_system = passenger_json["source_system"]
+                passenger_obj.puller_module = passenger_json["puller_module"]
+                passenger_obj.pull_datetime = pull_datetime
+                self._log.append_text(f"Found passenger {passenger_obj.id_text}")
+
+                for attachment_json in passenger_json["attachments"]:
+                    attachment_obj = self._get_attachment_obj(passenger_obj.internal_id,
+                                                            attachment_json)
+                    passenger_obj.attachments.append(attachment_obj)
+
+                if "log_guids" in passenger_json:
+                    for log_guid in passenger_json["log_guids"]:
+                        passenger_obj.collect_log_guid(uuid.UUID(log_guid))
+
+                paqs = PassengerQueueStatus(p_passenger=passenger_obj,
+                                            p_pusher_statuses=[],
+                                            p_processor_statuses=[])
+
+                paqs.puller_notified = passenger_json["puller_notified"]
+
                 for processor_status in passenger_json["processor_statuses"]:
-                    if processor_status["status"] == p_processor_status.name:
-                        a_processor_found = True
-                        break
-                if not a_processor_found:
-                    continue
+                    paqs.processor_statuses.append(ProcessorQueueStatus(
+                        p_processor_module=processor_status["processor_module"],
+                        p_status=QueueStatus[processor_status["status"]]))
 
-            if p_passenger_module is not None and passenger_json["passenger_module"] != p_passenger_module: # pylint: disable=C0301
-                continue
+                for pusher_status in passenger_json["pusher_statuses"]:
+                    paqs.pusher_statuses.append(PusherQueueStatus(
+                        p_pusher_module=pusher_status["pusher_module"],
+                        p_status=QueueStatus[pusher_status["status"]]))
 
-            if p_puller_notified is not None and passenger_json["puller_notified"] != p_puller_notified: # pylint: disable=C0301
-                continue
+                output.append(paqs)
+            except Exception as e:
+                log_entry = LogEntry(p_message=f"Passenger error {passenger_directory}: {str(e)}",
+                                     p_type=MessageType.error)
+                self._log.append_entry(log_entry)
 
-            if p_pulled_before is not None and pull_datetime > p_pulled_before:
-                continue
-
-            passenger_obj = self._passenger_factory.create_passenger(passenger_json["passenger_module"]) # pylint: disable=C0301
-            passenger_obj.internal_id = passenger_json["internal_id"]
-            passenger_obj.external_id = passenger_json["external_id"]
-            passenger_obj.source_system = passenger_json["source_system"]
-            passenger_obj.puller_module = passenger_json["puller_module"]
-            passenger_obj.pull_datetime = pull_datetime
-            self._log.append_text(f"Found passenger {passenger_obj.id_text}")
-
-            for attachment_json in passenger_json["attachments"]:
-                attachment_obj = self._get_attachment_obj(passenger_obj.internal_id,
-                                                          attachment_json)
-                passenger_obj.attachments.append(attachment_obj)
-
-            if "log_guids" in passenger_json:
-                for log_guid in passenger_json["log_guids"]:
-                    passenger_obj.collect_log_guid(uuid.UUID(log_guid))
-
-            paqs = PassengerQueueStatus(p_passenger=passenger_obj,
-                                        p_pusher_statuses=[],
-                                        p_processor_statuses=[])
-
-            paqs.puller_notified = passenger_json["puller_notified"]
-
-            for processor_status in passenger_json["processor_statuses"]:
-                paqs.processor_statuses.append(ProcessorQueueStatus(
-                    p_processor_module=processor_status["processor_module"],
-                    p_status=QueueStatus[processor_status["status"]]))
-
-            for pusher_status in passenger_json["pusher_statuses"]:
-                paqs.pusher_statuses.append(PusherQueueStatus(
-                    p_pusher_module=pusher_status["pusher_module"],
-                    p_status=QueueStatus[pusher_status["status"]]))
-
-            output.append(paqs)
         return output
 
     def insert_passenger(self, p_passenger_status: PassengerQueueStatus):
