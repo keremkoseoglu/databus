@@ -53,6 +53,13 @@ class JsonPathBuilder:
             self.client_dir_path,
             self._args.queue_dir)
 
+    @property
+    def backup_root_path(self) -> str:
+        """ Returns backup root path"""
+        return path.join(
+            self.client_dir_path,
+            self._args.backup_dir)
+
     def get_attachment_directory_path(self, p_internal_id: str) -> str:
         """ Returns the attachment directory path """
         return path.join(

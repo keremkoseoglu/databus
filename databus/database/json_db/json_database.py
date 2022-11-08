@@ -1,25 +1,28 @@
 """ Implementation module for JSON database """
 from datetime import datetime
+from shutil import disk_usage
 from typing import List
 from uuid import UUID
 from databus.client.client import Client
-from databus.client.log import Log, MessageType
+from databus.client.log import Log, LogEntry, MessageType
 from databus.client.user import Credential
+from databus.client.customizing import ClientCustomizing
 from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.database.json_db.json_client import JsonClient
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
 from databus.database.json_db.json_log import JsonLog
 from databus.database.json_db.json_queue import JsonQueue
+from databus.database.json_db.json_cust_node_backup import CustomizingNodeBackup
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.queue_status import QueueStatus, PassengerQueueStatus
 
-
 ARGS_TEMPLATE = JsonDatabaseArguments.TEMPLATE
-
 
 class JsonDatabase(AbstractDatabase):
     """ Implementation class for JSON database """
+    _FREE_SPACE_ERROR_PERC = 5
+
     def __init__(self,
                  p_client_id: str,
                  p_log: Log,
@@ -37,6 +40,8 @@ class JsonDatabase(AbstractDatabase):
                 self.client = None # We might be creating a new database
         self._json_log = JsonLog(self._args)
         self._json_queue = JsonQueue(p_client_id, p_log, self.passenger_factory, self._args)
+        self._cust_node_backup = CustomizingNodeBackup(json_db_arguments=self._args)
+        self._check_disk_size(p_log)
 
     @property
     def client_master_data(self) -> str:
@@ -162,5 +167,27 @@ class JsonDatabase(AbstractDatabase):
                 return log_id
         return ""
 
+    def backup_client_customizing(self, p_cc: ClientCustomizing):
+        """ Backup customizing nodes """
+        self._cust_node_backup.execute(p_cc=p_cc)
+
+    def delete_old_client_customizing_backups(self, p_before: datetime, p_log: Log):
+        """ Deletes overdue client customizing backups """
+        self._cust_node_backup.delete_old_files(p_before=p_before, p_db=self, p_log=p_log)
+
     def _get_client(self, p_id: str) -> Client:
         return self._json_client.get_single(p_id)
+
+    def _check_disk_size(self, p_log: Log):
+        total, used, free = disk_usage("/")
+        divider = 2**30
+        total_gb = total // divider
+        used_gb = used // divider
+        free_gb = free // divider
+        free_perc = int((free / total) * 100)
+
+        p_log.append_text(f"Disk {total_gb}GB, used {used_gb}GB, free {free_gb}GB ({free_perc})%")
+
+        if free_perc <= JsonDatabase._FREE_SPACE_ERROR_PERC:
+            size_entry = LogEntry(p_message="Disk space running low", p_type=MessageType.error)
+            p_log.append_entry(size_entry)

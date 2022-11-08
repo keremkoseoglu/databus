@@ -1,0 +1,77 @@
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Dispatching client demo passenger databus.passenger.demo.demo_binary_passenger
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Creating database databus.database.json_db.json_database
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Disk 931GB, used 544GB, free 387GB (41)%
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Checking schema
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Creating driver databus.driver.primal_driver
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Creating ticket
+[2022-11-07T17:46:43.419998][databus.dispatcher.primal_dispatcher][info] Driving
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Driving...
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Deleting old log files
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Deleting logs before 2022-11-06T17:47:56.431396
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Deleting old backups
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Pulling new passengers
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Pulling via databus.puller.demo.demo_binary_puller
+[2022-11-07T17:46:43.419998][databus.puller.demo.demo_binary_puller][info] Got passenger DEMO_SYSTEM - ID_BIN_1 (2a8aa4ee-5eab-11ed-803b-acde48001122)
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Got new passenger: DEMO_SYSTEM - ID_BIN_1 (2a8aa4ee-5eab-11ed-803b-acde48001122)
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Writing new passengers to queue
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08de4dc2-5e07-11ed-8038-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_2_1 (08de4dc2-5e07-11ed-8038-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0829f066-5e07-11ed-8026-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_3_1 (0829f066-5e07-11ed-8026-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0829f066-5e07-11ed-8026-acde48001122/attachments/puller3_file1.txt
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/3d7081e0-5bb4-11ed-801a-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][error] Passenger error 3d7081e0-5bb4-11ed-801a-acde48001122: 'pull_datetime'
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_BIN_1 (094eb53a-5e07-11ed-8049-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/attachments/sample_binary_file.png
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0826ea9c-5e07-11ed-8022-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_1 (0826ea9c-5e07-11ed-8022-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0826ea9c-5e07-11ed-8022-acde48001122/attachments/puller1_file1.txt
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/082791e0-5e07-11ed-8023-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_1_2 (082791e0-5e07-11ed-8023-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08df0104-5e07-11ed-8039-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_2_2 (08df0104-5e07-11ed-8039-acde48001122)
+[2022-11-07T17:46:43.419998][databus.pqueue.primal_queue][info] Inserting passenger into queue: DEMO_SYSTEM - ID_BIN_1 (2a8aa4ee-5eab-11ed-803b-acde48001122)
+[2022-11-07T17:46:43.419998][databus.pqueue.primal_queue][warning] Passenger already in queue, skipping
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Notifying pullers about seated passengers
+[2022-11-07T17:46:43.419998][databus.pqueue.primal_queue][info] Reading puller notifiable passengers
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08de4dc2-5e07-11ed-8038-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0829f066-5e07-11ed-8026-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/3d7081e0-5bb4-11ed-801a-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][error] Passenger error 3d7081e0-5bb4-11ed-801a-acde48001122: 'pull_datetime'
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0826ea9c-5e07-11ed-8022-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/082791e0-5e07-11ed-8023-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08df0104-5e07-11ed-8039-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Reading processable passengers from queue
+[2022-11-07T17:46:43.419998][databus.pqueue.primal_queue][info] Reading processable passengers of type databus.passenger.demo.demo_binary_passenger
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08de4dc2-5e07-11ed-8038-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0829f066-5e07-11ed-8026-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/3d7081e0-5bb4-11ed-801a-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][error] Passenger error 3d7081e0-5bb4-11ed-801a-acde48001122: 'pull_datetime'
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Found passenger DEMO_SYSTEM - ID_BIN_1 (094eb53a-5e07-11ed-8049-acde48001122)
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading attachment from disk: /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/attachments/sample_binary_file.png
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0826ea9c-5e07-11ed-8022-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/082791e0-5e07-11ed-8023-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08df0104-5e07-11ed-8039-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Unprocessed passenger: DEMO_SYSTEM - ID_BIN_1 (094eb53a-5e07-11ed-8049-acde48001122)
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Processing unprocessed passengers
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Processing DEMO_SYSTEM - ID_BIN_1 (094eb53a-5e07-11ed-8049-acde48001122)
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Reading deliverable passengers from queue
+[2022-11-07T17:46:43.419998][databus.pqueue.primal_queue][info] Reading deliverable passengers of type databus.passenger.demo.demo_binary_passenger
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Reading passenger queue entries
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08de4dc2-5e07-11ed-8038-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0829f066-5e07-11ed-8026-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/3d7081e0-5bb4-11ed-801a-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][error] Passenger error 3d7081e0-5bb4-11ed-801a-acde48001122: 'pull_datetime'
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/094eb53a-5e07-11ed-8049-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/0826ea9c-5e07-11ed-8022-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/082791e0-5e07-11ed-8023-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_queue][info] Reading passenger file /Users/kerem/Documents/dev/databus/data/json_db/clients/demo/pqueue/08df0104-5e07-11ed-8039-acde48001122/passenger.json
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Pushing deliverable passengers
+[2022-11-07T17:46:43.419998][databus.driver.primal_driver][info] Drive complete
+[2022-11-07T17:46:43.419998][databus.database.json_db.json_database][info] Writing log to disk

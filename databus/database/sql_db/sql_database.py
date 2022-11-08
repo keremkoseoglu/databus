@@ -15,6 +15,7 @@ from uuid import UUID
 from databus.client.client import Client, ClientPassenger
 from databus.client.log import Log
 from databus.client.user import Credential, User, Role, str_to_role
+from databus.client.customizing import ClientCustomizing
 from databus.database.abstract_database import AbstractDatabase, LogListItem
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger, Attachment
@@ -28,9 +29,7 @@ from databus.database.sql_db.update_builder import UpdateBuilder
 from databus.database.sql_db.value_conversion import DatabusToSql, SqlToDatabus
 from databus.database.sql_db.where_builder import WhereBuilder
 
-
 ARGS_TEMPLATE = SqlDatabaseArguments.TEMPLATE
-
 
 class ClientDataset:
     """ Defines a client dataset """
@@ -468,6 +467,14 @@ class SqlDatabase(AbstractDatabase):
         update.add_string("token", p_credential.token)
         update.where = where
         self._query_helper.execute_update(update)
+
+    def backup_client_customizing(self, p_cc: ClientCustomizing):
+        """ Backup customizing nodes """
+        # will be implemented later
+
+    def delete_old_client_customizing_backups(self, p_before: datetime, p_log: Log):
+        """ Deletes overdue client customizing backups """
+        # will be implemented later
 
     def _insert_logs(self, p_passenger_status: PassengerQueueStatus):
         del_where = "queue_id = '" + p_passenger_status.passenger.internal_id + "'"

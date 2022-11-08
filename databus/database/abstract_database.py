@@ -6,10 +6,10 @@ from uuid import UUID
 from databus.client.client import Client
 from databus.client.log import Log, MessageType
 from databus.client.user import Credential
+from databus.client.customizing import ClientCustomizing
 from databus.passenger.abstract_factory import AbstractPassengerFactory
 from databus.passenger.abstract_passenger import AbstractPassenger
 from databus.pqueue.queue_status import PassengerQueueStatus, QueueStatus
-
 
 class LogListItem: # pylint: disable=R0903
     """ A structure for a log list item """
@@ -136,6 +136,14 @@ class AbstractDatabase(ABC):
     @abstractmethod
     def convert_log_guid_to_id(self, p_guid: UUID) -> str:
         """ UUID to id conversion """
+
+    @abstractmethod
+    def backup_client_customizing(self, p_cc: ClientCustomizing):
+        """ Backup customizing nodes """
+
+    @abstractmethod
+    def delete_old_client_customizing_backups(self, p_before: datetime, p_log: Log):
+        """ Deletes overdue client customizing backups """
 
     @abstractmethod
     def _get_client(self, p_id: str) -> Client:

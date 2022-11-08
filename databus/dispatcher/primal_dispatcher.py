@@ -12,7 +12,6 @@ from databus.dispatcher.abstract_dispatcher import AbstractDispatcher, Dispatche
 from databus.driver.abstract_driver import BusTicket
 from databus.web import app
 
-
 class ClientPassengerTickCount:
     """ Keeps track of passenger ticks """
     _INFINITE_TICK = 999999999
@@ -127,6 +126,8 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
         """ Starts the dispatcher timer and web server """
         if self.ticket.run_web_server:
             Thread(target=self._start_web_server, daemon=True).start()
+
+        self.backup_client_customizings()
         self._start_dispatch_timer()
 
     def request_shutdown(self):
@@ -219,6 +220,9 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             if db is not None:
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)
+                db.delete_old_client_customizing_backups(
+                    p_before=p_client.log_expiry_date,
+                    p_log=log)
             if driver is not None:
                 driver.queue.delete_completed_passengers(
                     p_client_passenger.name,

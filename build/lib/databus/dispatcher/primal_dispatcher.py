@@ -217,6 +217,11 @@ class PrimalDispatcher(AbstractDispatcher): # pylint: disable=R0903
             if db is not None:
                 db.insert_log(log)
                 db.delete_old_logs(p_client.log_expiry_date)
+
+                db.delete_old_client_customizing_backups(
+                    p_before=p_client.log_expiry_date,
+                    p_log=log)
+
             if driver is not None:
                 driver.queue.delete_completed_passengers(
                     p_client_passenger.name,
