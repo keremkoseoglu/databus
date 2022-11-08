@@ -68,6 +68,11 @@ class PrimalDriver(AbstractDriver):
             self._bus.ticket.log.append_text("Deleting old log files")
             log_expiry_date = self._bus.ticket.database.client.log_expiry_date
             self._bus.ticket.database.delete_old_logs(log_expiry_date)
+            self._bus.ticket.log.append_text("Deleting old backup files")
+
+            self._bus.ticket.database.delete_old_client_customizing_backups(
+                p_before=log_expiry_date,
+                p_log=self._bus.ticket.log)
         except Exception as del_error: # pylint: disable=W0703
             self._log_exception(del_error)
 

@@ -56,7 +56,7 @@ config.json will have the following format:
 }
 ```
 
-- **log_life_span**: For how many days should the log files live on the disk? They will be deleted afterwards.
+- **log_life_span**: For how many days should the log files live on the disk? They will be deleted afterwards. Backup preserve duration also depend on this setting.
 - **passengers**: List of [passengers](passenger.md) of the client.
     - **name**: Name of the Python [passenger](passenger.md) module. This is our data to transport.
     - **pullers**: Names of Python [puller](puller.md) modules. Those are our data sources.

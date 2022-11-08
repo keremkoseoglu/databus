@@ -1,0 +1,12 @@
+{
+    "log_life_span": 1,
+    "passengers": [],
+    "users": [
+        {
+            "password": "root",
+            "role": "administrator",
+            "token": "42673d0a-cab5-11ec-99a1-acde48001122",
+            "username": "root"
+        }
+    ]
+}

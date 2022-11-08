@@ -37,6 +37,7 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
     KEY_QUEUE_ATTACHMENT_DIR = "queue_attachment_dir"
     KEY_QUEUE_DIR = "queue_dir"
     KEY_QUEUE_PASSENGER = "queue_passenger"
+    KEY_BACKUP_DIR = "backup_dir"
 
     TEMPLATE = {
         KEY_CLIENT_CONFIG: "config.json",
@@ -46,7 +47,8 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
         KEY_LOG_EXTENSION: "txt",
         KEY_QUEUE_ATTACHMENT_DIR: "attachments",
         KEY_QUEUE_DIR: "pqueue",
-        KEY_QUEUE_PASSENGER: "passenger.json"
+        KEY_QUEUE_PASSENGER: "passenger.json",
+        KEY_BACKUP_DIR: "backup"
     }
 
     def __init__(self, p_arguments: dict):
@@ -58,6 +60,7 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
         self.queue_attachment_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_QUEUE_ATTACHMENT_DIR] # pylint: disable=C0301
         self.queue_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_QUEUE_DIR]
         self.queue_passenger = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_QUEUE_PASSENGER] # pylint: disable=C0301
+        self.backup_dir = JsonDatabaseArguments.TEMPLATE[JsonDatabaseArguments.KEY_BACKUP_DIR]
 
         for key in p_arguments:
             if key == JsonDatabaseArguments.KEY_CLIENT_CONFIG:
@@ -76,6 +79,8 @@ class JsonDatabaseArguments: # pylint: disable=R0902, R0903
                 self.queue_dir = p_arguments[key]
             elif key == JsonDatabaseArguments.KEY_QUEUE_PASSENGER:
                 self.queue_passenger = p_arguments[key]
+            elif key == JsonDatabaseArguments.KEY_BACKUP_DIR:
+                self.backup_dir = p_arguments[key]
             else:
                 raise JsonDatabaseArgumentError(
                     JsonDatabaseArgumentError.ErrorCode.invalid_argument,

@@ -4,6 +4,7 @@ from typing import List
 from databus.client.client import Client
 from databus.client.external_config import ExternalConfigFile, ExternalConfigFileManager
 from databus.client.log import Log
+from databus.client.customizing import ClientCustomizing, CustomizingNode
 from databus.database.abstract_database import AbstractDatabase
 from databus.database.abstract_factory import AbstractDatabaseFactory
 from databus.database.json_db.json_database_arguments import JsonDatabaseArguments
@@ -23,6 +24,8 @@ from databus.pusher.primal_factory import PrimalPusherFactory
 from databus.processor.abstract_factory import AbstractProcessorFactory
 from databus.processor.primal_factory import PrimalProcessorFactory
 
+CLIENTS_DB_NODE = "__clients__"
+DATABUS_DB_NODE = "__databus__"
 
 class DispatcherTicket: # pylint: disable=R0902, R0903
     """ Factory parameters for dispatcher creation """
@@ -36,7 +39,8 @@ class DispatcherTicket: # pylint: disable=R0902, R0903
         JsonDatabaseArguments.KEY_LOG_EXTENSION: "txt",
         JsonDatabaseArguments.KEY_QUEUE_ATTACHMENT_DIR: "attachments",
         JsonDatabaseArguments.KEY_QUEUE_DIR: "pqueue",
-        JsonDatabaseArguments.KEY_QUEUE_PASSENGER: "passenger.json"
+        JsonDatabaseArguments.KEY_QUEUE_PASSENGER: "passenger.json",
+        JsonDatabaseArguments.KEY_BACKUP_DIR: "backup"
     }
 
     def __init__(self,
@@ -216,3 +220,46 @@ class AbstractDispatcher(ABC): # pylint: disable=R0903
         """ Resumes the dispatcher
         This is the antonym of pause
         """
+
+    def get_client_customizing_entry(self, p_client_id: str, p_entry_name: str) -> ClientCustomizing: # pylint: disable=C0301
+        """ Returns a single node """
+        all_entries = self.get_client_customizing_list(p_client_id=p_client_id)
+        if all_entries is None or len(all_entries) < 0:
+            return None
+        for entry in all_entries[0].nodes:
+            if entry.name == p_entry_name:
+                return entry
+        return None
+
+    def get_client_customizing_list(self, p_client_id: str = None) -> List[ClientCustomizing]:
+        """ Returns a list of client - customizing files """
+        output = []
+
+        for client in self.all_clients:
+            if p_client_id is not None and client.id != p_client_id:
+                continue
+            client_nodes = []
+
+            client_database = self.get_client_database(client.id)
+            db_node = CustomizingNode(DATABUS_DB_NODE, client_database.customizing)
+            client_nodes.append(db_node)
+
+            if client.id == Client.ROOT:
+                clients_node = CustomizingNode(CLIENTS_DB_NODE, client_database.client_master_data)
+                client_nodes.append(clients_node)
+
+            external_files = self.external_config_file_manager.get_files_of_client(client.id) # pylint: disable=C0301
+            for external_file in external_files:
+                external_node = CustomizingNode(external_file.file_id, external_file.file_content)
+                client_nodes.append(external_node)
+
+            output.append(ClientCustomizing(client, client_nodes))
+        return output
+
+    def backup_client_customizings(self):
+        """ Backup client customizing"""
+        customs = self.get_client_customizing_list()
+
+        for custom in customs:
+            db = self.get_client_database(custom.client.id)
+            db.backup_client_customizing(p_cc=custom)
