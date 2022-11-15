@@ -1,0 +1,12 @@
+{
+    "client": [
+        {
+            "client_id": "demo",
+            "log_life_span": 1
+        },
+        {
+            "client_id": "root",
+            "log_life_span": 1
+        }
+    ]
+}

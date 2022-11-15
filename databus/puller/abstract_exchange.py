@@ -92,7 +92,7 @@ class AbstractExchange(AbstractPuller, ABC):
         try:
             self.account = AbstractExchange._login(self._settings)
         except Exception as login_error:
-            raise AbstractPullerError from login_error
+            raise AbstractPullerError(p_error_description=str(login_error)) from login_error
 
         self.email_module = AbstractExchange._DEFAULT_EMAIL_MODULE
         self.alias = p_alias
