@@ -11,15 +11,21 @@ class ExternalConfigFile: # pylint: disable=R0903
 
     @property
     def file_content(self) -> str:
-        """ Reads file content from the disk & returns """
-        with open(self.path, "r", encoding="utf-8") as text_file:
+        """ Reads file content from the disk & returns
+        I didn't put encoding="utf-8" below, because it
+        may cause an error on Windows
+        """
+        with open(self.path, "r") as text_file: # pylint: disable=W1514
             output = text_file.read()
         return output
 
     @file_content.setter
     def file_content(self, p_content: str):
-        """ Writes file content to disk """
-        with open(self.path, "w", encoding="utf-8") as text_file:
+        """ Writes file content to disk
+        I didn't put encoding="utf-8" below, because it
+        may cause an error on Windows
+        """
+        with open(self.path, "w") as text_file: # pylint: disable=W1514
             text_file.write(p_content)
 
 
